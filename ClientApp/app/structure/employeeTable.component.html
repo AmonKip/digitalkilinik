@@ -1,0 +1,24 @@
+﻿<div class="btn btn-success" style="width: 100%">
+  Employees
+</div>
+
+<table class="table table-sm table-striped">
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Phone</th>
+    <th></th>
+  </tr>
+  <tr *ngFor="let employee of employees">
+    <td>{{employee.firstName || 'Loading Data...'}}</td>
+    <td>{{employee.lastName || 'Loading Data...'}}</td>
+    <td>{{employee.phone || 'Loading Data...'}}</td>
+    <td>
+      <button class="btn btn-primary btn-sm"
+              [routerLink]="['/employeedetail', employee.employeeID]">
+        Details
+      </button>
+    </td>
+  </tr>
+
+</table>

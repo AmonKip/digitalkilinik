@@ -1,0 +1,18 @@
+﻿
+  <table class="table table-striped table-sm table-bordered">
+    <tr><th colspan="2" class="bg-info">Visit</th></tr>
+    <tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>
+    <tr><th>Date</th><td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td></tr>
+    <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>
+    <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>
+    <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Patient</th></tr>
+    <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>
+    <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info"><a routerLink="/userDetails">Physician</a></th></tr>
+    <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>
+    <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>
+  </table>
+  <div class="text-center">
+    <button class="btn btn-primary" routerLink="/visittable"><i class="fa fa-backward"></i> Back</button>
+  </div>

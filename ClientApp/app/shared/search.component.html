@@ -1,0 +1,23 @@
+﻿ <div class="form-inline">
+  <div class="form-group">
+    {{title}}
+  </div>
+  <div class="form-group">
+    <div class="input-group ml-2 mb-2 mr-sm-2 mb-sm-0">
+      <div class="input-group-addon"><i class="fa fa-search"></i></div>
+      <input class="input p-1" placeholder="seach" (paste)="getPasteData($event)" (keyup)="getEachChar($event.target.value)" type="text" [(ngModel)]="listFilter" /><button class="btn btn-sm btnCut" (click)="clearFilter()" *ngIf="listFilter"><i class="fa fa-cut"></i></button>
+    </div>
+  </div>
+  <div class="form-group">
+    <div *ngIf='listFilter'>
+      <div class="p text-muted">Filter by: {{listFilter}}</div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .btnCut{
+    background-color : white;
+    margin: 1px;
+  }
+</style> 

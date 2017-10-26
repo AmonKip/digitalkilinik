@@ -1,0 +1,44 @@
+﻿<div class="navbar bg-info mb-1">
+  <div class="row">
+    <div class="col">
+      <a class="navbar-brand text-white">ePatient Care Admin</a>
+    </div>
+    <div class="col text-right">
+      <button class="btn btn-sm btn-warning"
+              (click)="authService.logout()">
+        Log Out
+      </button>
+    </div>
+  </div>
+</div>
+    <div class="row no-gutters">
+      <div class="col-3">
+        <button type="button" class="btn btn-block btn-outline-info" routerLink="/admin"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+          <i class="fa fa-home mr-2"></i> Home
+        </button>
+        <button class="btn btn-block btn-outline-info " routerLink="/admin/patientslist"
+                routerLinkActive="active">
+          <i class="fa fa-hospital-o mr-2"></i> Patients
+        </button>
+        <button class="btn btn-block btn-outline-info " routerLink="/admin/visitslist"
+                routerLinkActive="active">
+          <i class="fa fa-list mr-2"></i> Visits
+        </button>
+        <button class="btn btn-block btn-outline-info " routerLink="/admin/userslist"
+                routerLinkActive="active">
+          <i class="fa fa-user-md mr-2"></i> Users
+        </button>
+        <button class="btn btn-block btn-outline-info" routerLink="/admin/usersrequests"
+                routerLinkActive="active">
+          <i class="fa fa-briefcase mr-2"></i>  Requests
+        </button>
+        <button class="btn btn-block btn-outline-info" routerLink="/admin/roles"
+                routerLinkActive="active">
+          <i class="fa fa-wrench mr-2"></i> Roles
+        </button>
+      </div>
+      <div class="col p-2">
+        <router-outlet></router-outlet>
+      </div>
+    </div>

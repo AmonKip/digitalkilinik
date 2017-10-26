@@ -1,0 +1,26 @@
+﻿<table class="table table-sm table-striped table-bordered">
+  <tr><th colspan="5" class="bg-info">Patients</th></tr>
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>DOB</th>
+    <th>Sublocation</th>
+    <th>Action</th>
+  </tr>
+  <tr *ngFor="let patient of patients">
+    <td>{{patient.firstName || 'Loading Data...'}}</td>
+    <td>{{patient.lastName || 'Loading Data...'}}</td>
+    <td>{{patient.dob | date: 'mediumDate' || 'Loading Data...'}}</td>
+    <td>{{patient.sublocation || 'Loading Data...'}}</td>
+    <td>
+      
+      <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
+              [routerLink]="['/admin/patientdetail', patient.patientID]">
+        <i class="fa fa-address-card-o"></i>
+      </button>
+      <button class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="fa fa-pencil"></i></button>
+      <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button>
+    </td>
+  </tr>
+
+</table>

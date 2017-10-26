@@ -1,0 +1,32 @@
+﻿<div class="btn btn-success" style="width: 100%">
+  Users
+</div>
+<div class="btn btn-primary btn-sm mb-2 mt-2 customBtn" routerLink ="/admin/usercreate">
+  Add User
+</div>
+<table class="table table-sm table-striped table-bordered">
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Username</th>
+    <th>Action</th>
+  </tr>
+  <tr *ngFor="let user of users">
+    <td>{{user.firstName || 'Loading Data...'}}</td>
+    <td>{{user.lastName || 'Loading Data...'}}</td>
+    <td>{{user.username || 'Loading Data...'}}</td>
+    <td>
+      <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
+              [routerLink]="['/admin/userdetails', user.userDetailsID]">
+        <i class="fa fa-address-card-o"></i>
+      </button>
+      <button class="btn btn-sm btn-warning customBtn" data-toggle="tooltip" data-placement="bottom" title="Edit"
+               [routerLink]="['/admin/useredit', user.userDetailsID]">
+        <i class="fa fa-pencil"></i>
+      </button>
+      <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button>
+    </td>
+  </tr>
+
+</table>
+

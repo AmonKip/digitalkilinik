@@ -1,0 +1,58 @@
+﻿@section scripts {
+  <script src="~/dist/inline.bundle.js" asp-append-version="true"></script>
+  <script src="~/dist/polyfills.bundle.js" asp-append-version="true"></script>
+  <script src="~/dist/vendor.bundle.js" asp-append-version="true"></script>
+  <script src="~/dist/main.bundle.js" asp-append-version="true"></script>
+}
+
+@*<div class="navbar bg-inverse">
+  <a class="navbar-brand text-white">@(ViewBag.Message ?? "ePatient Care")</a>
+</div>*@
+
+  @*<header class="header clearfix">
+    <nav>
+      <ul class="nav nav-pills float-left">
+        <li class="nav-item">
+          <a class="nav-link" href="/">Patients</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/visittable">Visits</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Profile</a>
+        </li>
+      </ul>
+    </nav>
+  </header>*@
+@*<div id="data" class="p-1 bg-warning">
+  @Json.Serialize(Model)
+</div>*@
+<div class="p-1">
+  <app-root></app-root>
+</div>
+<style>
+  .customBtn {
+    cursor: pointer;
+  }
+
+  .btn {
+    cursor: pointer;
+  
+  }
+
+  .btn-link {
+    cursor: pointer;
+    text-decoration: none;
+  }
+  .header{
+    background-color: yellow;
+  }
+  .a nav-link{
+    border-bottom-color: gray;
+    border: 1px;
+    background-color: blue;
+  }
+</style>

@@ -1,0 +1,19 @@
+﻿import { Component } from '@angular/core';
+import { Repository } from "../models/repository";
+import { AppUser } from "../models/appuser.model";
+import { Router } from "@angular/router";
+
+@Component({
+    selector: "appUserRequestAdmin-table",
+    templateUrl: "AppUserRequestAdmin.component.html"
+})
+export class AppUserRequestAdminComponent {
+
+    constructor(private repo: Repository, private router: Router) { }
+
+    get users(): AppUser[] {
+        return this.repo.appUserRequests;
+
+    }
+
+}

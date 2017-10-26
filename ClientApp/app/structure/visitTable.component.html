@@ -1,0 +1,23 @@
+﻿<div class="btn btn-success" style="width: 100%">
+  Visits
+</div>
+<table class="table table-sm table-striped table-bordered">
+  <tr>
+    <th>Date</th>
+    <th>Complain</th>
+    <th>Medications</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let visit of visits">
+    <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>
+    <td>{{visit?.complain || 'No Data'}}</td>
+    <td>{{visit?.medications ||'No Data'}}</td>
+    <td>
+      <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
+              [routerLink]="['/admin/visitdetail', visit.visitId]">
+        <i class="fa fa-address-card"></i>
+      </button>
+    </td>
+  </tr>
+
+</table>

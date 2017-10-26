@@ -1,0 +1,126 @@
+﻿<form novalidate #form="ngForm" (ngSubmit)="submitForm(form)">
+  <div class="bg-danger p-a-1 mb-1"
+       *ngIf="formSubmitted && form.invalid">
+    There are problems with the form
+  </div>
+
+  <div class="form-group">
+    <label for="title">Title</label>
+    <input class="form-control input-group-sm" [(ngModel)]="user.title" name="title"
+           #title="ngModel" required type="text" id="title" />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || firstName.dirty) && title.invalid">
+      <li *ngFor="let error of getValidationMessages(title)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>First Name</label>
+    <input class="form-control" [(ngModel)]="user.firstName" name="firstName"
+           #firstName="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || firstName.dirty) && firstName.invalid">
+      <li *ngFor="let error of getValidationMessages(firstName)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Last Name</label>
+    <input class="form-control" [(ngModel)]="user.lastName" name="lastName"
+           #lastName="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || lastName.dirty) && lastName.invalid">
+      <li *ngFor="let error of getValidationMessages(lastName)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Email</label>
+    <input class="form-control" [(ngModel)]="user.email" name="email"
+           #email="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || email.dirty) && email.invalid">
+      <li *ngFor="let error of getValidationMessages(email)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Username</label>
+    <input class="form-control" [(ngModel)]="user.username" name="username"
+           #username="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || username.dirty) && username.invalid">
+      <li *ngFor="let error of getValidationMessages(username)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>National ID No.</label>
+    <input class="form-control" [(ngModel)]="user.idNumber" name="idNumber"
+           #idNumber="ngModel" />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || idNumber.dirty) && idNumber.invalid">
+      <li *ngFor="let error of getValidationMessages(idNumber)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Phone</label>
+    <input class="form-control" [(ngModel)]="user.phoneNumber" name="phoneNumber"
+           #phoneNumber="ngModel" />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid">
+      <li *ngFor="let error of getValidationMessages(phoneNumber)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Gender</label>
+    <input class="form-control" [(ngModel)]="user.gender" name="gender"
+           #gender="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || gender.dirty) && gender.invalid">
+      <li *ngFor="let error of getValidationMessages(gender)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Reason</label>
+    <input class="form-control" [(ngModel)]="user.reason" name="reason"
+           #reason="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || reason.dirty) && reason.invalid">
+      <li *ngFor="let error of getValidationMessages(reason)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <label>Biography</label>
+    <input class="form-control" [(ngModel)]="user.biography" name="biography"
+           #biography="ngModel" required />
+    <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || biography.dirty) && biography.invalid">
+      <li *ngFor="let error of getValidationMessages(biography)">
+        {{error}}
+      </li>
+    </ul>
+  </div>
+
+  <div class="form-group">
+    <input class="form-control" [(ngModel)]="user.enabled" name="enabled"
+           type="hidden"/>
+  </div>
+
+
+  <div class="mb-2 row justify-content-center align-items-center">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </div>
+</form>

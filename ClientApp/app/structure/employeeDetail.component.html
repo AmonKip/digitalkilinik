@@ -1,0 +1,14 @@
+﻿<table class="table table-striped">
+  <tr><th colspan="2" class="bg-info">Employee</th></tr>
+  <tr><th>Title</th><td>{{ employee?.title || 'No Data' }}</td></tr>
+  <tr><th>First Name</th><td>{{ employee?.firstName || 'No Data' }}</td></tr>
+  <tr><th>Last Name</th><td>{{ employee?.lastName || 'No Data' }}</td></tr>
+  <tr><th>ID Number</th><td>{{employee?.idNumber || 'No Data'}}</td></tr>
+  <tr><th>Email</th><td>{{employee?.email  || 'No Data'}}</td></tr>
+  <tr><th>Username</th><td>{{ employee?.username || 'No Data' }}</td></tr>
+  <tr><th>Phone</th><td>{{ employee?.phone || 'No Data' }}</td></tr>
+  <tr><th>Biography</th><td>{{ employee?.biography || 'No Data' }}</td></tr>
+</table>
+<div class="text-center">
+  <button class="btn btn-primary" routerLink="/employeetable">Back</button>
+</div>

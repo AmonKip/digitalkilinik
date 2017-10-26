@@ -1,0 +1,40 @@
+﻿<div class="card">
+  <div class="card-header bg-info">Patients</div>
+  <div>
+    <search-list [title]='searchTitle' (change)="criteriaChange($event)" class="m-2"></search-list>
+    <button class="btn btn-primary mt-2" routerLink="/patientcreate"><i class="fa fa-user-plus"></i> Add Patient</button>
+  </div>
+  <table class="table table-sm table-striped table-bordered m-2 p-1">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>DOB</th>
+      <th>Sublocation</th>
+      <th>Action</th>
+    </tr>
+    <tr *ngFor="let patient of patients | patientFilter: listFilter">
+      <td>{{patient.firstName || 'Loading Data...'}}</td>
+      <td>{{patient.lastName || 'Loading Data...'}}</td>
+      <td>{{patient.dob | date: 'mediumDate' || 'Loading Data...'}}</td>
+      <td>{{patient.sublocation || 'Loading Data...'}}</td>
+      <td>
+        <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Check In"><i class="fa fa-sign-in"></i></button>
+        <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
+                [routerLink]="['/detail', patient.patientID]">
+          <i class="fa fa-address-card-o"></i>
+        </button>
+        <button class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit"
+                [routerLink]="['/patientedit', patient.patientID]">
+        <i class="fa fa-pencil"></i></button>
+      </td>
+    </tr>
+  </table>
+  <div class="card card-footer">
+   Total patient(s): {{patCount}} 
+  </div>
+</div>
+<style>
+  .card{
+    border-color: none;
+  }
+</style>
