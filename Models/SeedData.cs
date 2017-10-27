@@ -23,19 +23,23 @@ namespace ePatientCare.Models
         string password1 = "Secret123$";
         string roleName = "Admin";
 
-        var user1 = new AppUser { Email = "kiprotich@gmail.com", PhoneNumber = "1234567", UserName = username1 };
-        
+        var user1 = new AppUser { Email = "kiprotich@gmail.com", PhoneNumber = "4102519310", UserName = username1 };
+
         var userdetails1 = new UserDetails
         {
           FirstName = "Amon",
           LastName = "Kosgei",
           Username = username1,
-          Gender = 1,
-          Biography = "test",
+          Gender = "Male",
+          Biography = "testing",
           ImageUrl = "",
           Title = "Mr.",
           IDNumber = "1234567",
-          AppUser = user1
+          AppUser = user1,
+          PhoneNumber = "4102519310",
+          Reason = "Developer, Administrator, Tester",
+          Email = "kiprotich87@yahoo.com",
+          Enabled = 1
         };
 
         // new user
@@ -58,7 +62,7 @@ namespace ePatientCare.Models
           {
             FirstName = "Milly",
             LastName = "Chepkirui",
-            Gender = 2,
+            Gender = "Female",
             DOB = DateTime.Parse("10/10/2007"),
             Email = "",
             MiddleName = "Chepchumba",
@@ -77,7 +81,7 @@ namespace ePatientCare.Models
           {
             FirstName = "Peter",
             LastName = "Matui",
-            Gender = 1,
+            Gender = "Male",
             DOB = DateTime.Parse("12/12/1987"),
             Email = "",
             MiddleName = "Kiptum",
@@ -96,7 +100,7 @@ namespace ePatientCare.Models
             {
               FirstName = "Gibert",
               LastName = "Kibet",
-              Gender = 1,
+              Gender = "Male",
               DOB = DateTime.Parse("10/12/1985"),
               Email = "kibet@gmail.com",
               MiddleName = "",
@@ -116,7 +120,7 @@ namespace ePatientCare.Models
             {
               FirstName = "Keneth",
               LastName = "Kimutai",
-              Gender = 1,
+              Gender = "Male",
               DOB = DateTime.Parse("12/01/1996"),
               Email = "",
               MiddleName = "",
@@ -134,7 +138,7 @@ namespace ePatientCare.Models
             {
               FirstName = "Nancy",
               LastName = "Bitok",
-              Gender = 2,
+              Gender = "Female",
               DOB = DateTime.Parse("12/12/1991"),
               Email = "nancychepkok@yahoo.com",
               MiddleName = "chepkinyor",

@@ -27,7 +27,7 @@ namespace ePatientCare.Models
 
     public string PhoneNumber { get; set; }
 
-    public int Gender { get; set; }
+    public string Gender { get; set; }
 
     public string Biography { get; set; }
 

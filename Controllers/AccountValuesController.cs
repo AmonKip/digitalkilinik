@@ -85,6 +85,7 @@ namespace ePatientCare.Controllers
           userInfo.Biography = model.Biography;
           userInfo.Email = model.Email;
           userInfo.PhoneNumber = model.PhoneNumber;
+          userInfo.Reason = model.Reason;
           userInfo.Enabled = 0;
           //userInfo.AppUser = user;
 

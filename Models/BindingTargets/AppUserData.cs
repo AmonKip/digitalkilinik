@@ -26,7 +26,7 @@ namespace ePatientCare.Models.BindingTargets
     public string Username { get; set; }
 
     [Required(ErrorMessage = "Please select gender")]
-    public int Gender { get; set; }
+    public string Gender { get; set; }
 
     [Required(ErrorMessage = "Please enter phone")]
     public string PhoneNumber { get; set; }

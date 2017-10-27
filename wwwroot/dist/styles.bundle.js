@@ -9,7 +9,7 @@ webpackJsonp([2],{
 var content = __webpack_require__(38);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
-var update = __webpack_require__(253)(content, {});
+var update = __webpack_require__(257)(content, {});
 if(content.locals) module.exports = content.locals;
 // Hot Module Replacement
 if(true) {
@@ -27,7 +27,7 @@ if(true) {
 
 /***/ }),
 
-/***/ 253:
+/***/ 257:
 /***/ (function(module, exports) {
 
 /*
@@ -280,10 +280,10 @@ function updateLink(linkElement, obj) {
 
 /***/ }),
 
-/***/ 260:
+/***/ 264:
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(20);
+__webpack_require__(21);
 module.exports = __webpack_require__(122);
 
 
@@ -2220,7 +2220,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(27)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(28)))
 
 /***/ }),
 
@@ -2410,5 +2410,5 @@ module.exports = Array.isArray || function (arr) {
 
 /***/ })
 
-},[260]);
+},[264]);
 //# sourceMappingURL=styles.bundle.js.map

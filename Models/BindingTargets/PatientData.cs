@@ -31,6 +31,8 @@ namespace ePatientCare.Models.BindingTargets
 
         public string IDNumber { get; set; }
 
+        public string Gender { get; set; }
+
         public Patient Patient => new Patient
         {
             FirstName = FirstName,
@@ -41,7 +43,8 @@ namespace ePatientCare.Models.BindingTargets
             Sublocation = Sublocation,
             Phone = Phone,
             Email = Email,
-            IDNumber = IDNumber
+            IDNumber = IDNumber,
+            Gender = Gender
         };
     }
 }

@@ -120,7 +120,7 @@
           </ul>
         </div>
 
-        <div class="form-group">
+        <!--<div class="form-group">
           <label>Gender</label>
           <input class="form-control" [(ngModel)]="newUser.gender" name="gender"
                  #gender="ngModel" required />
@@ -129,6 +129,14 @@
               {{error}}
             </li>
           </ul>
+        </div>-->
+        <div class="form-group">
+          <label>Gender2</label>
+          <select class="form-control" [(ngModel)]="newUser.gender" name="gender"
+                 #gender="ngModel" required>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
         </div>
 
         <div class="form-group">
@@ -141,7 +149,7 @@
             </li>
           </ul>
         </div>
-
+        <input type="hidden" name="isFromAdmin" value="true"/>
         <!--<div class="form-group">
           <label>Image Url</label>
           <input class="form-control" [(ngModel)]="newUser.confirmPassword" name="confirmPassword"

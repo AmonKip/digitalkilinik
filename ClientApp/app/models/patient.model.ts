@@ -6,6 +6,7 @@ export class Patient {
         public firstName?: string,
         public lastName?: string,
         public middleName?: string,
+        public gender?: string,
         public dob?: string,
         public placeOfBirth?: string,
         public sublocation?: string,

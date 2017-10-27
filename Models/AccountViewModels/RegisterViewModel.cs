@@ -42,10 +42,15 @@ namespace ePatientCare.Models.AccountViewModels
         [Required(ErrorMessage = "Phone number required")]
         public string PhoneNumber { get; set; }
 
-    [Required(ErrorMessage = "Please choose gender")]
-        public int Gender { get; set; }
+        [Required(ErrorMessage = "Please choose gender")]
+        public string Gender { get; set; }
 
-        public string Biography { get; set; }
+        [Required(ErrorMessage = "Please enter reason")]
+        public string Reason { get; set; }
+
+        public bool IsFromAdmin{ get; set; }
+
+    public string Biography { get; set; }
 
         public string ImageUrl { get; set; }
   }

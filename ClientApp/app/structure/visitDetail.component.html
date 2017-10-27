@@ -6,10 +6,10 @@
     <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>
     <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>
     <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>
-    <tr><th colspan="2" class="bg-info">Patient</th></tr>
+    <tr><th colspan="2" class="bg-info"><a [routerLink]="['/detail', visit?.patient?.patientID]">Patient</a></th></tr>
     <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>
     <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>
-    <tr><th colspan="2" class="bg-info"><a routerLink="/userDetails">Physician</a></th></tr>
+    <tr><th colspan="2" class="bg-info">Physician</th></tr>
     <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>
     <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>
   </table>

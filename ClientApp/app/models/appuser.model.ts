@@ -10,7 +10,7 @@
         public idNumber?: string,
         public username?: string,
         public phoneNumber?: string,
-        public gender?: number,
+        public gender?: string,
         public enabled?: number,
         public reason?: string,
         public biography?: string,

@@ -1,16 +1,55 @@
-﻿<nav class="bg-dark">
-  <ul class="nav nav-pills float-left">
-    <li class="nav-item">
-      <a class="nav-link" href="/">Patients</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/visittable">Visits</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="/admin">Admin</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">Profile</a>
-    </li>
-  </ul>
-</nav>
+﻿<div class="navArea row">
+    <div class="">
+      <a class="btn ml-3"
+              routerLink="/">
+        Patients
+      </a>
+    </div>
+    <div class="">
+      <a class="btn btn-default ml-2"
+              routerLink="/visittable">
+        Visits
+      </a>
+    </div>
+   <div class="">
+    <a class="btn btn-default ml-2"
+            routerLink="/">
+      Settings
+    </a>
+   </div>
+  <div class="">
+    <a class="btn btn-default ml-2"
+            routerLink="/admin/overview">
+      Admin
+    </a>
+  </div>
+  <div class="col text-right mr-2">
+      <a class="btn btn-default"
+              (click)="authService.logout()">
+        Log Out
+      </a>
+   </div>
+</div>
+
+<style>
+  .navArea {
+    background-color: #080c5e;
+    color: white;
+    height: 45px;
+    padding-bottom: 0;
+    padding-top: 5px;
+  }
+
+  .a{
+    text-decoration: none;
+    color: white;
+    
+  }
+
+  a:hover {
+    border: 1px solid;
+    outline-color: dodgerblue;
+    color: white;
+  }
+
+</style>

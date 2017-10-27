@@ -86,7 +86,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "f2d525d921af22c559b0"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "3f1b9869f46d3137990c"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotMainModule = true; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
@@ -985,7 +985,7 @@ module.exports = Html5Entities;
 
 /***/ }),
 
-/***/ 163:
+/***/ 167:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1169,7 +1169,7 @@ ansiHTML.reset()
 
 /***/ }),
 
-/***/ 164:
+/***/ 168:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1181,7 +1181,7 @@ module.exports = function () {
 
 /***/ }),
 
-/***/ 20:
+/***/ 21:
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(__resourceQuery, module) {/*eslint-env browser*/
@@ -1197,7 +1197,7 @@ var options = {
   name: ''
 };
 if (true) {
-  var querystring = __webpack_require__(222);
+  var querystring = __webpack_require__(226);
   var overrides = querystring.parse(__resourceQuery.slice(1));
   if (overrides.path) options.path = overrides.path;
   if (overrides.timeout) options.timeout = overrides.timeout;
@@ -1317,11 +1317,11 @@ if (typeof window !== 'undefined') {
 }
 
 function createReporter() {
-  var strip = __webpack_require__(252);
+  var strip = __webpack_require__(256);
 
   var overlay;
   if (typeof document !== 'undefined' && options.overlay) {
-    overlay = __webpack_require__(254);
+    overlay = __webpack_require__(258);
   }
 
   var styles = {
@@ -1374,7 +1374,7 @@ function createReporter() {
   };
 }
 
-var processUpdate = __webpack_require__(255);
+var processUpdate = __webpack_require__(259);
 
 var customHandler;
 var subscribeAllHandler;
@@ -1439,16 +1439,16 @@ if (module) {
   };
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, "?path=%2F__webpack_hmr", __webpack_require__(256)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, "?path=%2F__webpack_hmr", __webpack_require__(260)(module)))
 
 /***/ }),
 
-/***/ 217:
+/***/ 221:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = {
-  XmlEntities: __webpack_require__(219),
-  Html4Entities: __webpack_require__(218),
+  XmlEntities: __webpack_require__(223),
+  Html4Entities: __webpack_require__(222),
   Html5Entities: __webpack_require__(105),
   AllHtmlEntities: __webpack_require__(105)
 };
@@ -1456,7 +1456,7 @@ module.exports = {
 
 /***/ }),
 
-/***/ 218:
+/***/ 222:
 /***/ (function(module, exports) {
 
 var HTML_ALPHA = ['apos', 'nbsp', 'iexcl', 'cent', 'pound', 'curren', 'yen', 'brvbar', 'sect', 'uml', 'copy', 'ordf', 'laquo', 'not', 'shy', 'reg', 'macr', 'deg', 'plusmn', 'sup2', 'sup3', 'acute', 'micro', 'para', 'middot', 'cedil', 'sup1', 'ordm', 'raquo', 'frac14', 'frac12', 'frac34', 'iquest', 'Agrave', 'Aacute', 'Acirc', 'Atilde', 'Auml', 'Aring', 'Aelig', 'Ccedil', 'Egrave', 'Eacute', 'Ecirc', 'Euml', 'Igrave', 'Iacute', 'Icirc', 'Iuml', 'ETH', 'Ntilde', 'Ograve', 'Oacute', 'Ocirc', 'Otilde', 'Ouml', 'times', 'Oslash', 'Ugrave', 'Uacute', 'Ucirc', 'Uuml', 'Yacute', 'THORN', 'szlig', 'agrave', 'aacute', 'acirc', 'atilde', 'auml', 'aring', 'aelig', 'ccedil', 'egrave', 'eacute', 'ecirc', 'euml', 'igrave', 'iacute', 'icirc', 'iuml', 'eth', 'ntilde', 'ograve', 'oacute', 'ocirc', 'otilde', 'ouml', 'divide', 'oslash', 'ugrave', 'uacute', 'ucirc', 'uuml', 'yacute', 'thorn', 'yuml', 'quot', 'amp', 'lt', 'gt', 'OElig', 'oelig', 'Scaron', 'scaron', 'Yuml', 'circ', 'tilde', 'ensp', 'emsp', 'thinsp', 'zwnj', 'zwj', 'lrm', 'rlm', 'ndash', 'mdash', 'lsquo', 'rsquo', 'sbquo', 'ldquo', 'rdquo', 'bdquo', 'dagger', 'Dagger', 'permil', 'lsaquo', 'rsaquo', 'euro', 'fnof', 'Alpha', 'Beta', 'Gamma', 'Delta', 'Epsilon', 'Zeta', 'Eta', 'Theta', 'Iota', 'Kappa', 'Lambda', 'Mu', 'Nu', 'Xi', 'Omicron', 'Pi', 'Rho', 'Sigma', 'Tau', 'Upsilon', 'Phi', 'Chi', 'Psi', 'Omega', 'alpha', 'beta', 'gamma', 'delta', 'epsilon', 'zeta', 'eta', 'theta', 'iota', 'kappa', 'lambda', 'mu', 'nu', 'xi', 'omicron', 'pi', 'rho', 'sigmaf', 'sigma', 'tau', 'upsilon', 'phi', 'chi', 'psi', 'omega', 'thetasym', 'upsih', 'piv', 'bull', 'hellip', 'prime', 'Prime', 'oline', 'frasl', 'weierp', 'image', 'real', 'trade', 'alefsym', 'larr', 'uarr', 'rarr', 'darr', 'harr', 'crarr', 'lArr', 'uArr', 'rArr', 'dArr', 'hArr', 'forall', 'part', 'exist', 'empty', 'nabla', 'isin', 'notin', 'ni', 'prod', 'sum', 'minus', 'lowast', 'radic', 'prop', 'infin', 'ang', 'and', 'or', 'cap', 'cup', 'int', 'there4', 'sim', 'cong', 'asymp', 'ne', 'equiv', 'le', 'ge', 'sub', 'sup', 'nsub', 'sube', 'supe', 'oplus', 'otimes', 'perp', 'sdot', 'lceil', 'rceil', 'lfloor', 'rfloor', 'lang', 'rang', 'loz', 'spades', 'clubs', 'hearts', 'diams'];
@@ -1610,7 +1610,7 @@ module.exports = Html4Entities;
 
 /***/ }),
 
-/***/ 219:
+/***/ 223:
 /***/ (function(module, exports) {
 
 var ALPHA_INDEX = {
@@ -1772,7 +1772,7 @@ module.exports = XmlEntities;
 
 /***/ }),
 
-/***/ 220:
+/***/ 224:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1864,7 +1864,7 @@ var isArray = Array.isArray || function (xs) {
 
 /***/ }),
 
-/***/ 221:
+/***/ 225:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -1957,24 +1957,24 @@ var objectKeys = Object.keys || function (obj) {
 
 /***/ }),
 
-/***/ 222:
+/***/ 226:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-exports.decode = exports.parse = __webpack_require__(220);
-exports.encode = exports.stringify = __webpack_require__(221);
+exports.decode = exports.parse = __webpack_require__(224);
+exports.encode = exports.stringify = __webpack_require__(225);
 
 
 /***/ }),
 
-/***/ 252:
+/***/ 256:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
-var ansiRegex = __webpack_require__(164)();
+var ansiRegex = __webpack_require__(168)();
 
 module.exports = function (str) {
 	return typeof str === 'string' ? str.replace(ansiRegex, '') : str;
@@ -1983,7 +1983,7 @@ module.exports = function (str) {
 
 /***/ }),
 
-/***/ 254:
+/***/ 258:
 /***/ (function(module, exports, __webpack_require__) {
 
 /*eslint-env browser*/
@@ -2012,7 +2012,7 @@ for (var key in styles) {
   clientOverlay.style[key] = styles[key];
 }
 
-var ansiHTML = __webpack_require__(163);
+var ansiHTML = __webpack_require__(167);
 var colors = {
   reset: ['transparent', 'transparent'],
   black: '181818',
@@ -2027,7 +2027,7 @@ var colors = {
 };
 ansiHTML.setColors(colors);
 
-var Entities = __webpack_require__(217).AllHtmlEntities;
+var Entities = __webpack_require__(221).AllHtmlEntities;
 var entities = new Entities();
 
 exports.showProblems =
@@ -2069,7 +2069,7 @@ function problemType (type) {
 
 /***/ }),
 
-/***/ 255:
+/***/ 259:
 /***/ (function(module, exports, __webpack_require__) {
 
 /**
@@ -2208,7 +2208,7 @@ module.exports = function(hash, moduleMap, options) {
 
 /***/ }),
 
-/***/ 256:
+/***/ 260:
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -2237,7 +2237,7 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 27:
+/***/ 28:
 /***/ (function(module, exports) {
 
 var g;

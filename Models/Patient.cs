@@ -17,7 +17,7 @@ namespace ePatientCare.Models
 
         public string MiddleName { get; set; }
 
-        public int Gender { get; set; }
+        public string Gender { get; set; }
 
        //[Required(ErrorMessage = "Please enter patient's date of birth")]
         public DateTime DOB { get; set; }

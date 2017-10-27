@@ -39,25 +39,19 @@ const routes: Routes = [
             { path: "userslist", component: AppUserAdminComponent },
             { path: "usersrequests", component: AppUserRequestAdminComponent },
             { path: "usercreate", component: AppUserCreateAdminComponent },
-            { path: "", component: OverviewComponent }]
-
+            { path: "", component: OverviewComponent },
+            {path: "**", redirectTo: "/admin/overview"}]
     },
-    {
-        path: "", component: PatientTableComponent,
-        canActivateChild: [AuthenticationGuard],
-        children: [
-            { path: "", component: PatientTableComponent },
-            { path: "table", component: PatientTableComponent },
-            { path: "patientedit/:id", component: PatientEditComponent },
-            { path: "visittable/:id", component: VisitTableComponent },
-            { path: "visittable", component: VisitTableComponent },
-            { path: "detail/:id", component: PatientDetailComponent },
-            { path: "visitdetail/:id", component: VisitDetailComponent },
-            { path: "detail", component: PatientDetailComponent },
-            { path: "visitdetail", component: VisitDetailComponent },
-            { path: "patientcreate", component: PatientCreateComponent },
-            { path: "accountcreate", component: AppUserCreateComponent }]
-    }
+
+    { path: "table", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
+    { path: "patientedit/:id", component: PatientEditComponent, canActivate: [AuthenticationGuard] },
+    { path: "visittable/:id", component: VisitTableComponent, canActivate: [AuthenticationGuard] },
+    { path: "visittable", component: VisitTableComponent, canActivate: [AuthenticationGuard] },
+    { path: "detail/:id", component: PatientDetailComponent, canActivate: [AuthenticationGuard] },
+    { path: "visitdetail/:id", component: VisitDetailComponent, canActivate: [AuthenticationGuard] },
+    { path: "patientcreate", component: PatientCreateComponent, canActivate: [AuthenticationGuard] },
+    { path: "accountcreate", component: AppUserCreateComponent, canActivate: [AuthenticationGuard] },
+    { path: "**", redirectTo: "/table" }
     ]
 
 export const RoutingConfig = RouterModule.forRoot(routes);
