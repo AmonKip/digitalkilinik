@@ -22,7 +22,21 @@ var AuthenticationGuard = (function () {
             return true;
         }
         else {
-            this.authService.callbackUrl = "/admin/" + route.url.toString();
+            this.authService.callbackUrl = state.url.toString();
+            //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            //console.log("1 pos" + state.url);
+            this.router.navigateByUrl("/login");
+            return false;
+        }
+    };
+    AuthenticationGuard.prototype.canActivate = function (route, state) {
+        if (this.authService.authenticated) {
+            return true;
+        }
+        else {
+            this.authService.callbackUrl = state.url.toString();
+            //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
+            //console.log("1 pos" + state.url);
             this.router.navigateByUrl("/login");
             return false;
         }

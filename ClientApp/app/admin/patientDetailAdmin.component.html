@@ -4,6 +4,7 @@
   <tr><th>Last Name</th><td>{{ patient?.lastName || 'No Data' }}</td></tr>
   <tr><th>Middle Name</th><td>{{ patient?.middleName || 'No Data' }}</td></tr>
   <tr><th>Date of Birth</th><td>{{patient?.dob | date: 'mediumDate' || 'No Data'}}</td></tr>
+  <tr><th>Gender</th><td>{{patient?.gender || 'No Data'}}</td></tr>
   <tr><th>Place of Birth</th><td>{{ patient?.placeOfBirth  || 'No Data'}}</td></tr>
   <tr><th>Sublocation</th><td>{{ patient?.sublocation || 'No Data' }}</td></tr>
   <tr><th>Phone</th><td>{{ patient?.phone || 'No Data' }}</td></tr>

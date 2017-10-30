@@ -9,16 +9,33 @@ import { Router } from "@angular/router";
 })
 export class AppUserAdminComponent {
 
-    constructor(private repo: Repository, private router: Router) { }
 
+    myusers: AppUser[];
+    
+    constructor(private repo: Repository, private router: Router) { }
+    
     get users(): AppUser[] {
         return this.repo.appUsers;
 
     }
+    toggle(userId: number, status){
+       if(status){
+           this.setToggle(userId, 0);
+          }
+       else{
+          this.setToggle(userId, 1);
+        }
+       this.repo.toggleAccount(userId);
+     }
 
-    //selectEmployee(id: number) {
-    //    this.repo.getEmployee(id);
-    //    this.router.navigateByUrl("/employeedetail");
-    //}
+     // toggles enabled value in users array
+     setToggle(userId, status) {
+       for (var i = 0; i < this.users.length; i++) {
+        if (this.users[i].userDetailsID === userId) {
+          this.users[i].enabled = status;
+          return;
+        }
+      }
+    }
 
 }

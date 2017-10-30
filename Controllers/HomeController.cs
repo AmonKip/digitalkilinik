@@ -18,7 +18,9 @@ namespace ePatientCare.Controllers
         {
       // ViewBag.Message = "ePatient Care App";
          ViewBag.Message = System.Diagnostics.Process.GetCurrentProcess().Id;
-            return View(context.Patients.FirstOrDefault());
+         Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().Id);
+        return View(context.Patients.FirstOrDefault());
+            
         }
 
         //public IActionResult About()

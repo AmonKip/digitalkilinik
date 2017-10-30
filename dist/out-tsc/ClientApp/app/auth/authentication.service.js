@@ -15,11 +15,19 @@ var Observable_1 = require("rxjs/Observable");
 var router_1 = require("@angular/router");
 require("rxjs/add/observable/of");
 var AuthenticationService = (function () {
-    function AuthenticationService(repo, router) {
+    function AuthenticationService(repo, router, route) {
         this.repo = repo;
         this.router = router;
+        this.route = route;
         this.authenticated = false;
     }
+    AuthenticationService.prototype.ngOnInit = function () {
+        // reset login status
+        //this.authenticationService.logout();
+        // get return url from route parameters or default to '/'
+        //this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        console.log("Init called");
+    };
     AuthenticationService.prototype.login = function () {
         var _this = this;
         this.authenticated = false;
@@ -28,11 +36,13 @@ var AuthenticationService = (function () {
             if (response.ok) {
                 _this.authenticated = true;
                 _this.password = null;
-                _this.router.navigateByUrl(_this.callbackUrl || "/admin/overview");
+                //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
+                _this.router.navigateByUrl(_this.callbackUrl || "/");
             }
             return _this.authenticated;
         })
             .catch(function (e) {
+            console.log(e);
             _this.authenticated = false;
             return Observable_1.Observable.of(false);
         });
@@ -47,7 +57,7 @@ var AuthenticationService = (function () {
 AuthenticationService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [repository_1.Repository,
-        router_1.Router])
+        router_1.Router, router_1.ActivatedRoute])
 ], AuthenticationService);
 exports.AuthenticationService = AuthenticationService;
 //# sourceMappingURL=authentication.service.js.map

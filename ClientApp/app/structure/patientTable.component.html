@@ -1,5 +1,7 @@
-﻿<div class="card">
-  <div class="card-header bg-info">Patients</div>
+﻿
+<div class="mt-2 mb-0">
+  <h4 class="p-0">Patients</h4>
+</div>
   <div>
     <search-list [title]='searchTitle' (change)="criteriaChange($event)" class="m-2"></search-list>
     <button class="btn btn-primary mt-2" routerLink="/patientcreate"><i class="fa fa-user-plus"></i> Add Patient</button>
@@ -32,7 +34,6 @@
   <div class="card card-footer">
    Total patient(s): {{patCount}} 
   </div>
-</div>
 <style>
   .card{
     border-color: none;

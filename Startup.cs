@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using ePatientCare.Models.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using ePatientCare.Configurations;
 
 namespace ePatientCare
 {
@@ -59,8 +60,9 @@ namespace ePatientCare
             services.AddMvc().AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling
                                   = ReferenceLoopHandling.Serialize);
 
-            // Add application services.
-            services.AddTransient<IEmailSender, AuthMessageSender>();
+      // Add application services.
+            services.Configure<EmailConfig>(Configuration.GetSection("Email"));
+            services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
             services.Configure<IdentityOptions>(config => {

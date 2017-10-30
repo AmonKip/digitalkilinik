@@ -37,6 +37,10 @@ namespace ePatientCare.Models
 
     public int Enabled { get; set; }
 
+    public DateTime CreatedDate { get; set; }
+
+    public DateTime LastUpdatedDate { get; set; }
+
     public IEnumerable<Visit> Visits { get; set; }
     public AppUser AppUser { get; set; }
   }

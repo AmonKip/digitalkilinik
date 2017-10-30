@@ -2,9 +2,9 @@
   <a class="navbar-brand text-white"> Login </a>
 </div>
 
-<h4 *ngIf="showError" class="p-2 bg-danger text-white">
+<div *ngIf="showError" class="alert alert-danger">
   Invalid username or password
-</h4>
+</div>
 <div class="loginPortal">
   <form novalidate #authForm="ngForm">
     <div class="form-group">
@@ -27,13 +27,25 @@
         Please enter your password
       </div>
     </div>
-    <div class="text-center pt-2">
-      <button class="btn btn-default submitBtn" [disabled]="authForm.invalid"
+    <div class="pt-2">
+      <button class="btn btn-primary" [disabled]="authForm.invalid"
               (click)="login()">
           Login
       </button>
     </div>
   </form>
+  <div class="">
+    Don't have account?
+    <a routerLink="/accountcreate">
+      Request account
+    </a>
+  </div>
+  <div class="mb-5">
+    Forgot password?
+    <a routerLink="/forgotpassword">
+      Reset password
+    </a>
+  </div>
 </div>
 
 <style>

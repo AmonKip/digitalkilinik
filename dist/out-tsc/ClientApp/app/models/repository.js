@@ -18,7 +18,7 @@ require("rxjs/add/operator/catch");
 var patientsUrl = "api/patients";
 var employeesUrl = "api/employees";
 var visitsUrl = "api/visits";
-var requestUrl = "api/accountrequest";
+var addRequestUrl = "api/addrequest";
 var Repository = (function () {
     function Repository(http) {
         this.http = http;
@@ -29,6 +29,7 @@ var Repository = (function () {
         this.getVisits();
         this.getUsers();
         this.getRoles();
+        this.getAccountRequests();
     }
     Repository.prototype.getPatient = function (id) {
         var _this = this;
@@ -90,6 +91,12 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, "/api/roles")
             .subscribe(function (response) { _this.appRoles = response; });
     };
+    // get account requests
+    Repository.prototype.getAccountRequests = function () {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/getrequests")
+            .subscribe(function (response) { _this.appUserRequests = response; });
+    };
     // creates patient
     Repository.prototype.createPatient = function (pat) {
         var _this = this;
@@ -109,9 +116,9 @@ var Repository = (function () {
         var _this = this;
         var data = {
             title: user.title, firstName: user.firstName, lastName: user.lastName, idNumber: user.idNumber, username: user.username, phoneNumber: user.phoneNumber, biography: user.biography,
-            imageUrl: user.imageUrl, gender: user.gender, email: user.email
+            imageUrl: user.imageUrl, gender: user.gender, email: user.email, reason: user.reason
         };
-        this.sendRequest(http_1.RequestMethod.Post, requestUrl, data)
+        this.sendRequest(http_1.RequestMethod.Post, addRequestUrl, data)
             .subscribe(function (response) {
             user.email = response;
             _this.patients.push(user);
@@ -143,14 +150,15 @@ var Repository = (function () {
     };
     // after update, the patients/employees array is repopulated using another request to server  ---very inefficient  process
     //todo: dynamically update only the changed patient to avoid round trip to the server
-    Repository.prototype.replaceEmployee = function (emp) {
+    Repository.prototype.replaceUser = function (user) {
         var _this = this;
         var data = {
-            title: emp.title, firstName: emp.firstName, lastName: emp.lastName, idNumber: emp.idNumber, email: emp.email,
-            username: emp.username, phone: emp.phone, biography: emp.biography, imageUrl: emp.imageUrl
+            title: user.title, firstName: user.firstName, lastName: user.lastName, idNumber: user.idNumber, email: user.email,
+            username: user.username, phoneNumber: user.phoneNumber, reason: user.reason, biography: user.biography,
+            imageUrl: user.imageUrl, gender: user.gender, enabled: user.enabled
         };
-        this.sendRequest(http_1.RequestMethod.Put, employeesUrl + "/" + emp.employeeID, data)
-            .subscribe(function (response) { return _this.getEmployees(); });
+        this.sendRequest(http_1.RequestMethod.Put, "api/edituser/" + user.userDetailsID, data)
+            .subscribe(function (response) { return _this.getUsers(); });
     };
     // delete patient by id
     Repository.prototype.deletePatient = function (id) {

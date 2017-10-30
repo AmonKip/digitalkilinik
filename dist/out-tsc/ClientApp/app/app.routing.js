@@ -5,8 +5,6 @@ var patientTable_component_1 = require("./structure/patientTable.component");
 var patientDetail_component_1 = require("./structure/patientDetail.component");
 var visitDetail_component_1 = require("./structure/visitDetail.component");
 var visitTable_component_1 = require("./structure/visitTable.component");
-var employeeDetail_component_1 = require("./structure/employeeDetail.component");
-var employeeTable_component_1 = require("./structure/employeeTable.component");
 var patientCreate_component_1 = require("./structure/patientCreate.component");
 var patientEdit_component_1 = require("./structure/patientEdit.component");
 var admin_component_1 = require("./admin/admin.component");
@@ -18,6 +16,11 @@ var patientDetailAdmin_component_1 = require("./admin/patientDetailAdmin.compone
 var authentication_guard_1 = require("./auth/authentication.guard");
 var authentication_component_1 = require("./auth/authentication.component");
 var AppUserDetailAdmin_component_1 = require("./admin/AppUserDetailAdmin.component");
+var AppUserRequestAdmin_component_1 = require("./admin/AppUserRequestAdmin.component");
+var AppUserEditAdmin_component_1 = require("./admin/AppUserEditAdmin.component");
+var visitsDetailAdmin_component_1 = require("./admin/visitsDetailAdmin.component");
+var visitsAdmin_component_1 = require("./admin/visitsAdmin.component");
+var appUserCreateAdmin_Component_1 = require("./admin/appUserCreateAdmin.Component");
 var routes = [
     { path: "login", component: authentication_component_1.AuthenticationComponent },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
@@ -28,25 +31,26 @@ var routes = [
             { path: "overview", component: overview_component_1.OverviewComponent },
             { path: "patientdetail/:id", component: patientDetailAdmin_component_1.PatientDetailAdminComponent },
             { path: "patientslist", component: patientAdmin_component_1.PatientAdminComponent },
+            { path: "visitdetail/:id", component: visitsDetailAdmin_component_1.VisitDetailAdminComponent },
+            { path: "visitslist", component: visitsAdmin_component_1.VisitAdminComponent },
             { path: "userdetails/:id", component: AppUserDetailAdmin_component_1.AppUserDetailAdminComponent },
+            { path: "useredit/:id", component: AppUserEditAdmin_component_1.AppUserEditAdminComponent },
             { path: "userslist", component: appUserAdmin_component_1.AppUserAdminComponent },
-            { path: "", component: overview_component_1.OverviewComponent }
+            { path: "usersrequests", component: AppUserRequestAdmin_component_1.AppUserRequestAdminComponent },
+            { path: "usercreate", component: appUserCreateAdmin_Component_1.AppUserCreateAdminComponent },
+            { path: "", component: overview_component_1.OverviewComponent },
+            { path: "**", redirectTo: "/admin/overview" }
         ]
     },
-    { path: "table", component: patientTable_component_1.PatientTableComponent },
-    { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent },
-    { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent },
-    { path: "visittable", component: visitTable_component_1.VisitTableComponent },
-    { path: "employeetable", component: employeeTable_component_1.EmployeeTableComponent },
-    { path: "detail/:id", component: patientDetail_component_1.PatientDetailComponent },
-    { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent },
-    { path: "employeedetail/:id", component: employeeDetail_component_1.EmployeeDetailComponent },
-    { path: "detail", component: patientDetail_component_1.PatientDetailComponent },
-    { path: "visitdetail", component: visitDetail_component_1.VisitDetailComponent },
-    { path: "employeedetail", component: employeeDetail_component_1.EmployeeDetailComponent },
-    { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent },
-    { path: "accountcreate", component: appUserCreate_Component_1.AppUserCreateComponent },
-    { path: "", component: patientTable_component_1.PatientTableComponent }
+    { path: "table", component: patientTable_component_1.PatientTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "visittable", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "detail/:id", component: patientDetail_component_1.PatientDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "accountcreate", component: appUserCreate_Component_1.AppUserCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "**", redirectTo: "/table" }
 ];
 exports.RoutingConfig = router_1.RouterModule.forRoot(routes);
 //# sourceMappingURL=app.routing.js.map

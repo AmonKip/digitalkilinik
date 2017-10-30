@@ -105,6 +105,8 @@ namespace ePatientCare.Migrations
 
                     b.Property<string>("Biography");
 
+                    b.Property<DateTime>("CreatedDate");
+
                     b.Property<string>("Email");
 
                     b.Property<int>("Enabled");
@@ -118,6 +120,8 @@ namespace ePatientCare.Migrations
                     b.Property<string>("ImageUrl");
 
                     b.Property<string>("LastName");
+
+                    b.Property<DateTime>("LastUpdatedDate");
 
                     b.Property<string>("PhoneNumber");
 

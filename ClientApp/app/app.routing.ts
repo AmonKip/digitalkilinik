@@ -21,9 +21,14 @@ import { AppUserEditAdminComponent } from "./admin/AppUserEditAdmin.component";
 import { VisitDetailAdminComponent } from "./admin/visitsDetailAdmin.component"
 import { VisitAdminComponent } from "./admin/visitsAdmin.component"
 import { AppUserCreateAdminComponent } from "./admin/appUserCreateAdmin.Component";
+import { ForgotPasswordComponent } from "./auth/forgotpassword.component";
+import { ResetPasswordComponent } from "./auth/resetpassword.component";
+
 
 const routes: Routes = [
     { path: "login", component: AuthenticationComponent },
+    { path: "forgotpassword", component: ForgotPasswordComponent },
+    { path: "resetpassword", component: ResetPasswordComponent },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
     {
         path: "admin", component: AdminComponent,
@@ -50,7 +55,7 @@ const routes: Routes = [
     { path: "detail/:id", component: PatientDetailComponent, canActivate: [AuthenticationGuard] },
     { path: "visitdetail/:id", component: VisitDetailComponent, canActivate: [AuthenticationGuard] },
     { path: "patientcreate", component: PatientCreateComponent, canActivate: [AuthenticationGuard] },
-    { path: "accountcreate", component: AppUserCreateComponent, canActivate: [AuthenticationGuard] },
+    { path: "accountcreate", component: AppUserCreateComponent },
     { path: "**", redirectTo: "/table" }
     ]
 

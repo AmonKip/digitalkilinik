@@ -29,6 +29,8 @@ var search_component_1 = require("./shared/search.component");
 var core_2 = require("@angular/core");
 var errorHandler_service_1 = require("./services/errorHandler.service");
 var auth_module_1 = require("./auth/auth.module");
+var header_component_1 = require("./layout/header.component");
+var footer_component_1 = require("./layout/footer.component");
 var eHandler = new errorHandler_service_1.ErrorHandlerService();
 function handler() {
     return eHandler;
@@ -46,7 +48,8 @@ AppModule = __decorate([
             categoryFilter_component_1.CategoryFilterComponent, patientDetail_component_1.PatientDetailComponent,
             employeeTable_component_1.EmployeeTableComponent, employeeDetail_component_1.EmployeeDetailComponent,
             patientCreate_component_1.PatientCreateComponent, appUserCreate_Component_1.AppUserCreateComponent,
-            patient_pipe_1.PatientFilterPipe, search_component_1.SearchComponent, patientEdit_component_1.PatientEditComponent],
+            patient_pipe_1.PatientFilterPipe, search_component_1.SearchComponent, patientEdit_component_1.PatientEditComponent,
+            header_component_1.HeaderComponent, footer_component_1.FooterComponent],
         imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, forms_1.ReactiveFormsModule,
             http_1.HttpModule, model_module_1.ModelModule, app_routing_1.RoutingConfig, admin_module_1.AdminModule, auth_module_1.AuthModule],
         providers: [{ provide: errorHandler_service_1.ErrorHandlerService, useFactory: handler },

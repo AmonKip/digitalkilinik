@@ -16,6 +16,11 @@ var patientAdmin_component_1 = require("./patientAdmin.component");
 var appUserAdmin_component_1 = require("./appUserAdmin.component");
 var patientDetailAdmin_component_1 = require("./patientDetailAdmin.component");
 var AppUserDetailAdmin_component_1 = require("./AppUserDetailAdmin.component");
+var AppUserRequestAdmin_component_1 = require("./AppUserRequestAdmin.component");
+var AppUserEditAdmin_component_1 = require("./AppUserEditAdmin.component");
+var visitsDetailAdmin_component_1 = require("./visitsDetailAdmin.component");
+var visitsAdmin_component_1 = require("./visitsAdmin.component");
+var appUserCreateAdmin_Component_1 = require("./appUserCreateAdmin.Component");
 var AdminModule = (function () {
     function AdminModule() {
     }
@@ -25,7 +30,10 @@ AdminModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, router_1.RouterModule, forms_1.FormsModule],
         declarations: [admin_component_1.AdminComponent, overview_component_1.OverviewComponent, patientAdmin_component_1.PatientAdminComponent,
-            appUserAdmin_component_1.AppUserAdminComponent, patientDetailAdmin_component_1.PatientDetailAdminComponent, AppUserDetailAdmin_component_1.AppUserDetailAdminComponent]
+            appUserAdmin_component_1.AppUserAdminComponent, patientDetailAdmin_component_1.PatientDetailAdminComponent,
+            AppUserDetailAdmin_component_1.AppUserDetailAdminComponent, AppUserRequestAdmin_component_1.AppUserRequestAdminComponent,
+            AppUserEditAdmin_component_1.AppUserEditAdminComponent, visitsDetailAdmin_component_1.VisitDetailAdminComponent,
+            visitsAdmin_component_1.VisitAdminComponent, appUserCreateAdmin_Component_1.AppUserCreateAdminComponent]
     })
 ], AdminModule);
 exports.AdminModule = AdminModule;

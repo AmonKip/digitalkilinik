@@ -5,10 +5,12 @@ import { RouterModule } from "@angular/router";
 import { AuthenticationService } from "./authentication.service";
 import { AuthenticationComponent } from "./authentication.component";
 import { AuthenticationGuard } from "./authentication.guard";
+import { ForgotPasswordComponent } from "./forgotpassword.component";
+import { ResetPasswordComponent } from "./resetpassword.component";
 
 @NgModule({
     imports: [RouterModule, FormsModule, BrowserModule],
-    declarations: [AuthenticationComponent],
+    declarations: [AuthenticationComponent, ForgotPasswordComponent, ResetPasswordComponent],
     providers: [AuthenticationService, AuthenticationGuard],
     exports: [AuthenticationComponent]
 })

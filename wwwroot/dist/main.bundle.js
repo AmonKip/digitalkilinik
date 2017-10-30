@@ -6,12 +6,12 @@ webpackJsonp([1],[
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_http__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(237);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__configClasses_repository__ = __webpack_require__(131);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__configClasses_repository__ = __webpack_require__(133);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__services_errorHandler_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__(232);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__ = __webpack_require__(236);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5_rxjs_add_operator_catch__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return Repository; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -117,7 +117,7 @@ var Repository = (function () {
         var data = {
             firstName: pat.firstName, lastName: pat.lastName, middleName: pat.middleName, dob: pat.dob,
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
-            idNumber: pat.idNumber
+            idNumber: pat.idNumber, gender: pat.gender
         };
         this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestMethod */].Post, patientsUrl, data)
             .subscribe(function (response) {
@@ -157,7 +157,7 @@ var Repository = (function () {
         var data = {
             firstName: pat.firstName, lastName: pat.lastName, middleName: pat.middleName, dob: pat.dob,
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
-            idNumber: pat.idNumber
+            idNumber: pat.idNumber, gender: pat.gender
         };
         this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestMethod */].Put, patientsUrl + "/" + pat.patientID, data)
             .subscribe(function (response) { return _this.getPatients(); });
@@ -217,11 +217,27 @@ var Repository = (function () {
         this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestMethod */].Get, "api/patientvisits/" + id)
             .subscribe(function (response) { _this.singlePatientVisits = response; });
     };
+    // login
     Repository.prototype.login = function (name, password) {
         return this.http.post("/api/account/login", { name: name, password: password });
     };
+    // email password reset 
+    Repository.prototype.resetPassword = function (email, password, confirmpassword, code) {
+        return this.http.post("/api/account/resetpassword", { email: email, password: password, confirmpassword: confirmpassword, code: code });
+    };
+    //logout
     Repository.prototype.logout = function () {
         this.http.post("/api/account/logout", null).subscribe(function (respone) { });
+    };
+    // send email 
+    Repository.prototype.forgotPassword = function (email) {
+        console.log("code repo method");
+        return this.http.post("/api/account/forgotpassword", { email: email });
+    };
+    Repository.prototype.toggleAccount = function (id) {
+        var _this = this;
+        this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestMethod */].Post, "/api/account/toggle/" + id)
+            .subscribe(function (response) { return _this.getUsers(); });
     };
     Object.defineProperty(Repository.prototype, "filter", {
         get: function () {
@@ -251,13 +267,7 @@ var _a;
 /* 10 */,
 /* 11 */,
 /* 12 */,
-/* 13 */,
-/* 14 */,
-/* 15 */,
-/* 16 */,
-/* 17 */,
-/* 18 */,
-/* 19 */
+/* 13 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -266,7 +276,7 @@ var _a;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_of__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_of__ = __webpack_require__(235);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_of___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_rxjs_add_observable_of__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationService; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -291,11 +301,6 @@ var AuthenticationService = (function () {
         this.authenticated = false;
     }
     AuthenticationService.prototype.ngOnInit = function () {
-        // reset login status
-        //this.authenticationService.logout();
-        // get return url from route parameters or default to '/'
-        //this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-        console.log("Init called");
     };
     AuthenticationService.prototype.login = function () {
         var _this = this;
@@ -321,6 +326,47 @@ var AuthenticationService = (function () {
         this.repo.logout();
         this.router.navigateByUrl("/login");
     };
+    AuthenticationService.prototype.resetPassword = function () {
+        var _this = this;
+        this.authenticated = false;
+        return this.repo.resetPassword(this.email, this.password, this.confirmpassword, this.code)
+            .map(function (response) {
+            if (response.ok) {
+                _this.authenticated = false;
+                _this.password = null;
+                _this.confirmpassword = null;
+                _this.email = null;
+                _this.code = null;
+                //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
+                _this.router.navigateByUrl(_this.callbackUrl || "/login");
+            }
+            return _this.authenticated;
+        })
+            .catch(function (e) {
+            console.log(e);
+            _this.authenticated = false;
+            return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].of(false);
+        });
+    };
+    AuthenticationService.prototype.forgotPassword = function () {
+        var _this = this;
+        this.authenticated = false;
+        return this.repo.forgotPassword(this.email)
+            .map(function (response) {
+            if (response.ok) {
+                _this.authenticated = false;
+                _this.email = null;
+                //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
+                _this.router.navigateByUrl(_this.callbackUrl || "/forgotpasswordconfirmation");
+            }
+            return _this.authenticated;
+        })
+            .catch(function (e) {
+            console.log(e);
+            _this.authenticated = false;
+            return __WEBPACK_IMPORTED_MODULE_2_rxjs_Observable__["Observable"].of(false);
+        });
+    };
     return AuthenticationService;
 }());
 AuthenticationService = __decorate([
@@ -332,6 +378,12 @@ var _a, _b, _c;
 //# sourceMappingURL=authentication.service.js.map
 
 /***/ }),
+/* 14 */,
+/* 15 */,
+/* 16 */,
+/* 17 */,
+/* 18 */,
+/* 19 */,
 /* 20 */,
 /* 21 */,
 /* 22 */,
@@ -494,7 +546,7 @@ var AppUserDetailAdminComponent = (function () {
 AppUserDetailAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "user-detail",
-        template: __webpack_require__(139)
+        template: __webpack_require__(141)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], AppUserDetailAdminComponent);
@@ -577,7 +629,7 @@ var AppUserEditAdminComponent = (function () {
 AppUserEditAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "user-edit",
-        template: __webpack_require__(140)
+        template: __webpack_require__(142)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], AppUserEditAdminComponent);
@@ -623,7 +675,7 @@ var AppUserRequestAdminComponent = (function () {
 AppUserRequestAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "appUserRequestAdmin-table",
-        template: __webpack_require__(141)
+        template: __webpack_require__(143)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], AppUserRequestAdminComponent);
@@ -638,7 +690,7 @@ var _a, _b;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_repository__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__ = __webpack_require__(13);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AdminComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -664,7 +716,7 @@ var AdminComponent = (function () {
 }());
 AdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
-        template: __webpack_require__(142)
+        template: __webpack_require__(144)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
 ], AdminComponent);
@@ -705,12 +757,30 @@ var AppUserAdminComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    AppUserAdminComponent.prototype.toggle = function (userId, status) {
+        if (status) {
+            this.setToggle(userId, 0);
+        }
+        else {
+            this.setToggle(userId, 1);
+        }
+        this.repo.toggleAccount(userId);
+    };
+    // toggles enabled value in users array
+    AppUserAdminComponent.prototype.setToggle = function (userId, status) {
+        for (var i = 0; i < this.users.length; i++) {
+            if (this.users[i].userDetailsID === userId) {
+                this.users[i].enabled = status;
+                return;
+            }
+        }
+    };
     return AppUserAdminComponent;
 }());
 AppUserAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "appUserAdmin-table",
-        template: __webpack_require__(143)
+        template: __webpack_require__(145)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], AppUserAdminComponent);
@@ -725,7 +795,7 @@ var _a, _b;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_repository__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_appuser_model__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_appuser_model__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(3);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppUserCreateAdminComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -784,7 +854,7 @@ var AppUserCreateAdminComponent = (function () {
 AppUserCreateAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "useradmin-create",
-        template: __webpack_require__(144)
+        template: __webpack_require__(146)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], AppUserCreateAdminComponent);
@@ -847,7 +917,7 @@ var OverviewComponent = (function () {
 }());
 OverviewComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
-        template: __webpack_require__(145)
+        template: __webpack_require__(147)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object])
 ], OverviewComponent);
@@ -911,7 +981,7 @@ var PatientAdminComponent = (function () {
 PatientAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "patientAdmin-table",
-        template: __webpack_require__(146)
+        template: __webpack_require__(148)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object])
 ], PatientAdminComponent);
@@ -982,7 +1052,7 @@ var PatientDetailAdminComponent = (function () {
 PatientDetailAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "patient-detailAdmin",
-        template: __webpack_require__(147)
+        template: __webpack_require__(149)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], PatientDetailAdminComponent);
@@ -1032,7 +1102,7 @@ var VisitAdminComponent = (function () {
 VisitAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "visitsadmin-table",
-        template: __webpack_require__(148)
+        template: __webpack_require__(150)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], VisitAdminComponent);
@@ -1084,7 +1154,7 @@ var VisitDetailAdminComponent = (function () {
 VisitDetailAdminComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "visitsadmin-detail",
-        template: __webpack_require__(149)
+        template: __webpack_require__(151)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], VisitDetailAdminComponent);
@@ -1098,7 +1168,7 @@ var _a, _b, _c;
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__authentication_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__authentication_service__ = __webpack_require__(13);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1127,7 +1197,7 @@ var AuthenticationComponent = (function () {
 }());
 AuthenticationComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
-        template: __webpack_require__(151)
+        template: __webpack_require__(153)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object])
 ], AuthenticationComponent);
@@ -1142,7 +1212,7 @@ var _a;
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_router__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__authentication_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__authentication_service__ = __webpack_require__(13);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthenticationGuard; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1200,6 +1270,102 @@ var _a, _b;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__authentication_service__ = __webpack_require__(13);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ForgotPasswordComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var ForgotPasswordComponent = (function () {
+    function ForgotPasswordComponent(authService) {
+        this.authService = authService;
+        this.showError = false;
+    }
+    ForgotPasswordComponent.prototype.forgotpassword = function () {
+        var _this = this;
+        this.showError = false;
+        this.authService.forgotPassword().subscribe(function (result) {
+            _this.showError = !result;
+        });
+    };
+    return ForgotPasswordComponent;
+}());
+ForgotPasswordComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
+        template: __webpack_require__(154)
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object])
+], ForgotPasswordComponent);
+
+var _a;
+//# sourceMappingURL=forgotpassword.component.js.map
+
+/***/ }),
+/* 85 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__authentication_service__ = __webpack_require__(13);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(3);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ResetPasswordComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+var ResetPasswordComponent = (function () {
+    function ResetPasswordComponent(authService, route) {
+        var _this = this;
+        this.authService = authService;
+        this.route = route;
+        this.showError = false;
+        this.route
+            .queryParams
+            .subscribe(function (params) {
+            _this.code = params['code'];
+        });
+    }
+    ResetPasswordComponent.prototype.resetpassword = function () {
+        var _this = this;
+        this.showError = false;
+        this.authService.code = this.code;
+        this.authService.resetPassword().subscribe(function (result) {
+            _this.showError = !result;
+        });
+    };
+    return ResetPasswordComponent;
+}());
+ResetPasswordComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
+        template: __webpack_require__(155)
+    }),
+    __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
+], ResetPasswordComponent);
+
+var _a, _b;
+//# sourceMappingURL=resetpassword.component.js.map
+
+/***/ }),
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppUser; });
 var AppUser = (function () {
     function AppUser(userDetailsID, title, email, password, confirmPassword, firstName, lastName, idNumber, username, phoneNumber, gender, enabled, reason, biography, imageUrl) {
@@ -1225,13 +1391,13 @@ var AppUser = (function () {
 //# sourceMappingURL=appuser.model.js.map
 
 /***/ }),
-/* 85 */
+/* 87 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_repository__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_appuser_model__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_appuser_model__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(3);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppUserCreateComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -1290,7 +1456,7 @@ var AppUserCreateComponent = (function () {
 AppUserCreateComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "user-create",
-        template: __webpack_require__(155)
+        template: __webpack_require__(159)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], AppUserCreateComponent);
@@ -1299,13 +1465,13 @@ var _a, _b;
 //# sourceMappingURL=appUserCreate.Component.js.map
 
 /***/ }),
-/* 86 */
+/* 88 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__models_repository__ = __webpack_require__(2);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_patient_model__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__models_patient_model__ = __webpack_require__(135);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return PatientCreateComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1376,7 +1542,7 @@ var PatientCreateComponent = (function () {
 PatientCreateComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "patient-create",
-        template: __webpack_require__(159)
+        template: __webpack_require__(163)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object])
 ], PatientCreateComponent);
@@ -1385,7 +1551,7 @@ var _a;
 //# sourceMappingURL=patientCreate.component.js.map
 
 /***/ }),
-/* 87 */
+/* 89 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1447,7 +1613,7 @@ var PatientDetailComponent = (function () {
 PatientDetailComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "patient-detail",
-        template: __webpack_require__(160)
+        template: __webpack_require__(164)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], PatientDetailComponent);
@@ -1456,7 +1622,7 @@ var _a, _b, _c;
 //# sourceMappingURL=patientDetail.component.js.map
 
 /***/ }),
-/* 88 */
+/* 90 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1530,7 +1696,7 @@ var PatientEditComponent = (function () {
 PatientEditComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "patient-edit",
-        template: __webpack_require__(161)
+        template: __webpack_require__(165)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], PatientEditComponent);
@@ -1539,7 +1705,7 @@ var _a, _b, _c;
 //# sourceMappingURL=patientEdit.component.js.map
 
 /***/ }),
-/* 89 */
+/* 91 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1584,7 +1750,7 @@ var PatientTableComponent = (function () {
 PatientTableComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "patient-table",
-        template: __webpack_require__(162)
+        template: __webpack_require__(166)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], PatientTableComponent);
@@ -1593,7 +1759,7 @@ var _a, _b;
 //# sourceMappingURL=patientTable.component.js.map
 
 /***/ }),
-/* 90 */
+/* 92 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1636,7 +1802,7 @@ var VisitDetailComponent = (function () {
 VisitDetailComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "visit-detail",
-        template: __webpack_require__(163)
+        template: __webpack_require__(167)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], VisitDetailComponent);
@@ -1645,7 +1811,7 @@ var _a, _b, _c;
 //# sourceMappingURL=visitDetail.component.js.map
 
 /***/ }),
-/* 91 */
+/* 93 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1686,7 +1852,7 @@ var VisitTableComponent = (function () {
 VisitTableComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "visit-table",
-        template: __webpack_require__(164)
+        template: __webpack_require__(168)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], VisitTableComponent);
@@ -1695,8 +1861,6 @@ var _a, _b;
 //# sourceMappingURL=visitTable.component.js.map
 
 /***/ }),
-/* 92 */,
-/* 93 */,
 /* 94 */,
 /* 95 */,
 /* 96 */,
@@ -1723,13 +1887,15 @@ var _a, _b;
 /* 117 */,
 /* 118 */,
 /* 119 */,
-/* 120 */
+/* 120 */,
+/* 121 */,
+/* 122 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(166);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_app_module__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(170);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_app_module__ = __webpack_require__(127);
 
 
 var bootApplication = function () {
@@ -1753,14 +1919,14 @@ else {
 //# sourceMappingURL=boot.js.map
 
 /***/ }),
-/* 121 */,
-/* 122 */,
-/* 123 */
+/* 123 */,
+/* 124 */,
+/* 125 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_router__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_forms__ = __webpack_require__(40);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__overview_component__ = __webpack_require__(77);
@@ -1815,13 +1981,13 @@ AdminModule = __decorate([
 //# sourceMappingURL=admin.module.js.map
 
 /***/ }),
-/* 124 */
+/* 126 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__services_errorHandler_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__ = __webpack_require__(13);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1869,8 +2035,8 @@ var AppComponent = (function () {
 AppComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: 'app-root',
-        template: __webpack_require__(150),
-        styles: [__webpack_require__(138)]
+        template: __webpack_require__(152),
+        styles: [__webpack_require__(140)]
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__services_errorHandler_service__["a" /* ErrorHandlerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__services_errorHandler_service__["a" /* ErrorHandlerService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
 ], AppComponent);
@@ -1879,34 +2045,34 @@ var _a, _b;
 //# sourceMappingURL=app.component.js.map
 
 /***/ }),
-/* 125 */
+/* 127 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_forms__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(92);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(124);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_model_module__ = __webpack_require__(132);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__structure_patientTable_component__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__structure_categoryFilter_component__ = __webpack_require__(135);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__structure_patientDetail_component__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__structure_visitTable_component__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__structure_visitDetail_component__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__structure_employeeTable_component__ = __webpack_require__(137);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__structure_employeeDetail_component__ = __webpack_require__(136);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__structure_patientCreate_component__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__structure_patientEdit_component__ = __webpack_require__(88);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__app_routing__ = __webpack_require__(126);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__admin_admin_module__ = __webpack_require__(123);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__structure_appUserCreate_Component__ = __webpack_require__(85);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__filter_patient_pipe__ = __webpack_require__(128);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shared_search_component__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(94);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(126);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__models_model_module__ = __webpack_require__(134);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__structure_patientTable_component__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__structure_categoryFilter_component__ = __webpack_require__(137);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__structure_patientDetail_component__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__structure_visitTable_component__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__structure_visitDetail_component__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__structure_employeeTable_component__ = __webpack_require__(139);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__structure_employeeDetail_component__ = __webpack_require__(138);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__structure_patientCreate_component__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__structure_patientEdit_component__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__app_routing__ = __webpack_require__(128);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__admin_admin_module__ = __webpack_require__(125);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__structure_appUserCreate_Component__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__filter_patient_pipe__ = __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__shared_search_component__ = __webpack_require__(136);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__services_errorHandler_service__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__auth_auth_module__ = __webpack_require__(127);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__layout_header_component__ = __webpack_require__(130);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__layout_footer_component__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__auth_auth_module__ = __webpack_require__(129);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__layout_header_component__ = __webpack_require__(132);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__layout_footer_component__ = __webpack_require__(131);
 /* unused harmony export handler */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -1969,20 +2135,20 @@ AppModule = __decorate([
 //# sourceMappingURL=app.module.js.map
 
 /***/ }),
-/* 126 */
+/* 128 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_router__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__structure_patientTable_component__ = __webpack_require__(89);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__structure_patientDetail_component__ = __webpack_require__(87);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__structure_visitDetail_component__ = __webpack_require__(90);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__structure_visitTable_component__ = __webpack_require__(91);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__structure_patientCreate_component__ = __webpack_require__(86);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__structure_patientEdit_component__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__structure_patientTable_component__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__structure_patientDetail_component__ = __webpack_require__(89);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__structure_visitDetail_component__ = __webpack_require__(92);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__structure_visitTable_component__ = __webpack_require__(93);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__structure_patientCreate_component__ = __webpack_require__(88);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__structure_patientEdit_component__ = __webpack_require__(90);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__admin_admin_component__ = __webpack_require__(74);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__admin_overview_component__ = __webpack_require__(77);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__structure_appUserCreate_Component__ = __webpack_require__(85);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__structure_appUserCreate_Component__ = __webpack_require__(87);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__admin_patientAdmin_component__ = __webpack_require__(78);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__admin_appUserAdmin_component__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__admin_patientDetailAdmin_component__ = __webpack_require__(79);
@@ -1994,7 +2160,11 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__admin_visitsDetailAdmin_component__ = __webpack_require__(81);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__admin_visitsAdmin_component__ = __webpack_require__(80);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__admin_appUserCreateAdmin_Component__ = __webpack_require__(76);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__auth_forgotpassword_component__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__auth_resetpassword_component__ = __webpack_require__(85);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RoutingConfig; });
+
+
 
 
 
@@ -2018,6 +2188,8 @@ AppModule = __decorate([
 
 var routes = [
     { path: "login", component: __WEBPACK_IMPORTED_MODULE_14__auth_authentication_component__["a" /* AuthenticationComponent */] },
+    { path: "forgotpassword", component: __WEBPACK_IMPORTED_MODULE_21__auth_forgotpassword_component__["a" /* ForgotPasswordComponent */] },
+    { path: "resetpassword", component: __WEBPACK_IMPORTED_MODULE_22__auth_resetpassword_component__["a" /* ResetPasswordComponent */] },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
     {
         path: "admin", component: __WEBPACK_IMPORTED_MODULE_7__admin_admin_component__["a" /* AdminComponent */],
@@ -2037,12 +2209,6 @@ var routes = [
             { path: "**", redirectTo: "/admin/overview" }
         ]
     },
-    //{path: "", redirectTo:"/table", pathMatch: "full"},
-    //{
-    //path: "", component: PatientTableComponent,
-    //canActivateChild: [AuthenticationGuard],
-    //children: [
-    //{ path: "", component: PatientTableComponent },
     { path: "table", component: __WEBPACK_IMPORTED_MODULE_1__structure_patientTable_component__["a" /* PatientTableComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
     { path: "patientedit/:id", component: __WEBPACK_IMPORTED_MODULE_6__structure_patientEdit_component__["a" /* PatientEditComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
     { path: "visittable/:id", component: __WEBPACK_IMPORTED_MODULE_4__structure_visitTable_component__["a" /* VisitTableComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
@@ -2050,25 +2216,26 @@ var routes = [
     { path: "detail/:id", component: __WEBPACK_IMPORTED_MODULE_2__structure_patientDetail_component__["a" /* PatientDetailComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
     { path: "visitdetail/:id", component: __WEBPACK_IMPORTED_MODULE_3__structure_visitDetail_component__["a" /* VisitDetailComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
     { path: "patientcreate", component: __WEBPACK_IMPORTED_MODULE_5__structure_patientCreate_component__["a" /* PatientCreateComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
-    { path: "accountcreate", component: __WEBPACK_IMPORTED_MODULE_9__structure_appUserCreate_Component__["a" /* AppUserCreateComponent */], canActivate: [__WEBPACK_IMPORTED_MODULE_13__auth_authentication_guard__["a" /* AuthenticationGuard */]] },
-    { path: "**", redirectTo: "/table" } //]
-    //}
+    { path: "accountcreate", component: __WEBPACK_IMPORTED_MODULE_9__structure_appUserCreate_Component__["a" /* AppUserCreateComponent */] },
+    { path: "**", redirectTo: "/table" }
 ];
 var RoutingConfig = __WEBPACK_IMPORTED_MODULE_0__angular_router__["a" /* RouterModule */].forRoot(routes);
 //# sourceMappingURL=app.routing.js.map
 
 /***/ }),
-/* 127 */
+/* 129 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_forms__ = __webpack_require__(40);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(16);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_router__ = __webpack_require__(3);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__authentication_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__authentication_service__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__authentication_component__ = __webpack_require__(82);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__authentication_guard__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__forgotpassword_component__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__resetpassword_component__ = __webpack_require__(85);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2076,6 +2243,8 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
+
 
 
 
@@ -2091,7 +2260,7 @@ var AuthModule = (function () {
 AuthModule = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */], __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["a" /* BrowserModule */]],
-        declarations: [__WEBPACK_IMPORTED_MODULE_5__authentication_component__["a" /* AuthenticationComponent */]],
+        declarations: [__WEBPACK_IMPORTED_MODULE_5__authentication_component__["a" /* AuthenticationComponent */], __WEBPACK_IMPORTED_MODULE_7__forgotpassword_component__["a" /* ForgotPasswordComponent */], __WEBPACK_IMPORTED_MODULE_8__resetpassword_component__["a" /* ResetPasswordComponent */]],
         providers: [__WEBPACK_IMPORTED_MODULE_4__authentication_service__["a" /* AuthenticationService */], __WEBPACK_IMPORTED_MODULE_6__authentication_guard__["a" /* AuthenticationGuard */]],
         exports: [__WEBPACK_IMPORTED_MODULE_5__authentication_component__["a" /* AuthenticationComponent */]]
     })
@@ -2100,7 +2269,7 @@ AuthModule = __decorate([
 //# sourceMappingURL=auth.module.js.map
 
 /***/ }),
-/* 128 */
+/* 130 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2135,7 +2304,7 @@ PatientFilterPipe = __decorate([
 //# sourceMappingURL=patient.pipe.js.map
 
 /***/ }),
-/* 129 */
+/* 131 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2157,19 +2326,19 @@ var FooterComponent = (function () {
 FooterComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: 'layout-footer',
-        template: __webpack_require__(152)
+        template: __webpack_require__(156)
     })
 ], FooterComponent);
 
 //# sourceMappingURL=footer.component.js.map
 
 /***/ }),
-/* 130 */
+/* 132 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_authentication_service__ = __webpack_require__(19);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__auth_authentication_service__ = __webpack_require__(13);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HeaderComponent; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2185,13 +2354,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var HeaderComponent = (function () {
     function HeaderComponent(authService) {
         this.authService = authService;
+        this.name = this.authService.name;
     }
     return HeaderComponent;
 }());
 HeaderComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: 'layout-header',
-        template: __webpack_require__(153)
+        template: __webpack_require__(157)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__auth_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__auth_authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object])
 ], HeaderComponent);
@@ -2200,7 +2370,7 @@ var _a;
 //# sourceMappingURL=header.component.js.map
 
 /***/ }),
-/* 131 */
+/* 133 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2217,7 +2387,7 @@ var Filter = (function () {
 //# sourceMappingURL=configClasses.repository.js.map
 
 /***/ }),
-/* 132 */
+/* 134 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2246,7 +2416,7 @@ ModelModule = __decorate([
 //# sourceMappingURL=model.module.js.map
 
 /***/ }),
-/* 133 */
+/* 135 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2272,7 +2442,7 @@ var Patient = (function () {
 //# sourceMappingURL=patient.model.js.map
 
 /***/ }),
-/* 134 */
+/* 136 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2317,7 +2487,7 @@ __decorate([
 SearchComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: 'search-list',
-        template: __webpack_require__(154)
+        template: __webpack_require__(158)
     })
 ], SearchComponent);
 
@@ -2325,7 +2495,7 @@ var _a;
 //# sourceMappingURL=search.component.js.map
 
 /***/ }),
-/* 135 */
+/* 137 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2357,7 +2527,7 @@ var CategoryFilterComponent = (function () {
 CategoryFilterComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "category-filter",
-        template: __webpack_require__(156)
+        template: __webpack_require__(160)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object])
 ], CategoryFilterComponent);
@@ -2366,7 +2536,7 @@ var _a;
 //# sourceMappingURL=categoryFilter.component.js.map
 
 /***/ }),
-/* 136 */
+/* 138 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2409,7 +2579,7 @@ var EmployeeDetailComponent = (function () {
 EmployeeDetailComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "employee-detail",
-        template: __webpack_require__(157)
+        template: __webpack_require__(161)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], EmployeeDetailComponent);
@@ -2418,7 +2588,7 @@ var _a, _b, _c;
 //# sourceMappingURL=employeeDetail.component.js.map
 
 /***/ }),
-/* 137 */
+/* 139 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -2459,7 +2629,7 @@ var EmployeeTableComponent = (function () {
 EmployeeTableComponent = __decorate([
     __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_10" /* Component */])({
         selector: "employee-table",
-        template: __webpack_require__(158)
+        template: __webpack_require__(162)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["b" /* Router */]) === "function" && _b || Object])
 ], EmployeeTableComponent);
@@ -2468,7 +2638,7 @@ var _a, _b;
 //# sourceMappingURL=employeeTable.component.js.map
 
 /***/ }),
-/* 138 */
+/* 140 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(58)(false);
@@ -2485,166 +2655,174 @@ exports.push([module.i, "", ""]);
 module.exports = module.exports.toString();
 
 /***/ }),
-/* 139 */
-/***/ (function(module, exports) {
-
-module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">User</th></tr>\r\n  <tr><th>Title</th><td>{{ user?.title || 'No Data' }}</td></tr>\r\n  <tr><th>First Name</th><td>{{ user?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ user?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{user?.idNumber || 'No Data'}}</td></tr>\r\n  <tr><th>Email</th><td>{{user?.email  || 'No Data'}}</td></tr>\r\n  <tr><th>Username</th><td>{{ user?.username || 'No Data' }}</td></tr>\r\n  <tr><th>Reason</th><td>{{ user?.reason || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ user?.phoneNumber || 'No Data' }}</td></tr>\r\n  <tr><th>Biography</th><td>{{ user?.biography || 'No Data' }}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/userslist\"><i class=\"fa fa-backward\"></i> Back</button>\r\n</div>"
-
-/***/ }),
-/* 140 */
-/***/ (function(module, exports) {
-
-module.exports = "<form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n  <div class=\"bg-danger p-a-1 mb-1\"\r\n       *ngIf=\"formSubmitted && form.invalid\">\r\n    There are problems with the form\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label for=\"title\">Title</label>\r\n    <input class=\"form-control input-group-sm\" [(ngModel)]=\"user.title\" name=\"title\"\r\n           #title=\"ngModel\" required type=\"text\" id=\"title\" />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && title.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(title)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>First Name</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.firstName\" name=\"firstName\"\r\n           #firstName=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && firstName.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(firstName)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Last Name</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.lastName\" name=\"lastName\"\r\n           #lastName=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lastName.dirty) && lastName.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(lastName)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Email</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.email\" name=\"email\"\r\n           #email=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(email)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Username</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.username\" name=\"username\"\r\n           #username=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || username.dirty) && username.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(username)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>National ID No.</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.idNumber\" name=\"idNumber\"\r\n           #idNumber=\"ngModel\" />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Phone</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.phoneNumber\" name=\"phoneNumber\"\r\n           #phoneNumber=\"ngModel\" />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(phoneNumber)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Gender</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.gender\" name=\"gender\"\r\n           #gender=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || gender.dirty) && gender.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(gender)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Reason</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.reason\" name=\"reason\"\r\n           #reason=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || reason.dirty) && reason.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(reason)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Biography</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.biography\" name=\"biography\"\r\n           #biography=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || biography.dirty) && biography.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(biography)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <input class=\"form-control\" [(ngModel)]=\"user.enabled\" name=\"enabled\"\r\n           type=\"hidden\"/>\r\n  </div>\r\n\r\n\r\n  <div class=\"mb-2 row justify-content-center align-items-center\">\r\n    <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\r\n  </div>\r\n</form>\r\n"
-
-/***/ }),
 /* 141 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Users\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Action</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"><i class=\"fa fa-pencil\"></i></button>\r\n      <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
+module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">User Details</th></tr>\r\n  <tr><th>Title</th><td>{{ user?.title || 'No Data' }}</td></tr>\r\n  <tr><th>First Name</th><td>{{ user?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ user?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Gender</th><td>{{ user?.gender || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{user?.idNumber || 'No Data'}}</td></tr>\r\n  <tr><th>Email</th><td>{{user?.email  || 'No Data'}}</td></tr>\r\n  <tr><th>Username</th><td>{{ user?.username || 'No Data' }}</td></tr>\r\n  <tr><th>Reason</th><td>{{ user?.reason || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ user?.phoneNumber || 'No Data' }}</td></tr>\r\n  <tr><th>Biography</th><td>{{ user?.biography || 'No Data' }}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/userslist\"><i class=\"fa fa-backward\"></i> Back</button>\r\n</div>"
 
 /***/ }),
 /* 142 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <div class=\"row\">\r\n    <div class=\"col\">\r\n      <a class=\"navbar-brand text-white\">ePatient Care Admin</a>\r\n    </div>\r\n    <!--<div class=\"col text-right\">\r\n      <button class=\"btn btn-sm btn-warning\"\r\n              (click)=\"authService.logout()\">\r\n        Log Out\r\n      </button>\r\n    </div>-->\r\n  </div>\r\n</div>\r\n    <div class=\"row no-gutters\">\r\n      <div class=\"col-3\">\r\n        <button type=\"button\" class=\"btn btn-block btn-outline-info\" routerLink=\"/admin\"\r\n                routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\r\n          <i class=\"fa fa-home mr-2\"></i> Home\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info \" routerLink=\"/admin/patientslist\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-hospital-o mr-2\"></i> Patients\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info \" routerLink=\"/admin/visitslist\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-list mr-2\"></i> Visits\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info \" routerLink=\"/admin/userslist\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-user-md mr-2\"></i> Users\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info\" routerLink=\"/admin/usersrequests\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-briefcase mr-2\"></i>  Requests\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info\" routerLink=\"/admin/roles\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-wrench mr-2\"></i> Roles\r\n        </button>\r\n      </div>\r\n      <div class=\"col p-2\">\r\n        <router-outlet></router-outlet>\r\n      </div>\r\n    </div>\r\n"
+module.exports = "<div class=\"btn btn-warning p-1 mb-2\" style=\"width:100%\">\r\n  <p>Edit User</p>\r\n</div>\r\n<form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n  <div class=\"bg-danger p-a-1 mb-1\"\r\n       *ngIf=\"formSubmitted && form.invalid\">\r\n    There are problems with the form\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label for=\"title\">Title</label>\r\n    <input class=\"form-control input-group-sm\" [(ngModel)]=\"user.title\" name=\"title\"\r\n           #title=\"ngModel\" required type=\"text\" id=\"title\" />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && title.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(title)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>First Name</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.firstName\" name=\"firstName\"\r\n           #firstName=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && firstName.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(firstName)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Last Name</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.lastName\" name=\"lastName\"\r\n           #lastName=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lastName.dirty) && lastName.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(lastName)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Email</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.email\" name=\"email\"\r\n           #email=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(email)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Username</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.username\" name=\"username\"\r\n           #username=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || username.dirty) && username.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(username)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>National ID No.</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.idNumber\" name=\"idNumber\"\r\n           #idNumber=\"ngModel\" />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Phone</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.phoneNumber\" name=\"phoneNumber\"\r\n           #phoneNumber=\"ngModel\" />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(phoneNumber)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Gender</label>\r\n    <select class=\"form-control\" [(ngModel)]=\"user.gender\" name=\"gender\"\r\n            #gender=\"ngModel\" required>\r\n      <option>Male</option>\r\n      <option>Female</option>\r\n    </select>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Reason</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.reason\" name=\"reason\"\r\n           #reason=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || reason.dirty) && reason.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(reason)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <label>Biography</label>\r\n    <input class=\"form-control\" [(ngModel)]=\"user.biography\" name=\"biography\"\r\n           #biography=\"ngModel\" required />\r\n    <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || biography.dirty) && biography.invalid\">\r\n      <li *ngFor=\"let error of getValidationMessages(biography)\">\r\n        {{error}}\r\n      </li>\r\n    </ul>\r\n  </div>\r\n\r\n  <div class=\"form-group\">\r\n    <input class=\"form-control\" [(ngModel)]=\"user.enabled\" name=\"enabled\"\r\n           type=\"hidden\"/>\r\n  </div>\r\n\r\n\r\n  <div class=\"mb-2 row justify-content-center align-items-center\">\r\n    <button type=\"submit\" class=\"btn btn-primary  mr-3\">Submit</button>\r\n    <button class=\"btn btn-primary\" routerLink=\"/admin/userslist\">Cancel</button>\r\n  </div>\r\n</form>\r\n"
 
 /***/ }),
 /* 143 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Users\r\n</div>\r\n<div class=\"btn btn-primary btn-sm mb-2 mt-2 customBtn\" routerLink =\"/admin/usercreate\">\r\n  Add User\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Action</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-warning customBtn\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"\r\n               [routerLink]=\"['/admin/useredit', user.userDetailsID]\">\r\n        <i class=\"fa fa-pencil\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>\r\n\r\n"
+module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  User Requests\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Action</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"><i class=\"fa fa-pencil\"></i></button>\r\n      <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
 
 /***/ }),
 /* 144 */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {\r\n    border: 2px solid #ff0000\r\n  }\r\n\r\n  input.ng-dirty.ng-valid {\r\n    border: 2px solid #6bc502\r\n  }\r\n</style>\r\n\r\n<div class=\"card create bor\">\r\n  <div class=\"card-body btn btn-info mb-3\">\r\n    <i class=\"fa fa-user-plus\"></i> Add new user\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Title</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.title\" name=\"title\"\r\n                 #title=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && title.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(title)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.firstName\" name=\"firstName\"\r\n                 #firstName=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && firstName.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(firstName)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.lastName\" name=\"lastName\"\r\n                 #lastName=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lastName.dirty) && lastName.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(lastName)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.email\" name=\"email\"\r\n                 #email=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(email)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Username</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.username\" name=\"username\"\r\n                 #username=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || username.dirty) && username.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(username)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <!--<div class=\"form-group\">\r\n          <label>Password</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.password\" name=\"password\"\r\n                 #password=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || password.dirty) && password.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(password)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Confirm Password</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                 #confirmPassword=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n\r\n        <div class=\"form-group\">\r\n          <label>National ID No.</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.phoneNumber\" name=\"phoneNumber\"\r\n                 #phoneNumber=\"ngModel\" />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(phoneNumber)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <!--<div class=\"form-group\">\r\n          <label>Gender</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.gender\" name=\"gender\"\r\n                 #gender=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || gender.dirty) && gender.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(gender)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n        <div class=\"form-group\">\r\n          <label>Gender2</label>\r\n          <select class=\"form-control\" [(ngModel)]=\"newUser.gender\" name=\"gender\"\r\n                 #gender=\"ngModel\" required>\r\n            <option>Male</option>\r\n            <option>Female</option>\r\n          </select>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Reason</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.biography\" name=\"biography\"\r\n                 #biography=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || biography.dirty) && biography.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(biography)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n        <input type=\"hidden\" name=\"isFromAdmin\" value=\"true\"/>\r\n        <!--<div class=\"form-group\">\r\n          <label>Image Url</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                 #confirmPassword=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n              {{ }}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create {\r\n    margin: auto;\r\n  }\r\n</style>"
+module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <div class=\"row\">\r\n    <div class=\"col\">\r\n      <a class=\"navbar-brand text-white\">Digital Kilinik Admin</a>\r\n    </div>\r\n    <!--<div class=\"col text-right\">\r\n      <button class=\"btn btn-sm btn-warning\"\r\n              (click)=\"authService.logout()\">\r\n        Log Out\r\n      </button>\r\n    </div>-->\r\n  </div>\r\n</div>\r\n    <div class=\"row no-gutters\">\r\n      <div class=\"col-3\">\r\n        <button type=\"button\" class=\"btn btn-block btn-outline-info\" routerLink=\"/admin\"\r\n                routerLinkActive=\"active\" [routerLinkActiveOptions]=\"{exact: true}\">\r\n          <i class=\"fa fa-home mr-2\"></i> Home\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info \" routerLink=\"/admin/patientslist\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-hospital-o mr-2\"></i> Patients\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info \" routerLink=\"/admin/visitslist\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-list mr-2\"></i> Visits\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info \" routerLink=\"/admin/userslist\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-user-md mr-2\"></i> Users\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info\" routerLink=\"/admin/usersrequests\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-briefcase mr-2\"></i>  Requests\r\n        </button>\r\n        <button class=\"btn btn-block btn-outline-info\" routerLink=\"/admin/roles\"\r\n                routerLinkActive=\"active\">\r\n          <i class=\"fa fa-wrench mr-2\"></i> Roles\r\n        </button>\r\n      </div>\r\n      <div class=\"col p-2\">\r\n        <router-outlet></router-outlet>\r\n      </div>\r\n    </div>\r\n"
 
 /***/ }),
 /* 145 */
 /***/ (function(module, exports) {
 
-module.exports = "<ul class=\"list-group\">\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total patients: <span class=\"badge badge-success badge-pill\">{{patients?.length || 0}}</span>\r\n  </li>\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total visits: <span class=\"badge badge-success badge-pill\"> {{visits?.length || 0}}</span>\r\n  </li>\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total users: <span class=\"badge badge-success badge-pill\">{{users?.length || 0}}</span>\r\n  </li>\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total roles:<span class=\"badge badge-success badge-pill\">{{roles?.length || 0}}</span>\r\n  </li>\r\n</ul>"
+module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Users\r\n</div>\r\n<div class=\"btn btn-primary btn-sm mb-2 mt-2 customBtn\" routerLink =\"/admin/usercreate\">\r\n  Add User\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Actions</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-sm actionbtn detailsButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm actionbtn editButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"\r\n               [routerLink]=\"['/admin/useredit', user.userDetailsID]\">\r\n        <i class=\"fa fa-pencil editButton\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm actionbtn deleteButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n      <button *ngIf=\"user.enabled \" class=\"btn actionbtn enabledButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Disable\" (click)=\"toggle(user.userDetailsID, user.enabled)\">\r\n        <i class=\"fa fa-toggle-on\"></i>\r\n      </button>\r\n      <button *ngIf=\"!user.enabled\" class=\"btn actionbtn disabledButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Enable\" (click)=\"toggle(user.userDetailsID, user.enabled)\"><i  class=\"fa fa-toggle-on\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>\r\n\r\n<style>\r\n  .actionbtn {\r\n    background-color: Transparent;\r\n    background-repeat: no-repeat;\r\n    border: none;\r\n    cursor: pointer;\r\n    overflow: hidden;\r\n    outline: none;\r\n    margin-right: 0px !important;\r\n    padding: 2px;\r\n  }\r\n  .editButton {\r\n    color: #ffc805;\r\n  }\r\n  .deleteButton {\r\n    color: red;\r\n  }\r\n  .detailsButton {\r\n    color: #0571ff;\r\n  }\r\n  .enabledButton {\r\n    color: #07bc40;\r\n  }\r\n  .disabledButton {\r\n    color: #66645b;\r\n  }\r\n</style>\r\n"
 
 /***/ }),
 /* 146 */
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr><th colspan=\"5\" class=\"bg-info\">Patients</th></tr>\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>DOB</th>\r\n    <th>Sublocation</th>\r\n    <th>Action</th>\r\n  </tr>\r\n  <tr *ngFor=\"let patient of patients\">\r\n    <td>{{patient.firstName || 'Loading Data...'}}</td>\r\n    <td>{{patient.lastName || 'Loading Data...'}}</td>\r\n    <td>{{patient.dob | date: 'mediumDate' || 'Loading Data...'}}</td>\r\n    <td>{{patient.sublocation || 'Loading Data...'}}</td>\r\n    <td>\r\n      \r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/patientdetail', patient.patientID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"><i class=\"fa fa-pencil\"></i></button>\r\n      <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
+module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {\r\n    border: 2px solid #ff0000\r\n  }\r\n\r\n  input.ng-dirty.ng-valid {\r\n    border: 2px solid #6bc502\r\n  }\r\n</style>\r\n\r\n<div class=\"card create bor\">\r\n  <div class=\"card-body btn btn-info mb-3\">\r\n    <i class=\"fa fa-user-plus\"></i> Add new user\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Title</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.title\" name=\"title\"\r\n                 #title=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && title.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(title)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.firstName\" name=\"firstName\"\r\n                 #firstName=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && firstName.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(firstName)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.lastName\" name=\"lastName\"\r\n                 #lastName=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lastName.dirty) && lastName.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(lastName)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.email\" name=\"email\"\r\n                 #email=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(email)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Username</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.username\" name=\"username\"\r\n                 #username=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || username.dirty) && username.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(username)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <!--<div class=\"form-group\">\r\n          <label>Password</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.password\" name=\"password\"\r\n                 #password=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || password.dirty) && password.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(password)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Confirm Password</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                 #confirmPassword=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n\r\n        <div class=\"form-group\">\r\n          <label>National ID No.</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.phoneNumber\" name=\"phoneNumber\"\r\n                 #phoneNumber=\"ngModel\" />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(phoneNumber)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <!--<div class=\"form-group\">\r\n          <label>Gender</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.gender\" name=\"gender\"\r\n                 #gender=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || gender.dirty) && gender.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(gender)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n        <div class=\"form-group\">\r\n          <label>Gender</label>\r\n          <select class=\"form-control\" [(ngModel)]=\"newUser.gender\" name=\"gender\"\r\n                 #gender=\"ngModel\" required>\r\n            <option>Male</option>\r\n            <option>Female</option>\r\n          </select>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Reason</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.biography\" name=\"biography\"\r\n                 #biography=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || biography.dirty) && biography.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(biography)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n        <input type=\"hidden\" name=\"isFromAdmin\" value=\"true\"/>\r\n        <!--<div class=\"form-group\">\r\n          <label>Image Url</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                 #confirmPassword=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n              {{ }}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button type=\"submit\" class=\"btn btn-primary mr-3\">Submit</button>\r\n          <button class=\"btn btn-primary\" routerLink=\"/admin/userslist\">Cancel</button>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create {\r\n    margin: auto;\r\n  }\r\n</style>"
 
 /***/ }),
 /* 147 */
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Patient Details</th></tr>\r\n  <tr><th>First Name</th><td>{{ patient?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ patient?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Middle Name</th><td>{{ patient?.middleName || 'No Data' }}</td></tr>\r\n  <tr><th>Date of Birth</th><td>{{patient?.dob | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n  <tr><th>Place of Birth</th><td>{{ patient?.placeOfBirth  || 'No Data'}}</td></tr>\r\n  <tr><th>Sublocation</th><td>{{ patient?.sublocation || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ patient?.phone || 'No Data' }}</td></tr>\r\n  <tr><th>Email</th><td>{{ patient?.email || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{ patient?.idNumber || 'No Data' }}</td></tr>\r\n</table>\r\n\r\n\r\n<div *ngIf=\"totalVisits > 0; else elseBlock\" class=\"card text-left\">\r\n  <div class=\"card-header bg-info\">\r\n    <h6>Patient Visits</h6>\r\n  </div>\r\n  <div class=\"card-block pb-0\">\r\n    <table class=\"table table-sm table-striped\">\r\n      <tr>\r\n        <th>Date</th>\r\n        <th>Complain</th>\r\n        <th>Medications</th>\r\n        <th></th>\r\n      </tr>\r\n      <tr *ngFor=\"let visit of singlePatientVisits\">\r\n        <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n        <td>{{visit?.complain || 'No Data'}}</td>\r\n        <td>{{visit?.medications ||'No Data'}}</td>\r\n        <td>\r\n          <button class=\"btn btn-primary btn-sm\"\r\n                  [routerLink]=\"['/admin/visitdetail', visit.visitId]\">\r\n            Details\r\n          </button>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </div>\r\n  <div class=\"card-footer bg-gray\">\r\n    {{totalVisits}} total visit(s)\r\n  </div>\r\n</div>\r\n<ng-template #elseBlock>\r\n  <div class=\"card text-left\">\r\n    <div class=\"card-header bg-info\">\r\n      <h5>Patient Visits</h5>\r\n    </div>\r\n    <div class=\"card-block\">\r\n      <p class=\"card-text\">No visits available for this patient.</p>\r\n    </div>\r\n    <div class=\"card-footer text-muted bg-info\">\r\n      {{totalVisits}} total visit(s)\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<div class=\"text-center mt-3\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/patientslist\"><i class=\"fa fa-backward\" aria-hidden=\"true\"></i> Back</button>\r\n  <button class=\"btn btn-success\" routerLink=\"/\" [disabled]=\"!totalVisits\"><i class=\"fa fa-file-pdf-o\"></i> Export</button>\r\n</div>"
+module.exports = "<ul class=\"list-group\">\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total patients: <span class=\"badge badge-success badge-pill\">{{patients?.length || 0}}</span>\r\n  </li>\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total visits: <span class=\"badge badge-success badge-pill\"> {{visits?.length || 0}}</span>\r\n  </li>\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total users: <span class=\"badge badge-success badge-pill\">{{users?.length || 0}}</span>\r\n  </li>\r\n  <li class=\"list-group-item justify-content-between\">\r\n    Total roles:<span class=\"badge badge-success badge-pill\">{{roles?.length || 0}}</span>\r\n  </li>\r\n</ul>"
 
 /***/ }),
 /* 148 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Visits\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>Date</th>\r\n    <th>Complain</th>\r\n    <th>Medications</th>\r\n    <th>Actions</th>\r\n  </tr>\r\n  <tr *ngFor=\"let visit of visits\">\r\n    <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n    <td>{{visit?.complain || 'No Data'}}</td>\r\n    <td>{{visit?.medications ||'No Data'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/visitdetail', visit.visitId]\">\r\n        <i class=\"fa fa-address-card\"></i>\r\n      </button>\r\n      <button class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\">\r\n        <i class=\"fa fa-trash\"></i>\r\n      </button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
+module.exports = "<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr><th colspan=\"5\" class=\"bg-info\">Patients</th></tr>\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>DOB</th>\r\n    <th>Sublocation</th>\r\n    <th>Action</th>\r\n  </tr>\r\n  <tr *ngFor=\"let patient of patients\">\r\n    <td>{{patient.firstName || 'Loading Data...'}}</td>\r\n    <td>{{patient.lastName || 'Loading Data...'}}</td>\r\n    <td>{{patient.dob | date: 'mediumDate' || 'Loading Data...'}}</td>\r\n    <td>{{patient.sublocation || 'Loading Data...'}}</td>\r\n    <td>\r\n      \r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/patientdetail', patient.patientID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"><i class=\"fa fa-pencil\"></i></button>\r\n      <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
 
 /***/ }),
 /* 149 */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<table class=\"table table-striped table-sm table-bordered\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Visit</th></tr>\r\n  <tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>\r\n  <tr><th>Date</th><td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n  <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>\r\n  <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>\r\n  <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>\r\n  <tr><th colspan=\"2\" class=\"btn-link bg-info\" [routerLink]=\"['/admin/patientdetail', visit?.patient?.patientID]\">Patient</th></tr>\r\n  <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>\r\n  <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>\r\n  <tr><th colspan=\"2\" class=\" btn-link bg-info\" [routerLink]=\"['/admin/userdetails', visit?.userDetails.userDetailsID]\">Physician</th></tr>\r\n  <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>\r\n  <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/visitslist\"><i class=\"fa fa-backward\"></i> Back</button>\r\n</div>"
+module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Patient Details</th></tr>\r\n  <tr><th>First Name</th><td>{{ patient?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ patient?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Middle Name</th><td>{{ patient?.middleName || 'No Data' }}</td></tr>\r\n  <tr><th>Date of Birth</th><td>{{patient?.dob | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n  <tr><th>Gender</th><td>{{patient?.gender || 'No Data'}}</td></tr>\r\n  <tr><th>Place of Birth</th><td>{{ patient?.placeOfBirth  || 'No Data'}}</td></tr>\r\n  <tr><th>Sublocation</th><td>{{ patient?.sublocation || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ patient?.phone || 'No Data' }}</td></tr>\r\n  <tr><th>Email</th><td>{{ patient?.email || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{ patient?.idNumber || 'No Data' }}</td></tr>\r\n</table>\r\n\r\n\r\n<div *ngIf=\"totalVisits > 0; else elseBlock\" class=\"card text-left\">\r\n  <div class=\"card-header bg-info\">\r\n    <h6>Patient Visits</h6>\r\n  </div>\r\n  <div class=\"card-block pb-0\">\r\n    <table class=\"table table-sm table-striped\">\r\n      <tr>\r\n        <th>Date</th>\r\n        <th>Complain</th>\r\n        <th>Medications</th>\r\n        <th></th>\r\n      </tr>\r\n      <tr *ngFor=\"let visit of singlePatientVisits\">\r\n        <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n        <td>{{visit?.complain || 'No Data'}}</td>\r\n        <td>{{visit?.medications ||'No Data'}}</td>\r\n        <td>\r\n          <button class=\"btn btn-primary btn-sm\"\r\n                  [routerLink]=\"['/admin/visitdetail', visit.visitId]\">\r\n            Details\r\n          </button>\r\n        </td>\r\n      </tr>\r\n    </table>\r\n  </div>\r\n  <div class=\"card-footer bg-gray\">\r\n    {{totalVisits}} total visit(s)\r\n  </div>\r\n</div>\r\n<ng-template #elseBlock>\r\n  <div class=\"card text-left\">\r\n    <div class=\"card-header bg-info\">\r\n      <h5>Patient Visits</h5>\r\n    </div>\r\n    <div class=\"card-block\">\r\n      <p class=\"card-text\">No visits available for this patient.</p>\r\n    </div>\r\n    <div class=\"card-footer text-muted bg-info\">\r\n      {{totalVisits}} total visit(s)\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<div class=\"text-center mt-3\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/patientslist\"><i class=\"fa fa-backward\" aria-hidden=\"true\"></i> Back</button>\r\n  <button class=\"btn btn-success\" routerLink=\"/\" [disabled]=\"!totalVisits\"><i class=\"fa fa-file-pdf-o\"></i> Export</button>\r\n</div>"
 
 /***/ }),
 /* 150 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"bg-danger text-white text-center p-2 m-2\" *ngIf=\"error != null\">\r\n  <h6 *ngFor=\"let e of error\">{{e}}</h6>\r\n  <button class=\"btn btn-warning\" (click)=\"clearError()\">OK</button>\r\n</div>\r\n<layout-header *ngIf=\"loggedIn\"></layout-header>\r\n<div class=\"separator\">\r\n</div>\r\n\r\n<router-outlet></router-outlet>\r\n\r\n<layout-footer></layout-footer>\r\n\r\n<style>\r\n  .separator{\r\n    clear:both;\r\n  }\r\n</style>"
+module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Visits\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>Date</th>\r\n    <th>Complain</th>\r\n    <th>Medications</th>\r\n    <th>Actions</th>\r\n  </tr>\r\n  <tr *ngFor=\"let visit of visits\">\r\n    <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n    <td>{{visit?.complain || 'No Data'}}</td>\r\n    <td>{{visit?.medications ||'No Data'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/visitdetail', visit.visitId]\">\r\n        <i class=\"fa fa-address-card\"></i>\r\n      </button>\r\n      <button class=\"btn btn-danger btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\">\r\n        <i class=\"fa fa-trash\"></i>\r\n      </button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
 
 /***/ }),
 /* 151 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <a class=\"navbar-brand text-white\"> Login </a>\r\n</div>\r\n\r\n<h4 *ngIf=\"showError\" class=\"p-2 bg-danger text-white\">\r\n  Invalid username or password\r\n</h4>\r\n<div class=\"loginPortal\">\r\n  <form novalidate #authForm=\"ngForm\">\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\"><i class=\"fa fa-at\"></i></span>\r\n        <input #name=\"ngModel\" name=\"name\" class=\"form-control\"\r\n               [(ngModel)]=\"authService.name\" placeholder=\"username\" required />\r\n      </div>\r\n      <div *ngIf=\"name.invalid\" class=\"text-danger\">\r\n        Please enter your username\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\"><i class=\"fa fa-key\"></i></span>\r\n        <input type=\"password\" #password=\"ngModel\" name=\"password\"\r\n               class=\"form-control\" [(ngModel)]=\"authService.password\" placeholder=\"password\" required />\r\n      </div>\r\n      <div *ngIf=\"password.invalid\" class=\"text-danger\">\r\n        Please enter your password\r\n      </div>\r\n    </div>\r\n    <div class=\"text-center pt-2\">\r\n      <button class=\"btn btn-default submitBtn\" [disabled]=\"authForm.invalid\"\r\n              (click)=\"login()\">\r\n          Login\r\n      </button>\r\n    </div>\r\n  </form>\r\n</div>\r\n\r\n<style>\r\n  .loginPortal{\r\n    width: 50%;\r\n    margin: auto;\r\n    margin-top: 10%;\r\n  }\r\n  .submitBtn{\r\n    width: 30%;\r\n  }\r\n</style>"
+module.exports = "\r\n<table class=\"table table-striped table-sm table-bordered\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Visit</th></tr>\r\n  <tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>\r\n  <tr><th>Date</th><td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n  <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>\r\n  <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>\r\n  <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>\r\n  <tr><th colspan=\"2\" class=\"btn-link bg-info\" [routerLink]=\"['/admin/patientdetail', visit?.patient?.patientID]\">Patient</th></tr>\r\n  <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>\r\n  <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>\r\n  <tr><th colspan=\"2\" class=\" btn-link bg-info\" [routerLink]=\"['/admin/userdetails', visit?.userDetails.userDetailsID]\">Physician</th></tr>\r\n  <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>\r\n  <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/visitslist\"><i class=\"fa fa-backward\"></i> Back</button>\r\n</div>"
 
 /***/ }),
 /* 152 */
 /***/ (function(module, exports) {
 
-module.exports = "<footer>\r\n  <div class=\"container footer\">\r\n    <a class=\"logo-font\" routerLink=\"/\">ePatientCare</a>\r\n    <span class=\"attribution\">\r\n      &copy; {{ today | date: 'yyyy' }}.\r\n      Kiptenden and Tulon Comunity Clinic Patient Management System. All Rights Reserved.\r\n    </span>\r\n  </div>\r\n</footer>\r\n\r\n"
+module.exports = "<div class=\"container bodyContainer\">\r\n  <div class=\"bg-danger text-white text-center p-2 m-2\" *ngIf=\"error != null\">\r\n    <h6 *ngFor=\"let e of error\">{{e}}</h6>\r\n    <button class=\"btn btn-warning\" (click)=\"clearError()\">OK</button>\r\n  </div>\r\n  <layout-header *ngIf=\"loggedIn\"></layout-header>\r\n  <div class=\"separator\">\r\n  </div>\r\n\r\n  <div style=\"margin-bottom:15px\">\r\n    <router-outlet></router-outlet>\r\n  </div>\r\n  <!--<layout-footer></layout-footer>-->\r\n</div>\r\n<style>\r\n  .separator{\r\n    clear:both;\r\n  }\r\n  .bodyContainer{\r\n    background-color: aliceblue;\r\n    padding-bottom: 1px;\r\n  }\r\n</style>"
 
 /***/ }),
 /* 153 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navArea row\">\r\n  <!--<nav>-->\r\n    <!--<ul class=\"nav nav-pills float-left\">\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" routerLink=\"/\">Patients</a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" routerLink=\"/visittable\">Visits</a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" routerLink=\"/admin\">Admin</a>\r\n      </li>\r\n      <li class=\"nav-item\">\r\n        <a class=\"nav-link\" routerLink=\"#\">Profile</a>\r\n      </li>\r\n    </ul>-->\r\n    <div class=\"navbtn\">\r\n      <a class=\"btn ml-3\"\r\n              routerLink=\"/\">\r\n        Patients\r\n      </a>\r\n    </div>\r\n    <div class=\"navbtn\">\r\n      <a class=\"btn btn-default ml-2\"\r\n              routerLink=\"/visittable\">\r\n        Visits\r\n      </a>\r\n    </div>\r\n   <div class=\"navbtn\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/\">\r\n      Settings\r\n    </a>\r\n   </div>\r\n  <div class=\"navbtn\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/admin/overview\">\r\n      Admin\r\n    </a>\r\n  </div>\r\n  <div class=\" navbtn col text-right mr-2\">\r\n      <a class=\"btn btn-default\"\r\n              (click)=\"authService.logout()\">\r\n        Log Out\r\n      </a>\r\n   </div>\r\n  <!--</nav>-->\r\n</div>\r\n\r\n<style>\r\n  .navArea {\r\n    background-color: #080c5e;\r\n    color: white;\r\n    height: 45px;\r\n    padding-bottom: 0;\r\n    padding-top: 5px;\r\n  }\r\n\r\n  .a{\r\n    text-decoration: none;\r\n    color: white;\r\n    \r\n  }\r\n  /*.navbtn:hover{\r\n    background-color: darkgray;\r\n    width: auto;\r\n    border: solid;\r\n  }*/\r\n  a:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }\r\n\r\n</style>"
+module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <a class=\"navbar-brand text-white\"> Login </a>\r\n</div>\r\n\r\n<div *ngIf=\"showError\" class=\"alert alert-danger\">\r\n  Invalid username or password\r\n</div>\r\n<div class=\"loginPortal\">\r\n  <form novalidate #authForm=\"ngForm\">\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\"><i class=\"fa fa-at\"></i></span>\r\n        <input #name=\"ngModel\" name=\"name\" class=\"form-control\"\r\n               [(ngModel)]=\"authService.name\" placeholder=\"username\" required />\r\n      </div>\r\n      <div *ngIf=\"name.invalid\" class=\"text-danger\">\r\n        Please enter your username\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\"><i class=\"fa fa-key\"></i></span>\r\n        <input type=\"password\" #password=\"ngModel\" name=\"password\"\r\n               class=\"form-control\" [(ngModel)]=\"authService.password\" placeholder=\"password\" required />\r\n      </div>\r\n      <div *ngIf=\"password.invalid\" class=\"text-danger\">\r\n        Please enter your password\r\n      </div>\r\n    </div>\r\n    <div class=\"pt-2\">\r\n      <button class=\"btn btn-primary\" [disabled]=\"authForm.invalid\"\r\n              (click)=\"login()\">\r\n          Login\r\n      </button>\r\n    </div>\r\n  </form>\r\n  <div class=\"\">\r\n    Don't have account?\r\n    <a routerLink=\"/accountcreate\">\r\n      Request account\r\n    </a>\r\n  </div>\r\n  <div class=\"mb-5\">\r\n    Forgot password?\r\n    <a routerLink=\"/forgotpassword\">\r\n      Reset password\r\n    </a>\r\n  </div>\r\n</div>\r\n\r\n<style>\r\n  .loginPortal{\r\n    width: 50%;\r\n    margin: auto;\r\n    margin-top: 10%;\r\n  }\r\n  .submitBtn{\r\n    width: 30%;\r\n  }\r\n</style>"
 
 /***/ }),
 /* 154 */
 /***/ (function(module, exports) {
 
-module.exports = " <div class=\"form-inline\">\r\n  <div class=\"form-group\">\r\n    {{title}}\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <div class=\"input-group ml-2 mb-2 mr-sm-2 mb-sm-0\">\r\n      <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      <input class=\"input p-1\" placeholder=\"seach\" (paste)=\"getPasteData($event)\" (keyup)=\"getEachChar($event.target.value)\" type=\"text\" [(ngModel)]=\"listFilter\" /><button class=\"btn btn-sm btnCut\" (click)=\"clearFilter()\" *ngIf=\"listFilter\"><i class=\"fa fa-cut\"></i></button>\r\n    </div>\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <div *ngIf='listFilter'>\r\n      <div class=\"p text-muted\">Filter by: {{listFilter}}</div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<style>\r\n  .btnCut{\r\n    background-color : white;\r\n    margin: 1px;\r\n  }\r\n</style> "
+module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <a class=\"navbar-brand text-white\"> Password Recovery </a>\r\n</div>\r\n\r\n<div class=\"forgotPassword\">\r\n  <form novalidate #authForm=\"ngForm\">\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\">Email</span>\r\n        <input #email=\"ngModel\" name=\"email\" class=\"form-control\"\r\n               [(ngModel)]=\"authService.email\" placeholder=\"\" required />\r\n      </div>\r\n      <div *ngIf=\"email.invalid\" class=\"text-danger\">\r\n        Please enter your email\r\n      </div>\r\n    </div>\r\n    <div class=\"mb-2\">\r\n      <button class=\"btn btn-primary\" [disabled]=\"authForm.invalid\"\r\n              (click)=\"forgotpassword()\">\r\n        Submit\r\n      </button>\r\n    </div>\r\n  </form>\r\n</div>\r\n<style>\r\n  .forgotPassword {\r\n    width: 50%;\r\n    margin: auto;\r\n    margin-top: 10%;\r\n  }\r\n</style>"
 
 /***/ }),
 /* 155 */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {\r\n    border: 2px solid #ff0000\r\n  }\r\n\r\n  input.ng-dirty.ng-valid {\r\n    border: 2px solid #6bc502\r\n  }\r\n</style>\r\n\r\n<div class=\"card create bor\">\r\n  <div class=\"card-body btn btn-info mb-3\">\r\n    <i class=\"fa fa-user-plus\"></i> Request Account\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Title</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.title\" name=\"title\"\r\n                 #title=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && title.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(title)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.firstName\" name=\"firstName\"\r\n                 #firstName=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && firstName.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(firstName)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.lastName\" name=\"lastName\"\r\n                 #lastName=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lastName.dirty) && lastName.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(lastName)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.email\" name=\"email\"\r\n                 #email=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(email)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Username</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.username\" name=\"username\"\r\n                 #username=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || username.dirty) && username.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(username)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <!--<div class=\"form-group\">\r\n          <label>Password</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.password\" name=\"password\"\r\n                 #password=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || password.dirty) && password.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(password)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Confirm Password</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                 #confirmPassword=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n\r\n        <div class=\"form-group\">\r\n          <label>National ID No.</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.phoneNumber\" name=\"phoneNumber\"\r\n                 #phoneNumber=\"ngModel\" />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(phoneNumber)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Gender</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.gender\" name=\"gender\"\r\n                 #gender=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || gender.dirty) && gender.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(gender)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Reason</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.biography\" name=\"biography\"\r\n                 #biography=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || biography.dirty) && biography.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(biography)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <!--<div class=\"form-group\">\r\n          <label>Image Url</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                 #confirmPassword=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n              {{ }}\r\n            </li>\r\n          </ul>\r\n        </div>-->\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\r\n        </div>\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create {\r\n    margin: auto;\r\n  }\r\n</style>"
+module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <a class=\"navbar-brand text-white\"> Password Recovery </a>\r\n</div>\r\n\r\n<div class=\"forgotPassword\">\r\n  <form novalidate #authForm=\"ngForm\">\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\" style=\"width:150px; text-align:left\">Email</span>\r\n        <input #email=\"ngModel\" name=\"email\" class=\"form-control\"\r\n               [(ngModel)]=\"authService.email\" placeholder=\"\" required type=\"email\"/>\r\n      </div>\r\n      <div *ngIf=\"email.invalid\" class=\"text-danger\">\r\n        Please enter your email\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\" style=\"width:150px; text-align:left\">Password</span>\r\n        <input #password=\"ngModel\" name=\"password\" class=\"form-control\"\r\n               [(ngModel)]=\"authService.password\" placeholder=\"\" required type=\"password\"/>\r\n      </div>\r\n      <div *ngIf=\"password.invalid\" class=\"text-danger\">\r\n        Please enter password\r\n      </div>\r\n    </div>\r\n    <div class=\"form-group\">\r\n      <div class=\"input-group\">\r\n        <span class=\"input-group-addon\" id=\"sizing-addon2\" style=\"width:150px; text-align:left\">Confirm Password</span>\r\n        <input #confirmpassword=\"ngModel\" name=\"confirmpassword\" class=\"form-control\"\r\n               [(ngModel)]=\"authService.confirmpassword\" placeholder=\"\" required type=\"password\"/>\r\n      </div>\r\n      <div *ngIf=\"confirmpassword.invalid\" class=\"text-danger\">\r\n        Please enter confirm password\r\n      </div>\r\n    </div>\r\n    <!--<input type=\"hidden\" name=\"code\" [(ngModel)]=\"authService.code\" value=\"code\"/>-->\r\n    <div class=\"pt-2\">\r\n      <button class=\"btn btn-primary mb-5\" [disabled]=\"authForm.invalid\"\r\n              (click)=\"resetpassword()\">\r\n        Submit\r\n      </button>\r\n    </div>\r\n  </form>\r\n</div>\r\n<style>\r\n  .forgotPassword {\r\n    width: 50%;\r\n    margin: auto;\r\n    margin-top: 10%;\r\n  }\r\n</style>"
 
 /***/ }),
 /* 156 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"m-1\">\r\n  <button class=\"btn btn-primary\" (click) =\"setCategory('kiptenden')\">Kiptenden</button>\r\n  <button class=\"btn btn-primary\" (click)=\"setCategory('Tulon')\">Tulon</button>\r\n  <button class=\"btn btn-primary\" (click)=\"setCategory(null)\">All</button>\r\n</div>\r\n"
+module.exports = "<footer>\r\n  <div class=\"container footer\">\r\n    <a class=\"logo-font\" routerLink=\"/\">ePatientCare</a>\r\n    <span class=\"attribution\">\r\n      &copy; {{ today | date: 'yyyy' }}.\r\n      Kiptenden and Tulon Comunity Clinic Patient Management System. All Rights Reserved.\r\n    </span>\r\n  </div>\r\n</footer>\r\n\r\n"
 
 /***/ }),
 /* 157 */
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Employee</th></tr>\r\n  <tr><th>Title</th><td>{{ employee?.title || 'No Data' }}</td></tr>\r\n  <tr><th>First Name</th><td>{{ employee?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ employee?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{employee?.idNumber || 'No Data'}}</td></tr>\r\n  <tr><th>Email</th><td>{{employee?.email  || 'No Data'}}</td></tr>\r\n  <tr><th>Username</th><td>{{ employee?.username || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ employee?.phone || 'No Data' }}</td></tr>\r\n  <tr><th>Biography</th><td>{{ employee?.biography || 'No Data' }}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/employeetable\">Back</button>\r\n</div>"
+module.exports = "<div class=\"navArea row\">\r\n    <div class=\"\">\r\n      <a class=\"btn ml-3\"\r\n              routerLink=\"/\">\r\n        Patients\r\n      </a>\r\n    </div>\r\n    <div class=\"\">\r\n      <a class=\"btn btn-default ml-2\"\r\n              routerLink=\"/visittable\">\r\n        Visits\r\n      </a>\r\n    </div>\r\n   <div class=\"\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/\">\r\n      Settings\r\n    </a>\r\n   </div>\r\n  <div class=\"\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/admin/overview\">\r\n      Admin\r\n    </a>\r\n  </div>\r\n  <div class=\"col text-right mr-2\">\r\n      <a class=\"userwelcome\" routerLink=\"/login\">Welcome, {{name}}</a>\r\n      <a class=\"btn btn-default\"\r\n              (click)=\"authService.logout()\">\r\n        Log Out\r\n      </a>\r\n   </div>\r\n</div>\r\n\r\n<style>\r\n  .navArea {\r\n    background-color: #080c5e;\r\n    color: white;\r\n    height: 45px;\r\n    padding-bottom: 0;\r\n    padding-top: 5px;\r\n  }\r\n\r\n  .a{\r\n    text-decoration: none;\r\n    color: white;\r\n    \r\n  }\r\n\r\n  a:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }\r\n  .userwelcome {\r\n    color: dimgrey !important;\r\n\r\n  }\r\n  .userwelcome:hover {\r\n    text-decoration: underline !important;\r\n    border: none;\r\n    cursor: pointer;\r\n    color: deepskyblue !important;\r\n  }\r\n  /*.btnLogout{\r\n    color: dodgerblue !important;\r\n  }\r\n  btnLogout:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }*/\r\n\r\n</style>"
 
 /***/ }),
 /* 158 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Employees\r\n</div>\r\n\r\n<table class=\"table table-sm table-striped\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Phone</th>\r\n    <th></th>\r\n  </tr>\r\n  <tr *ngFor=\"let employee of employees\">\r\n    <td>{{employee.firstName || 'Loading Data...'}}</td>\r\n    <td>{{employee.lastName || 'Loading Data...'}}</td>\r\n    <td>{{employee.phone || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\"\r\n              [routerLink]=\"['/employeedetail', employee.employeeID]\">\r\n        Details\r\n      </button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
+module.exports = " <div class=\"form-inline\">\r\n  <div class=\"form-group\">\r\n    {{title}}\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <div class=\"input-group ml-2 mb-2 mr-sm-2 mb-sm-0\">\r\n      <div class=\"input-group-addon\"><i class=\"fa fa-search\"></i></div>\r\n      <input class=\"input p-1\" placeholder=\"seach\" (paste)=\"getPasteData($event)\" (keyup)=\"getEachChar($event.target.value)\" type=\"text\" [(ngModel)]=\"listFilter\" /><button class=\"btn btn-sm btnCut\" (click)=\"clearFilter()\" *ngIf=\"listFilter\"><i class=\"fa fa-cut\"></i></button>\r\n    </div>\r\n  </div>\r\n  <div class=\"form-group\">\r\n    <div *ngIf='listFilter'>\r\n      <div class=\"p text-muted\">Filter by: {{listFilter}}</div>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n<style>\r\n  .btnCut{\r\n    background-color : white;\r\n    margin: 1px;\r\n  }\r\n</style> "
 
 /***/ }),
 /* 159 */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {border: 2px solid #ff0000}\r\n  input.ng-dirty.ng-valid {border: 2px solid #6bc502}\r\n</style>\r\n\r\n<div class=\"card create\">\r\n  <div class=\"card-body btn btn-info mb-3\">\r\n   <i class=\"fa fa-user-plus\"></i> Add a new patient\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.firstName\" name=\"fname\"\r\n                 #fname=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || fname.dirty) && fname.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(fname)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.lastName\" name=\"lname\"\r\n                 #lname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lname.dirty) && lname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(lname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Middle Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.middleName\" name=\"mname\" \r\n                 #mname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || mname.dirty) && mname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(mname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>DOB</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.dob\" name=\"dob\"\r\n                 #dob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || dob.dirty) && dob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(dob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Place of Birth</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.placeOfBirth\" name=\"pob\"\r\n                 #pob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || pob.dirty) && pob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(pob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Sublocation</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.sublocation\" name=\"sublocation\" \r\n                 #sublocation=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || sublocation.dirty) && sublocation.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(sublocation)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.phone\" name=\"phone\"\r\n                 #phone=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phone.dirty) && phone.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(phone)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.email\" name=\"email\"\r\n                 #email=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(email)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>ID Number</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\r\n        </div>\r\n\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create{\r\n    margin: auto;\r\n  }\r\n\r\n</style>"
+module.exports = "<div class=\"container\">\r\n  <div class=\"card create bor\">\r\n    <div class=\"card-body btn btn-info mb-3\">\r\n      <i class=\"fa fa-user-plus\"></i> Account Request\r\n    </div>\r\n    <div class=\"alert alert-warning m-3\">\r\n      <p>\r\n        This form is ONLY to be used to request a new account if you do not have one already. Please complete this form accurately and your request will be reviewed for approval\r\n        as soon as possible. Ensure to supply a working email since account instructions will be send there. If you have an existing account and have forgotten your password, please click <a routerLink=\"/login\">here</a> to reset your account password.\r\n      </p>\r\n    </div>\r\n    <div class=\"cardbody ml-3 mr-3\">\r\n      <div class=\"form1\">\r\n        <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n          <div class=\"bg-danger p-a-1 mb-1\"\r\n               *ngIf=\"formSubmitted && form.invalid\">\r\n            There are problems with the form\r\n          </div>\r\n\r\n          <div class=\"form-group \">\r\n            <label>Salutation</label>\r\n            <select class=\"form-control\" [(ngModel)]=\"newUser.title\" name=\"title\">\r\n              <option>Mr.</option>\r\n              <option>Ms.</option>\r\n              <option>Mrs.</option>\r\n            </select>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>First Name</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.firstName\" name=\"firstName\"\r\n                   #firstName=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || firstName.dirty) && firstName.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(firstName)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>Last Name</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.lastName\" name=\"lastName\"\r\n                   #lastName=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lastName.dirty) && lastName.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(lastName)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>Email</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.email\" name=\"email\"\r\n                   #email=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(email)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>Username</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.username\" name=\"username\"\r\n                   #username=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || username.dirty) && username.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(username)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <!--<div class=\"form-group\">\r\n            <label>Password</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.password\" name=\"password\"\r\n                   #password=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || password.dirty) && password.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(password)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>Confirm Password</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                   #confirmPassword=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>-->\r\n\r\n          <div class=\"form-group\">\r\n            <label>National ID No.</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.idNumber\" name=\"idNumber\"\r\n                   #idNumber=\"ngModel\" />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>Phone</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.phoneNumber\" name=\"phoneNumber\"\r\n                   #phoneNumber=\"ngModel\" />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phoneNumber.dirty) && phoneNumber.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(phoneNumber)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <div class=\"form-group \">\r\n            <label>Gender</label>\r\n            <select class=\"form-control\" [(ngModel)]=\"newUser.gender\" name=\"gender\" #gender=\"ngModel\" required>\r\n              <option>Male</option>\r\n              <option>Female</option>\r\n            </select>\r\n          </div>\r\n\r\n          <div class=\"form-group\">\r\n            <label>Reason</label>\r\n            <textarea class=\"form-control\" [(ngModel)]=\"newUser.biography\" name=\"biography\"\r\n                   #biography=\"ngModel\" required></textarea>\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || biography.dirty) && biography.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(biography)\">\r\n                {{error}}\r\n              </li>\r\n            </ul>\r\n          </div>\r\n\r\n          <!--<div class=\"form-group\">\r\n            <label>Image Url</label>\r\n            <input class=\"form-control\" [(ngModel)]=\"newUser.confirmPassword\" name=\"confirmPassword\"\r\n                   #confirmPassword=\"ngModel\" required />\r\n            <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid\">\r\n              <li *ngFor=\"let error of getValidationMessages(confirmPassword)\">\r\n                {{ }}\r\n              </li>\r\n            </ul>\r\n          </div>-->\r\n\r\n          <div class=\"mb-2 row justify-content-center align-items-center\">\r\n            <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\r\n          </div>\r\n        </form>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  input.ng-dirty.ng-invalid {\r\n    border: 2px solid #ff0000\r\n  }\r\n\r\n  input.ng-dirty.ng-valid {\r\n    border: 2px solid #6bc502\r\n  }\r\n  .create {\r\n    margin: auto;\r\n  }\r\n</style>"
 
 /***/ }),
 /* 160 */
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-striped table-sm\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Patient Details</th></tr>\r\n  <tr><th>First Name</th><td>{{ patient?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ patient?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Middle Name</th><td>{{ patient?.middleName || 'No Data' }}</td></tr>\r\n  <tr><th>Date of Birth</th><td>{{patient?.dob | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n  <tr><th>Place of Birth</th><td>{{ patient?.placeOfBirth  || 'No Data'}}</td></tr>\r\n  <tr><th>Sublocation</th><td>{{ patient?.sublocation || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ patient?.phone || 'No Data' }}</td></tr>\r\n  <tr><th>Email</th><td>{{ patient?.email || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{ patient?.idNumber || 'No Data' }}</td></tr>\r\n</table>\r\n\r\n\r\n <div *ngIf =\"totalVisits > 0; else elseBlock\" class=\"card text-left\">\r\n <div class=\"card-header bg-info\">\r\n   <h6>Patient Visits</h6>\r\n </div>\r\n   <div class=\"card-block pb-0\">\r\n     <table class=\"table table-sm table-striped\">\r\n       <tr>\r\n         <th>Date</th>\r\n         <th>Complain</th>\r\n         <th>Medications</th>\r\n         <th></th>\r\n       </tr>\r\n       <tr *ngFor=\"let visit of singlePatientVisits\">\r\n         <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n         <td>{{visit?.complain || 'No Data'}}</td>\r\n         <td>{{visit?.medications ||'No Data'}}</td>\r\n         <td>\r\n           <button class=\"btn btn-primary btn-sm\"\r\n                   [routerLink]=\"['/visitdetail', visit.visitId]\">\r\n             Details\r\n           </button>\r\n         </td>\r\n       </tr>\r\n     </table>\r\n   </div>\r\n   <div class=\"card-footer bg-gray\">\r\n    {{totalVisits}} total visit(s)\r\n   </div>\r\n</div>\r\n<ng-template #elseBlock>\r\n  <div class=\"card text-left\">\r\n    <div class=\"card-header bg-info\">\r\n      <h5>Patient Visits</h5>\r\n    </div>\r\n    <div class=\"card-block\">\r\n      <p class=\"card-text\">No visits available for this patient.</p>\r\n    </div>\r\n    <div class=\"card-footer text-muted bg-info\">\r\n       {{totalVisits}} total visit(s)\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<div class=\"text-center mt-3\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/table\">Back</button>\r\n  <button class=\"btn btn-success\" routerLink=\"/\" [disabled]=\"!totalVisits\"><i class=\"fa fa-file-pdf-o\"></i> Export</button>\r\n</div>\r\n"
+module.exports = "<div class=\"m-1\">\r\n  <button class=\"btn btn-primary\" (click) =\"setCategory('kiptenden')\">Kiptenden</button>\r\n  <button class=\"btn btn-primary\" (click)=\"setCategory('Tulon')\">Tulon</button>\r\n  <button class=\"btn btn-primary\" (click)=\"setCategory(null)\">All</button>\r\n</div>\r\n"
 
 /***/ }),
 /* 161 */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {\r\n    border: 2px solid #ff0000\r\n  }\r\n\r\n  input.ng-dirty.ng-valid {\r\n    border: 2px solid #6bc502\r\n  }\r\n</style>\r\n\r\n<div class=\"card create\">\r\n  <div class=\"card-body btn btn-info mb-3\">\r\n    <i class=\"fa fa-edit\"></i> Edit patient\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.firstName\" name=\"fname\"\r\n                 #fname=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || fname.dirty) && fname.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(fname)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.lastName\" name=\"lname\"\r\n                 #lname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lname.dirty) && lname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(lname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Middle Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.middleName\" name=\"mname\"\r\n                 #mname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || mname.dirty) && mname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(mname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>DOB</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.dob\" name=\"dob\" placeholder=\"patient.dob\"\r\n                 #dob=\"ngModel\" required type=\"date\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || dob.dirty) && dob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(dob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Place of Birth</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.placeOfBirth\" name=\"pob\"\r\n                 #pob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || pob.dirty) && pob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(pob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Sublocation</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.sublocation\" name=\"sublocation\"\r\n                 #sublocation=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || sublocation.dirty) && sublocation.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(sublocation)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.phone\" name=\"phone\"\r\n                 #phone=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phone.dirty) && phone.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(phone)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.email\" name=\"email\"\r\n                 #email=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(email)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>ID Number</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button class=\"btn btn-primary mr-3\" routerLink=\"/\">Back</button>\r\n          <button type=\"submit\" class=\"btn btn-primary\">Save</button>\r\n         \r\n        </div>\r\n\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create {\r\n    margin: auto;\r\n  }\r\n</style>\r\n\r\n"
+module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Employee</th></tr>\r\n  <tr><th>Title</th><td>{{ employee?.title || 'No Data' }}</td></tr>\r\n  <tr><th>First Name</th><td>{{ employee?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ employee?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{employee?.idNumber || 'No Data'}}</td></tr>\r\n  <tr><th>Email</th><td>{{employee?.email  || 'No Data'}}</td></tr>\r\n  <tr><th>Username</th><td>{{ employee?.username || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ employee?.phone || 'No Data' }}</td></tr>\r\n  <tr><th>Biography</th><td>{{ employee?.biography || 'No Data' }}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/employeetable\">Back</button>\r\n</div>"
 
 /***/ }),
 /* 162 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"card\">\r\n  <div class=\"card-header bg-info\">Patients</div>\r\n  <div>\r\n    <search-list [title]='searchTitle' (change)=\"criteriaChange($event)\" class=\"m-2\"></search-list>\r\n    <button class=\"btn btn-primary mt-2\" routerLink=\"/patientcreate\"><i class=\"fa fa-user-plus\"></i> Add Patient</button>\r\n  </div>\r\n  <table class=\"table table-sm table-striped table-bordered m-2 p-1\">\r\n    <tr>\r\n      <th>First Name</th>\r\n      <th>Last Name</th>\r\n      <th>DOB</th>\r\n      <th>Sublocation</th>\r\n      <th>Action</th>\r\n    </tr>\r\n    <tr *ngFor=\"let patient of patients | patientFilter: listFilter\">\r\n      <td>{{patient.firstName || 'Loading Data...'}}</td>\r\n      <td>{{patient.lastName || 'Loading Data...'}}</td>\r\n      <td>{{patient.dob | date: 'mediumDate' || 'Loading Data...'}}</td>\r\n      <td>{{patient.sublocation || 'Loading Data...'}}</td>\r\n      <td>\r\n        <button class=\"btn btn-sm btn-primary\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Check In\"><i class=\"fa fa-sign-in\"></i></button>\r\n        <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n                [routerLink]=\"['/detail', patient.patientID]\">\r\n          <i class=\"fa fa-address-card-o\"></i>\r\n        </button>\r\n        <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"\r\n                [routerLink]=\"['/patientedit', patient.patientID]\">\r\n        <i class=\"fa fa-pencil\"></i></button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <div class=\"card card-footer\">\r\n   Total patient(s): {{patCount}} \r\n  </div>\r\n</div>\r\n<style>\r\n  .card{\r\n    border-color: none;\r\n  }\r\n</style>"
+module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Employees\r\n</div>\r\n\r\n<table class=\"table table-sm table-striped\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Phone</th>\r\n    <th></th>\r\n  </tr>\r\n  <tr *ngFor=\"let employee of employees\">\r\n    <td>{{employee.firstName || 'Loading Data...'}}</td>\r\n    <td>{{employee.lastName || 'Loading Data...'}}</td>\r\n    <td>{{employee.phone || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\"\r\n              [routerLink]=\"['/employeedetail', employee.employeeID]\">\r\n        Details\r\n      </button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
 
 /***/ }),
 /* 163 */
 /***/ (function(module, exports) {
 
-module.exports = "\r\n  <table class=\"table table-striped table-sm table-bordered\">\r\n    <tr><th colspan=\"2\" class=\"bg-info\">Visit</th></tr>\r\n    <tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>\r\n    <tr><th>Date</th><td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n    <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>\r\n    <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>\r\n    <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>\r\n    <tr><th colspan=\"2\" class=\"bg-info\"><a [routerLink]=\"['/detail', visit?.patient?.patientID]\">Patient</a></th></tr>\r\n    <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>\r\n    <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>\r\n    <tr><th colspan=\"2\" class=\"bg-info\">Physician</th></tr>\r\n    <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>\r\n    <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>\r\n  </table>\r\n  <div class=\"text-center\">\r\n    <button class=\"btn btn-primary\" routerLink=\"/visittable\"><i class=\"fa fa-backward\"></i> Back</button>\r\n  </div>"
+module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {border: 2px solid #ff0000}\r\n  input.ng-dirty.ng-valid {border: 2px solid #6bc502}\r\n</style>\r\n\r\n<div class=\"card create\">\r\n  <div class=\"m-2\">\r\n  <h5> <i class=\"fa fa-user-plus\" style=\"color: #006abc\"></i> Add a new patient</h5>\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.firstName\" name=\"fname\"\r\n                 #fname=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || fname.dirty) && fname.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(fname)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.lastName\" name=\"lname\"\r\n                 #lname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lname.dirty) && lname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(lname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Middle Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.middleName\" name=\"mname\" \r\n                 #mname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || mname.dirty) && mname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(mname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>DOB</label>\r\n          <input type=\"date\" class=\"form-control\" [ngModel]=\"newPatient.dob\" (ngModelChange)=\"newPatient.dob = $event\" name=\"dob\"\r\n                 #dob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || dob.dirty) && dob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(dob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Gender</label>\r\n          <select class=\"form-control\" [(ngModel)]=\"newPatient.gender\" name=\"gender\"\r\n                  #gender=\"ngModel\" required>\r\n            <option>Male</option>\r\n            <option>Female</option>\r\n          </select>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Place of Birth</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.placeOfBirth\" name=\"pob\"\r\n                 #pob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || pob.dirty) && pob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(pob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Sublocation</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.sublocation\" name=\"sublocation\" \r\n                 #sublocation=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || sublocation.dirty) && sublocation.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(sublocation)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.phone\" name=\"phone\"\r\n                 #phone=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phone.dirty) && phone.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(phone)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.email\" name=\"email\"\r\n                 #email=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(email)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>ID Number</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"newPatient.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button type=\"submit\" class=\"btn btn-primary\">Submit</button>\r\n        </div>\r\n\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create{\r\n    margin: auto;\r\n  }\r\n  .faUser{\r\n    color: dodgerblue;\r\n  }\r\n\r\n</style>"
 
 /***/ }),
 /* 164 */
 /***/ (function(module, exports) {
 
+module.exports = "<table class=\"table table-striped table-sm\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">Patient Details</th></tr>\r\n  <tr><th>First Name</th><td>{{ patient?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ patient?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Middle Name</th><td>{{ patient?.middleName || 'No Data' }}</td></tr>\r\n  <tr><th>Date of Birth</th><td>{{patient?.dob | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n  <tr><th>Gender</th><td>{{patient?.gender || 'No Data'}}</td></tr>\r\n  <tr><th>Place of Birth</th><td>{{ patient?.placeOfBirth  || 'No Data'}}</td></tr>\r\n  <tr><th>Sublocation</th><td>{{ patient?.sublocation || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ patient?.phone || 'No Data' }}</td></tr>\r\n  <tr><th>Email</th><td>{{ patient?.email || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{ patient?.idNumber || 'No Data' }}</td></tr>\r\n</table>\r\n\r\n\r\n <div *ngIf =\"totalVisits > 0; else elseBlock\" class=\"card text-left\">\r\n <div class=\"card-header bg-info\">\r\n   <h6>Patient Visits</h6>\r\n </div>\r\n   <div class=\"card-block pb-0\">\r\n     <table class=\"table table-sm table-striped\">\r\n       <tr>\r\n         <th>Date</th>\r\n         <th>Complain</th>\r\n         <th>Medications</th>\r\n         <th></th>\r\n       </tr>\r\n       <tr *ngFor=\"let visit of singlePatientVisits\">\r\n         <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n         <td>{{visit?.complain || 'No Data'}}</td>\r\n         <td>{{visit?.medications ||'No Data'}}</td>\r\n         <td>\r\n           <button class=\"btn btn-primary btn-sm\"\r\n                   [routerLink]=\"['/visitdetail', visit.visitId]\">\r\n             Details\r\n           </button>\r\n         </td>\r\n       </tr>\r\n     </table>\r\n   </div>\r\n   <div class=\"card-footer bg-gray\">\r\n    {{totalVisits}} total visit(s)\r\n   </div>\r\n</div>\r\n<ng-template #elseBlock>\r\n  <div class=\"card text-left\">\r\n    <div class=\"card-header bg-info\">\r\n      <h5>Patient Visits</h5>\r\n    </div>\r\n    <div class=\"card-block\">\r\n      <p class=\"card-text\">No visits available for this patient.</p>\r\n    </div>\r\n    <div class=\"card-footer text-muted bg-info\">\r\n       {{totalVisits}} total visit(s)\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<div class=\"text-center mt-3\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/table\">Back</button>\r\n  <button class=\"btn btn-success\" routerLink=\"/\" [disabled]=\"!totalVisits\"><i class=\"fa fa-file-pdf-o\"></i> Export</button>\r\n</div>\r\n"
+
+/***/ }),
+/* 165 */
+/***/ (function(module, exports) {
+
+module.exports = "\r\n<style>\r\n  input.ng-dirty.ng-invalid {\r\n    border: 2px solid #ff0000\r\n  }\r\n\r\n  input.ng-dirty.ng-valid {\r\n    border: 2px solid #6bc502\r\n  }\r\n</style>\r\n\r\n<div class=\"card create\">\r\n  <div class=\"card-body btn btn-info mb-3\">\r\n    <i class=\"fa fa-edit\"></i> Edit patient\r\n  </div>\r\n  <div class=\"cardbody ml-3 mr-3\">\r\n    <div class=\"form1\">\r\n      <form novalidate #form=\"ngForm\" (ngSubmit)=\"submitForm(form)\">\r\n        <div class=\"bg-danger p-a-1 mb-1\"\r\n             *ngIf=\"formSubmitted && form.invalid\">\r\n          There are problems with the form\r\n        </div>\r\n        <div class=\"form-group\">\r\n          <label>First Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.firstName\" name=\"fname\"\r\n                 #fname=\"ngModel\" required />\r\n          <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || fname.dirty) && fname.invalid\">\r\n            <li *ngFor=\"let error of getValidationMessages(fname)\">\r\n              {{error}}\r\n            </li>\r\n          </ul>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Last Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.lastName\" name=\"lname\"\r\n                 #lname=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || lname.dirty) && lname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(lname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Middle Name</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.middleName\" name=\"mname\"\r\n                 #mname=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || mname.dirty) && mname.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(mname)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>DOB</label>\r\n          <input class=\"form-control\" [ngModel]=\"patient.dob | date:'yyyy-MM-dd'\" (ngModelChange)=\"patient.dob = $event\" type=\"date\"  name=\"dob\"\r\n                 #dob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || dob.dirty) && dob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(dob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Place of Birth</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.placeOfBirth\" name=\"pob\"\r\n                 #pob=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || pob.dirty) && pob.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(pob)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Gender</label>\r\n          <select class=\"form-control\" [(ngModel)]=\"patient.gender\" name=\"gender\"\r\n                  #gender=\"ngModel\" required>\r\n            <option>Male</option>\r\n            <option>Female</option>\r\n          </select>\r\n        </div>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Sublocation</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.sublocation\" name=\"sublocation\"\r\n                 #sublocation=\"ngModel\" required />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || sublocation.dirty) && sublocation.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(sublocation)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Phone</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.phone\" name=\"phone\"\r\n                 #phone=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || phone.dirty) && phone.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(phone)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>Email</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.email\" name=\"email\"\r\n                 #email=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || email.dirty) && email.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(email)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"form-group\">\r\n          <label>ID Number</label>\r\n          <input class=\"form-control\" [(ngModel)]=\"patient.idNumber\" name=\"idNumber\"\r\n                 #idNumber=\"ngModel\" />\r\n        </div>\r\n        <ul class=\"text-danger list-unstyled\" *ngIf=\"(formSubmitted || idNumber.dirty) && idNumber.invalid\">\r\n          <li *ngFor=\"let error of getValidationMessages(idNumber)\">\r\n            {{error}}\r\n          </li>\r\n        </ul>\r\n\r\n        <div class=\"mb-2 row justify-content-center align-items-center\">\r\n          <button class=\"btn btn-primary mr-3\" routerLink=\"/\">Back</button>\r\n          <button type=\"submit\" class=\"btn btn-primary\">Save</button>\r\n         \r\n        </div>\r\n\r\n      </form>\r\n    </div>\r\n  </div>\r\n</div>\r\n<style>\r\n  .create {\r\n    margin: auto;\r\n  }\r\n</style>\r\n\r\n"
+
+/***/ }),
+/* 166 */
+/***/ (function(module, exports) {
+
+module.exports = "\r\n<div class=\"mt-2 mb-0\">\r\n  <h4 class=\"p-0\">Patients</h4>\r\n</div>\r\n  <div>\r\n    <search-list [title]='searchTitle' (change)=\"criteriaChange($event)\" class=\"m-2\"></search-list>\r\n    <button class=\"btn btn-primary mt-2\" routerLink=\"/patientcreate\"><i class=\"fa fa-user-plus\"></i> Add Patient</button>\r\n  </div>\r\n  <table class=\"table table-sm table-striped table-bordered m-2 p-1\">\r\n    <tr>\r\n      <th>First Name</th>\r\n      <th>Last Name</th>\r\n      <th>DOB</th>\r\n      <th>Sublocation</th>\r\n      <th>Action</th>\r\n    </tr>\r\n    <tr *ngFor=\"let patient of patients | patientFilter: listFilter\">\r\n      <td>{{patient.firstName || 'Loading Data...'}}</td>\r\n      <td>{{patient.lastName || 'Loading Data...'}}</td>\r\n      <td>{{patient.dob | date: 'mediumDate' || 'Loading Data...'}}</td>\r\n      <td>{{patient.sublocation || 'Loading Data...'}}</td>\r\n      <td>\r\n        <button class=\"btn btn-sm btn-primary\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Check In\"><i class=\"fa fa-sign-in\"></i></button>\r\n        <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n                [routerLink]=\"['/detail', patient.patientID]\">\r\n          <i class=\"fa fa-address-card-o\"></i>\r\n        </button>\r\n        <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"\r\n                [routerLink]=\"['/patientedit', patient.patientID]\">\r\n        <i class=\"fa fa-pencil\"></i></button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <div class=\"card card-footer\">\r\n   Total patient(s): {{patCount}} \r\n  </div>\r\n<style>\r\n  .card{\r\n    border-color: none;\r\n  }\r\n</style>"
+
+/***/ }),
+/* 167 */
+/***/ (function(module, exports) {
+
+module.exports = "\r\n  <table class=\"table table-striped table-sm table-bordered\">\r\n    <tr><th colspan=\"2\" class=\"bg-info\">Visit</th></tr>\r\n    <tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>\r\n    <tr><th>Date</th><td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td></tr>\r\n    <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>\r\n    <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>\r\n    <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>\r\n    <tr><th colspan=\"2\" class=\"bg-info\"><a [routerLink]=\"['/detail', visit?.patient?.patientID]\">Patient</a></th></tr>\r\n    <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>\r\n    <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>\r\n    <tr><th colspan=\"2\" class=\"bg-info\">Physician</th></tr>\r\n    <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>\r\n    <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>\r\n  </table>\r\n  <div class=\"text-center\">\r\n    <button class=\"btn btn-primary\" routerLink=\"/visittable\"><i class=\"fa fa-backward\"></i> Back</button>\r\n  </div>"
+
+/***/ }),
+/* 168 */
+/***/ (function(module, exports) {
+
 module.exports = "<div class=\"btn btn-info\" style=\"width: 100%\">\r\n  Visits\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>Date</th>\r\n    <th>Complain</th>\r\n    <th>Medications</th>\r\n    <th>Actions</th>\r\n  </tr>\r\n  <tr *ngFor=\"let visit of visits\">\r\n    <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>\r\n    <td>{{visit?.complain || 'No Data'}}</td>\r\n    <td>{{visit?.medications ||'No Data'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/visitdetail', visit.visitId]\">\r\n        <i class=\"fa fa-address-card\"></i>\r\n      </button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
 
 /***/ }),
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
 /* 169 */,
 /* 170 */,
 /* 171 */,
@@ -2738,13 +2916,17 @@ module.exports = "<div class=\"btn btn-info\" style=\"width: 100%\">\r\n  Visits
 /* 259 */,
 /* 260 */,
 /* 261 */,
-/* 262 */
+/* 262 */,
+/* 263 */,
+/* 264 */,
+/* 265 */,
+/* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(21);
-module.exports = __webpack_require__(120);
+module.exports = __webpack_require__(122);
 
 
 /***/ })
-],[262]);
+],[266]);
 //# sourceMappingURL=main.bundle.js.map

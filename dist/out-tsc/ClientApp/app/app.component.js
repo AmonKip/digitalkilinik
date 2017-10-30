@@ -11,12 +11,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var errorHandler_service_1 = require("./services/errorHandler.service");
+var authentication_service_1 = require("./auth/authentication.service");
 var AppComponent = (function () {
-    function AppComponent(errorHandler) {
+    function AppComponent(errorHandler, authService) {
         var _this = this;
+        this.authService = authService;
+        this.isLoggedIn = false;
         errorHandler.errors.subscribe(function (error) {
             _this.lastError = error;
         });
+        //authService.login().subscribe(result => {
+        //    this.isLoggedIn = result;
+        //})
     }
     Object.defineProperty(AppComponent.prototype, "error", {
         get: function () {
@@ -28,6 +34,13 @@ var AppComponent = (function () {
     AppComponent.prototype.clearError = function () {
         this.lastError = null;
     };
+    Object.defineProperty(AppComponent.prototype, "loggedIn", {
+        get: function () {
+            return this.authService.authenticated;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return AppComponent;
 }());
 AppComponent = __decorate([
@@ -36,7 +49,7 @@ AppComponent = __decorate([
         templateUrl: './app.component.html',
         styleUrls: ['./app.component.css']
     }),
-    __metadata("design:paramtypes", [errorHandler_service_1.ErrorHandlerService])
+    __metadata("design:paramtypes", [errorHandler_service_1.ErrorHandlerService, authentication_service_1.AuthenticationService])
 ], AppComponent);
 exports.AppComponent = AppComponent;
 //# sourceMappingURL=app.component.js.map

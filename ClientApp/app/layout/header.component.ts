@@ -6,6 +6,10 @@ import { AuthenticationService } from "../auth/authentication.service";
     templateUrl: './header.component.html'
 })
 export class HeaderComponent {
-    constructor(public authService: AuthenticationService) { }
 
+    name: string;
+
+    constructor(public authService: AuthenticationService) { this.name = this.authService.name; }
+
+ 
 }

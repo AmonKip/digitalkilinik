@@ -101,7 +101,7 @@ export class Repository {
         let data = {
             firstName: pat.firstName, lastName: pat.lastName, middleName: pat.middleName, dob: pat.dob,
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
-            idNumber: pat.idNumber
+            idNumber: pat.idNumber, gender: pat.gender
         };
         this.sendRequest(RequestMethod.Post, patientsUrl, data)
             .subscribe(response => {
@@ -137,7 +137,7 @@ export class Repository {
         let data = {
             firstName: pat.firstName, lastName: pat.lastName, middleName: pat.middleName, dob: pat.dob,
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
-            idNumber: pat.idNumber
+            idNumber: pat.idNumber, gender: pat.gender
         };
         this.sendRequest(RequestMethod.Put, patientsUrl + "/" + pat.patientID, data)
             .subscribe(response => this.getPatients());
@@ -198,14 +198,31 @@ export class Repository {
             .subscribe(response => { this.singlePatientVisits = response; });
        
     }
+    // login
     login(name: string, password: string): Observable<Response> {
         return this.http.post("/api/account/login",
             { name: name, password: password });
     }
+    // email password reset 
+    resetPassword(email: string, password: string, confirmpassword: string, code: string): Observable<Response> {
+        return this.http.post("/api/account/resetpassword",
+            { email: email, password: password, confirmpassword: confirmpassword, code: code });
+    }
+    //logout
     logout() {
         this.http.post("/api/account/logout", null).subscribe(respone => { });
     }
 
+    // send email 
+    forgotPassword(email: string): Observable<Response> {
+        console.log("code repo method");
+        return this.http.post("/api/account/forgotpassword",
+            { email: email});
+    }
+    toggleAccount(id: number){
+      this.sendRequest(RequestMethod.Post, "/api/account/toggle/" + id)
+            .subscribe(response => this.getUsers());
+   }
     // properties 
     patient: Patient;
     patients: Patient[];

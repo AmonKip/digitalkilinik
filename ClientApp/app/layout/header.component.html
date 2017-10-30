@@ -24,6 +24,7 @@
     </a>
   </div>
   <div class="col text-right mr-2">
+      <a class="userwelcome" routerLink="/login">Welcome, {{name}}</a>
       <a class="btn btn-default"
               (click)="authService.logout()">
         Log Out
@@ -51,5 +52,23 @@
     outline-color: dodgerblue;
     color: white;
   }
+  .userwelcome {
+    color: dimgrey !important;
+
+  }
+  .userwelcome:hover {
+    text-decoration: underline !important;
+    border: none;
+    cursor: pointer;
+    color: deepskyblue !important;
+  }
+  /*.btnLogout{
+    color: dodgerblue !important;
+  }
+  btnLogout:hover {
+    border: 1px solid;
+    outline-color: dodgerblue;
+    color: white;
+  }*/
 
 </style>
