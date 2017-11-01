@@ -231,12 +231,16 @@ var Repository = (function () {
     };
     // send email 
     Repository.prototype.forgotPassword = function (email) {
-        console.log("code repo method");
         return this.http.post("/api/account/forgotpassword", { email: email });
     };
-    Repository.prototype.toggleAccount = function (id) {
+    Repository.prototype.isAdmin = function (email) {
+        console.log("isadmin called");
+        return this.http.post("/api/account/isadmin", { email: email });
+    };
+    Repository.prototype.toggleAccount = function (id, fromrequest) {
         var _this = this;
-        this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestMethod */].Post, "/api/account/toggle/" + id)
+        if (fromrequest === void 0) { fromrequest = false; }
+        this.sendRequest(__WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* RequestMethod */].Post, "/api/account/toggle/" + id + "?fromrequest=" + fromrequest)
             .subscribe(function (response) { return _this.getUsers(); });
     };
     Object.defineProperty(Repository.prototype, "filter", {
@@ -525,13 +529,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var AppUserDetailAdminComponent = (function () {
     function AppUserDetailAdminComponent(repo, router, activeRoute) {
+        var _this = this;
         this.repo = repo;
+        this.router = router;
+        this.activeRoute = activeRoute;
+        this.request = "";
+        this.returnUrl = "";
+        this.activeRoute.queryParams.subscribe(function (params) {
+            _this.returnUrl = params['returnUrl'];
+        });
+        this.activeRoute.queryParams.subscribe(function (params) {
+            _this.request = params['request'];
+        });
         var id = Number.parseInt(activeRoute.snapshot.params["id"]);
         if (id) {
             this.repo.getUser(id);
         }
         else {
-            router.navigateByUrl("/");
+            this.router.navigateByUrl("/");
         }
     }
     Object.defineProperty(AppUserDetailAdminComponent.prototype, "user", {
@@ -541,6 +556,15 @@ var AppUserDetailAdminComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    AppUserDetailAdminComponent.prototype.approveRequest = function (id) {
+        this.repo.toggleAccount(id, true);
+        this.router.navigateByUrl("/admin/overview");
+    };
+    AppUserDetailAdminComponent.prototype.rejectRequest = function (id) {
+        // code to add user to reject list of users
+        //this.repo.toggleAccount(id);
+        this.router.navigateByUrl("/admin/overview");
+    };
     return AppUserDetailAdminComponent;
 }());
 AppUserDetailAdminComponent = __decorate([
@@ -662,6 +686,8 @@ var AppUserRequestAdminComponent = (function () {
     function AppUserRequestAdminComponent(repo, router) {
         this.repo = repo;
         this.router = router;
+        this.request = true;
+        this.returnUrl = "/admin/usersrequests";
     }
     Object.defineProperty(AppUserRequestAdminComponent.prototype, "users", {
         get: function () {
@@ -749,6 +775,8 @@ var AppUserAdminComponent = (function () {
     function AppUserAdminComponent(repo, router) {
         this.repo = repo;
         this.router = router;
+        this.request = false;
+        this.returnUrl = "/admin/userslist";
     }
     Object.defineProperty(AppUserAdminComponent.prototype, "users", {
         get: function () {
@@ -764,7 +792,7 @@ var AppUserAdminComponent = (function () {
         else {
             this.setToggle(userId, 1);
         }
-        this.repo.toggleAccount(userId);
+        this.repo.toggleAccount(userId, false);
     };
     // toggles enabled value in users array
     AppUserAdminComponent.prototype.setToggle = function (userId, status) {
@@ -1335,9 +1363,7 @@ var ResetPasswordComponent = (function () {
         this.authService = authService;
         this.route = route;
         this.showError = false;
-        this.route
-            .queryParams
-            .subscribe(function (params) {
+        this.route.queryParams.subscribe(function (params) {
             _this.code = params['code'];
         });
     }
@@ -2658,7 +2684,7 @@ module.exports = module.exports.toString();
 /* 141 */
 /***/ (function(module, exports) {
 
-module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">User Details</th></tr>\r\n  <tr><th>Title</th><td>{{ user?.title || 'No Data' }}</td></tr>\r\n  <tr><th>First Name</th><td>{{ user?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ user?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Gender</th><td>{{ user?.gender || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{user?.idNumber || 'No Data'}}</td></tr>\r\n  <tr><th>Email</th><td>{{user?.email  || 'No Data'}}</td></tr>\r\n  <tr><th>Username</th><td>{{ user?.username || 'No Data' }}</td></tr>\r\n  <tr><th>Reason</th><td>{{ user?.reason || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ user?.phoneNumber || 'No Data' }}</td></tr>\r\n  <tr><th>Biography</th><td>{{ user?.biography || 'No Data' }}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" routerLink=\"/admin/userslist\"><i class=\"fa fa-backward\"></i> Back</button>\r\n</div>"
+module.exports = "<table class=\"table table-striped\">\r\n  <tr><th colspan=\"2\" class=\"bg-info\">User Details</th></tr>\r\n  <tr><th>Title</th><td>{{ user?.title || 'No Data' }}</td></tr>\r\n  <tr><th>First Name</th><td>{{ user?.firstName || 'No Data' }}</td></tr>\r\n  <tr><th>Last Name</th><td>{{ user?.lastName || 'No Data' }}</td></tr>\r\n  <tr><th>Gender</th><td>{{ user?.gender || 'No Data' }}</td></tr>\r\n  <tr><th>ID Number</th><td>{{user?.idNumber || 'No Data'}}</td></tr>\r\n  <tr><th>Email</th><td>{{user?.email  || 'No Data'}}</td></tr>\r\n  <tr><th>Username</th><td>{{ user?.username || 'No Data' }}</td></tr>\r\n  <tr><th>Reason</th><td>{{ user?.reason || 'No Data' }}</td></tr>\r\n  <tr><th>Phone</th><td>{{ user?.phoneNumber || 'No Data' }}</td></tr>\r\n  <tr><th>Biography</th><td>{{ user?.biography || 'No Data' }}</td></tr>\r\n</table>\r\n<div class=\"text-center\">\r\n  <button class=\"btn btn-primary\" [routerLink]=\"[returnUrl]\"><i class=\"fa fa-backward\"></i> Back</button>\r\n  <button *ngIf=\"request\" class=\"btn btn-success\" (click)=\"approveRequest(user.userDetailsID)\"><i class=\"fa fa-thumbs-up\"></i> Approve</button>\r\n  <button *ngIf=\"request\" class=\"btn btn-danger\" (click)=\"rejectRequest(user.userDetailsID)\"><i class=\"fa fa-thumbs-down\"></i> Reject</button>\r\n</div>"
 
 /***/ }),
 /* 142 */
@@ -2670,7 +2696,7 @@ module.exports = "<div class=\"btn btn-warning p-1 mb-2\" style=\"width:100%\">\
 /* 143 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  User Requests\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Action</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"><i class=\"fa fa-pencil\"></i></button>\r\n      <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>"
+module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  User Requests\r\n</div>\r\n<div *ngIf=\"users.length\">\r\n  <table class=\"table table-sm table-striped table-bordered\">\r\n\r\n    <tr>\r\n      <th>First Name</th>\r\n      <th>Last Name</th>\r\n      <th>Username</th>\r\n      <th>Action</th>\r\n    </tr>\r\n\r\n    <tr *ngFor=\"let user of users\">\r\n      <td>{{user.firstName || 'Loading Data...'}}</td>\r\n      <td>{{user.lastName || 'Loading Data...'}}</td>\r\n      <td>{{user.username || 'Loading Data...'}}</td>\r\n      <td>\r\n        <button class=\"btn btn-primary btn-sm\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n                [routerLink]=\"['/admin/userdetails', user.userDetailsID]\" [queryParams]=\"{returnUrl: returnUrl, request: true}\">\r\n          <i class=\"fa fa-address-card-o\"></i>\r\n        </button>\r\n        <button class=\"btn btn-sm btn-warning\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"><i class=\"fa fa-pencil\"></i></button>\r\n        <button class=\"btn btn-sm btn-danger\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n</div>\r\n<div *ngIf=\"!users.length\" class=\"\">\r\n  <p>There are no user requests</p>\r\n</div>"
 
 /***/ }),
 /* 144 */
@@ -2682,7 +2708,7 @@ module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <div class=\"row\">\r
 /* 145 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Users\r\n</div>\r\n<div class=\"btn btn-primary btn-sm mb-2 mt-2 customBtn\" routerLink =\"/admin/usercreate\">\r\n  Add User\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Actions</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-sm actionbtn detailsButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm actionbtn editButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"\r\n               [routerLink]=\"['/admin/useredit', user.userDetailsID]\">\r\n        <i class=\"fa fa-pencil editButton\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm actionbtn deleteButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n      <button *ngIf=\"user.enabled \" class=\"btn actionbtn enabledButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Disable\" (click)=\"toggle(user.userDetailsID, user.enabled)\">\r\n        <i class=\"fa fa-toggle-on\"></i>\r\n      </button>\r\n      <button *ngIf=\"!user.enabled\" class=\"btn actionbtn disabledButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Enable\" (click)=\"toggle(user.userDetailsID, user.enabled)\"><i  class=\"fa fa-toggle-on\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>\r\n\r\n<style>\r\n  .actionbtn {\r\n    background-color: Transparent;\r\n    background-repeat: no-repeat;\r\n    border: none;\r\n    cursor: pointer;\r\n    overflow: hidden;\r\n    outline: none;\r\n    margin-right: 0px !important;\r\n    padding: 2px;\r\n  }\r\n  .editButton {\r\n    color: #ffc805;\r\n  }\r\n  .deleteButton {\r\n    color: red;\r\n  }\r\n  .detailsButton {\r\n    color: #0571ff;\r\n  }\r\n  .enabledButton {\r\n    color: #07bc40;\r\n  }\r\n  .disabledButton {\r\n    color: #66645b;\r\n  }\r\n</style>\r\n"
+module.exports = "<div class=\"btn btn-success\" style=\"width: 100%\">\r\n  Users\r\n</div>\r\n<div class=\"btn btn-primary btn-sm mb-2 mt-2 customBtn\" routerLink =\"/admin/usercreate\">\r\n  Add User\r\n</div>\r\n<table class=\"table table-sm table-striped table-bordered\">\r\n  <tr>\r\n    <th>First Name</th>\r\n    <th>Last Name</th>\r\n    <th>Username</th>\r\n    <th>Actions</th>\r\n  </tr>\r\n  <tr *ngFor=\"let user of users\">\r\n    <td>{{user.firstName || 'Loading Data...'}}</td>\r\n    <td>{{user.lastName || 'Loading Data...'}}</td>\r\n    <td>{{user.username || 'Loading Data...'}}</td>\r\n    <td>\r\n      <button class=\"btn btn-sm actionbtn detailsButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Details\"\r\n              [routerLink]=\"['/admin/userdetails', user.userDetailsID]\" [queryParams]=\"{returnUrl: returnUrl}\">\r\n        <i class=\"fa fa-address-card-o\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm actionbtn editButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Edit\"\r\n               [routerLink]=\"['/admin/useredit', user.userDetailsID]\">\r\n        <i class=\"fa fa-pencil editButton\"></i>\r\n      </button>\r\n      <button class=\"btn btn-sm actionbtn deleteButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Delete\"><i class=\"fa fa-trash\"></i></button>\r\n      <button *ngIf=\"user.enabled \" class=\"btn actionbtn enabledButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Disable\" (click)=\"toggle(user.userDetailsID, user.enabled)\">\r\n        <i class=\"fa fa-toggle-on\"></i>\r\n      </button>\r\n      <button *ngIf=\"!user.enabled\" class=\"btn actionbtn disabledButton\" data-toggle=\"tooltip\" data-placement=\"bottom\" title=\"Enable\" (click)=\"toggle(user.userDetailsID, user.enabled)\"><i  class=\"fa fa-toggle-on\"></i></button>\r\n    </td>\r\n  </tr>\r\n\r\n</table>\r\n\r\n<style>\r\n  .actionbtn {\r\n    background-color: Transparent;\r\n    background-repeat: no-repeat;\r\n    border: none;\r\n    cursor: pointer;\r\n    overflow: hidden;\r\n    outline: none;\r\n    margin-right: 0px !important;\r\n    padding: 2px;\r\n  }\r\n  .editButton {\r\n    color: #ffc805;\r\n  }\r\n  .deleteButton {\r\n    color: red;\r\n  }\r\n  .detailsButton {\r\n    color: #0571ff;\r\n  }\r\n  .enabledButton {\r\n    color: #07bc40;\r\n  }\r\n  .disabledButton {\r\n    color: #66645b;\r\n  }\r\n</style>\r\n"
 
 /***/ }),
 /* 146 */

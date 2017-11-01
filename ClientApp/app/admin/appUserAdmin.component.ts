@@ -8,11 +8,11 @@ import { Router } from "@angular/router";
     templateUrl: "appUserAdmin.component.html"
 })
 export class AppUserAdminComponent {
-
-
+    request = false;
+    returnUrl = "/admin/userslist";
     myusers: AppUser[];
     
-    constructor(private repo: Repository, private router: Router) { }
+    constructor(private repo: Repository, private router: Router) {}
     
     get users(): AppUser[] {
         return this.repo.appUsers;
@@ -25,7 +25,7 @@ export class AppUserAdminComponent {
        else{
           this.setToggle(userId, 1);
         }
-       this.repo.toggleAccount(userId);
+       this.repo.toggleAccount(userId, false);
      }
 
      // toggles enabled value in users array

@@ -17,7 +17,7 @@
     <td>{{user.username || 'Loading Data...'}}</td>
     <td>
       <button class="btn btn-sm actionbtn detailsButton" data-toggle="tooltip" data-placement="bottom" title="Details"
-              [routerLink]="['/admin/userdetails', user.userDetailsID]">
+              [routerLink]="['/admin/userdetails', user.userDetailsID]" [queryParams]="{returnUrl: returnUrl}">
         <i class="fa fa-address-card-o"></i>
       </button>
       <button class="btn btn-sm actionbtn editButton" data-toggle="tooltip" data-placement="bottom" title="Edit"

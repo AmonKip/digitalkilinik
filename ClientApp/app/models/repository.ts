@@ -215,12 +215,16 @@ export class Repository {
 
     // send email 
     forgotPassword(email: string): Observable<Response> {
-        console.log("code repo method");
         return this.http.post("/api/account/forgotpassword",
             { email: email});
     }
-    toggleAccount(id: number){
-      this.sendRequest(RequestMethod.Post, "/api/account/toggle/" + id)
+    isAdmin(email: string): Observable<Response> {
+         console.log("isadmin called");
+        return this.http.post("/api/account/isadmin",
+            { email: email});
+    }
+    toggleAccount(id: number, fromrequest = false){
+      this.sendRequest(RequestMethod.Post, "/api/account/toggle/" + id +"?fromrequest=" + fromrequest)
             .subscribe(response => this.getUsers());
    }
     // properties 

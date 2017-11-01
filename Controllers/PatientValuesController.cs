@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace ePatientCare.Controllers
 {
   [Route("api/patients")]
-  [Authorize(Roles = "Admin")]
   public class PatientValuesController : Controller
   {
     private ApplicationDbContext context;

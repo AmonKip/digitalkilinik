@@ -12,5 +12,7 @@
   <tr><th>Biography</th><td>{{ user?.biography || 'No Data' }}</td></tr>
 </table>
 <div class="text-center">
-  <button class="btn btn-primary" routerLink="/admin/userslist"><i class="fa fa-backward"></i> Back</button>
+  <button class="btn btn-primary" [routerLink]="[returnUrl]"><i class="fa fa-backward"></i> Back</button>
+  <button *ngIf="request" class="btn btn-success" (click)="approveRequest(user.userDetailsID)"><i class="fa fa-thumbs-up"></i> Approve</button>
+  <button *ngIf="request" class="btn btn-danger" (click)="rejectRequest(user.userDetailsID)"><i class="fa fa-thumbs-down"></i> Reject</button>
 </div>

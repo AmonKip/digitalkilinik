@@ -9,6 +9,8 @@ import { Router } from "@angular/router";
 })
 export class AppUserRequestAdminComponent {
 
+    request = true;
+    returnUrl = "/admin/usersrequests";
     constructor(private repo: Repository, private router: Router) { }
 
     get users(): AppUser[] {

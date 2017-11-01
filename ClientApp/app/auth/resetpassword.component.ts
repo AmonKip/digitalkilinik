@@ -11,12 +11,9 @@ export class ResetPasswordComponent {
     constructor(public authService: AuthenticationService, 
                  private route: ActivatedRoute) {
             
-          this.route
-          .queryParams
-          .subscribe(params => {
-           this.code = params['code'];
-      });  
-
+                 this.route.queryParams.subscribe(params => {
+                                 this.code = params['code'];
+               });  
  }
 
     showError: boolean = false;
