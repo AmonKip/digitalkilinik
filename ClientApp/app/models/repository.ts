@@ -218,7 +218,7 @@ export class Repository {
         return this.http.post("/api/account/forgotpassword",
             { email: email});
     }
-    isAdmin(email: string): Observable<Response> {
+    hasAdminRole(email: string): Observable<Response> {
          console.log("isadmin called");
         return this.http.post("/api/account/isadmin",
             { email: email});

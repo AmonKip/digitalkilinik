@@ -16,6 +16,7 @@ export class AuthenticationService implements OnInit {
 
     authenticated: boolean = false;
     name: string;
+    isAdmin: boolean = false;
     email: string;
     password: string;
     confirmpassword: string;
@@ -91,5 +92,24 @@ export class AuthenticationService implements OnInit {
             this.authenticated = false;
             return Observable.of(false);
         });
+    }
+    hasAdminRole(): Observable<boolean> {
+        this.isAdmin = false;
+        return this.repo.hasAdminRole(this.name)
+            .map(response => {
+                if (response.ok) {
+                    this.isAdmin = true;
+                   //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
+                    //this.router.navigateByUrl(this.callbackUrl || "/");
+                
+                }
+                return this.isAdmin;
+            })
+            .catch(e => {
+                console.log(e);
+                this.isAdmin = false;
+                return Observable.of(false);
+            });
+
     }
 }
