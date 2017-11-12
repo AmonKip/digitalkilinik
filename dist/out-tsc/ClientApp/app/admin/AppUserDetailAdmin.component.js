@@ -14,13 +14,24 @@ var repository_1 = require("../models/repository");
 var router_1 = require("@angular/router");
 var AppUserDetailAdminComponent = (function () {
     function AppUserDetailAdminComponent(repo, router, activeRoute) {
+        var _this = this;
         this.repo = repo;
+        this.router = router;
+        this.activeRoute = activeRoute;
+        this.request = "";
+        this.returnUrl = "";
+        this.activeRoute.queryParams.subscribe(function (params) {
+            _this.returnUrl = params['returnUrl'];
+        });
+        this.activeRoute.queryParams.subscribe(function (params) {
+            _this.request = params['request'];
+        });
         var id = Number.parseInt(activeRoute.snapshot.params["id"]);
         if (id) {
             this.repo.getUser(id);
         }
         else {
-            router.navigateByUrl("/");
+            this.router.navigateByUrl("/");
         }
     }
     Object.defineProperty(AppUserDetailAdminComponent.prototype, "user", {
@@ -30,6 +41,15 @@ var AppUserDetailAdminComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    AppUserDetailAdminComponent.prototype.approveRequest = function (id) {
+        this.repo.toggleAccount(id, true);
+        this.router.navigateByUrl("/admin/overview");
+    };
+    AppUserDetailAdminComponent.prototype.rejectRequest = function (id) {
+        // code to add user to reject list of users
+        //this.repo.toggleAccount(id);
+        this.router.navigateByUrl("/admin/overview");
+    };
     return AppUserDetailAdminComponent;
 }());
 AppUserDetailAdminComponent = __decorate([

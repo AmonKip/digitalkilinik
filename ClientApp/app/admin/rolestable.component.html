@@ -1,0 +1,19 @@
+﻿<table class="table table-sm table-striped table-bordered">
+  <tr><th colspan="2" class="bg-info">Roles</th></tr>
+  <tr>
+    <th>Name</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let role of roles">
+    <td>{{role.name || 'Loading Data...'}}</td>
+    <td>
+
+      <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
+              [routerLink]="['/admin/roledetail', role.id]">
+        <i class="fa fa-address-card-o"></i>
+      </button>
+      <button class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="fa fa-pencil"></i></button>
+      <button class="btn btn-sm btn-danger" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button>
+    </td>
+  </tr>
+</table>

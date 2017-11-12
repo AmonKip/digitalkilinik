@@ -1,5 +1,6 @@
 ﻿using ePatientCare.Data;
 using ePatientCare.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace ePatientCare.Controllers
 {
-
+  [Authorize(Roles ="Admin")]
+  [ValidateAntiForgeryToken]
   public class VisitValuesController : Controller
   {
     private ApplicationDbContext context;
@@ -24,7 +26,7 @@ namespace ePatientCare.Controllers
     [Route("api/visits/{id}")]
     public Visit Visit(long id)
     {
-      //System.Threading.Thread.Sleep(5000);
+    
       Visit result = context.Visits.Include(v => v.Patient)
                                    .Include(v => v.UserDetails)
                                    .First(v => v.VisitId == id);

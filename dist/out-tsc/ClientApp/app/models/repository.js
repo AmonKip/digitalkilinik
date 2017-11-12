@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -103,7 +103,7 @@ var Repository = (function () {
         var data = {
             firstName: pat.firstName, lastName: pat.lastName, middleName: pat.middleName, dob: pat.dob,
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
-            idNumber: pat.idNumber
+            idNumber: pat.idNumber, gender: pat.gender
         };
         this.sendRequest(http_1.RequestMethod.Post, patientsUrl, data)
             .subscribe(function (response) {
@@ -143,7 +143,7 @@ var Repository = (function () {
         var data = {
             firstName: pat.firstName, lastName: pat.lastName, middleName: pat.middleName, dob: pat.dob,
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
-            idNumber: pat.idNumber
+            idNumber: pat.idNumber, gender: pat.gender
         };
         this.sendRequest(http_1.RequestMethod.Put, patientsUrl + "/" + pat.patientID, data)
             .subscribe(function (response) { return _this.getPatients(); });
@@ -203,11 +203,30 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, "api/patientvisits/" + id)
             .subscribe(function (response) { _this.singlePatientVisits = response; });
     };
+    // login
     Repository.prototype.login = function (name, password) {
-        return this.http.post("/api/account/login", { name: name, password: password });
+        return this.http.post("/token/login", { name: name, password: password });
     };
+    // email password reset 
+    Repository.prototype.resetPassword = function (email, password, confirmpassword, code) {
+        return this.http.post("/api/account/resetpassword", { email: email, password: password, confirmpassword: confirmpassword, code: code });
+    };
+    //logout
     Repository.prototype.logout = function () {
         this.http.post("/api/account/logout", null).subscribe(function (respone) { });
+    };
+    // send email 
+    Repository.prototype.forgotPassword = function (email) {
+        return this.http.post("/api/account/forgotpassword", { email: email });
+    };
+    Repository.prototype.hasAdminRole = function (email) {
+        return this.http.post("/api/account/isadmin", { email: email });
+    };
+    Repository.prototype.toggleAccount = function (id, fromrequest) {
+        var _this = this;
+        if (fromrequest === void 0) { fromrequest = false; }
+        this.sendRequest(http_1.RequestMethod.Post, "/api/account/toggle/" + id + "?fromrequest=" + fromrequest)
+            .subscribe(function (response) { return _this.getUsers(); });
     };
     Object.defineProperty(Repository.prototype, "filter", {
         get: function () {

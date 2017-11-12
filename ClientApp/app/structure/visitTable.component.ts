@@ -9,7 +9,9 @@ import { Router } from "@angular/router";
 })
 export class VisitTableComponent {
 
-    constructor(private repo: Repository, private router: Router) { }
+    constructor(private repo: Repository, private router: Router) {
+        this.repo.getVisits();
+    }
 
     get visits(): Visit[] {
         return this.repo.visits;

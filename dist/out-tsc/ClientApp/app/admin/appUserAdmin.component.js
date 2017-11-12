@@ -16,6 +16,8 @@ var AppUserAdminComponent = (function () {
     function AppUserAdminComponent(repo, router) {
         this.repo = repo;
         this.router = router;
+        this.request = false;
+        this.returnUrl = "/admin/userslist";
     }
     Object.defineProperty(AppUserAdminComponent.prototype, "users", {
         get: function () {
@@ -24,6 +26,24 @@ var AppUserAdminComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    AppUserAdminComponent.prototype.toggle = function (userId, status) {
+        if (status) {
+            this.setToggle(userId, 0);
+        }
+        else {
+            this.setToggle(userId, 1);
+        }
+        this.repo.toggleAccount(userId, false);
+    };
+    // toggles enabled value in users array
+    AppUserAdminComponent.prototype.setToggle = function (userId, status) {
+        for (var i = 0; i < this.users.length; i++) {
+            if (this.users[i].userDetailsID === userId) {
+                this.users[i].enabled = status;
+                return;
+            }
+        }
+    };
     return AppUserAdminComponent;
 }());
 AppUserAdminComponent = __decorate([

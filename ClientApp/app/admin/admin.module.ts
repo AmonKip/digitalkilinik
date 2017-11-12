@@ -13,6 +13,7 @@ import { AppUserEditAdminComponent } from "./AppUserEditAdmin.component";
 import { VisitDetailAdminComponent } from "./visitsDetailAdmin.component"
 import { VisitAdminComponent } from "./visitsAdmin.component"
 import { AppUserCreateAdminComponent } from "./appUserCreateAdmin.Component";
+import { RolesTableComponent } from "./rolestable.component";
 
 @NgModule({
     imports: [BrowserModule, RouterModule, FormsModule],
@@ -20,7 +21,8 @@ import { AppUserCreateAdminComponent } from "./appUserCreateAdmin.Component";
         AppUserAdminComponent, PatientDetailAdminComponent,
         AppUserDetailAdminComponent, AppUserRequestAdminComponent,
         AppUserEditAdminComponent, VisitDetailAdminComponent,
-        VisitAdminComponent, AppUserCreateAdminComponent ]
+        VisitAdminComponent, AppUserCreateAdminComponent,
+        RolesTableComponent]
 })
 
 export class AdminModule{}

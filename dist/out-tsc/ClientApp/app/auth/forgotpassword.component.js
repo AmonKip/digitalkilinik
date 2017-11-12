@@ -10,20 +10,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var authentication_service_1 = require("../auth/authentication.service");
-var HeaderComponent = (function () {
-    function HeaderComponent(authService) {
+var authentication_service_1 = require("./authentication.service");
+var ForgotPasswordComponent = (function () {
+    function ForgotPasswordComponent(authService) {
         this.authService = authService;
-        this.name = this.authService.name;
+        this.showError = false;
     }
-    return HeaderComponent;
+    ForgotPasswordComponent.prototype.forgotpassword = function () {
+        var _this = this;
+        this.showError = false;
+        this.authService.forgotPassword().subscribe(function (result) {
+            _this.showError = !result;
+        });
+    };
+    return ForgotPasswordComponent;
 }());
-HeaderComponent = __decorate([
+ForgotPasswordComponent = __decorate([
     core_1.Component({
-        selector: 'layout-header',
-        templateUrl: './header.component.html'
+        templateUrl: "forgotpassword.component.html"
     }),
     __metadata("design:paramtypes", [authentication_service_1.AuthenticationService])
-], HeaderComponent);
-exports.HeaderComponent = HeaderComponent;
-//# sourceMappingURL=header.component.js.map
+], ForgotPasswordComponent);
+exports.ForgotPasswordComponent = ForgotPasswordComponent;
+//# sourceMappingURL=forgotpassword.component.js.map

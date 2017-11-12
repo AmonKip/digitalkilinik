@@ -1,7 +1,7 @@
 ﻿import { Patient } from "./patient.model";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
-import { Http, RequestMethod, Request, Response } from "@angular/http";
+import { Http, RequestMethod, Request, Response, Headers, RequestOptions } from "@angular/http";
 import "rxjs/add/operator/map";
 import { Filter } from "./configClasses.repository";
 import { Employee } from "./employee.model";
@@ -23,13 +23,9 @@ export class Repository {
     private filterObject = new Filter();
 
     constructor(private http: Http) {
-        //this.filter.category = "";
         this.getPatients();
-        this.getEmployees();
         this.getVisits();
-        this.getUsers();
-        this.getRoles();
-        this.getAccountRequests();
+     
     }
 
     getPatient(id: number) {
@@ -42,7 +38,7 @@ export class Repository {
             .subscribe(response => { this.employee = response; });
     }
 
-    getPatients() {
+    getPatients(){
         let url = patientsUrl
 
         if (this.filter.category && this.filter.search)
@@ -56,8 +52,8 @@ export class Repository {
             url += "?search=" + this.filter.search;
         }
 
-        this.sendRequest(RequestMethod.Get, url)
-            .subscribe(response => { this.patients = response; });
+          this.sendRequest(RequestMethod.Get, url)
+           .subscribe(response => { this.patients = response; });
     }
     getEmployees() {
         this.sendRequest(RequestMethod.Get, employeesUrl)
@@ -203,6 +199,7 @@ export class Repository {
         return this.http.post("/api/account/login",
             { name: name, password: password });
     }
+
     // email password reset 
     resetPassword(email: string, password: string, confirmpassword: string, code: string): Observable<Response> {
         return this.http.post("/api/account/resetpassword",
@@ -219,7 +216,6 @@ export class Repository {
             { email: email});
     }
     hasAdminRole(email: string): Observable<Response> {
-         console.log("isadmin called");
         return this.http.post("/api/account/isadmin",
             { email: email});
     }
@@ -245,4 +241,5 @@ export class Repository {
     get filter(): Filter {
         return this.filterObject;
     }
+
 }

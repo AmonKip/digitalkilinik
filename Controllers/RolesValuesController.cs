@@ -14,7 +14,8 @@ using System.Threading.Tasks;
 
 namespace ePatientCare.Controllers
 {
-
+  [Authorize(Roles = "Admin")]
+  [ValidateAntiForgeryToken]
   public class RolesValuesController : Controller
   {
     private readonly ApplicationDbContext context;
@@ -24,6 +25,7 @@ namespace ePatientCare.Controllers
     //private readonly ISmsSender _smsSender;
     //private readonly ILogger _logger;
 
+
     public RolesValuesController(ApplicationDbContext ctx, RoleManager<IdentityRole> roleMgr)
     {
       context = ctx;
@@ -32,13 +34,18 @@ namespace ePatientCare.Controllers
 
     [HttpGet]
     [Route("api/roles")]
-    public IEnumerable<IdentityRole> GetRoles() => roleManager.Roles;
+    public IEnumerable<IdentityRole> GetRoles() 
+    { 
+       System.Threading.Thread.Sleep(5000);
+      return roleManager.Roles;
+    }
 
     // POST: /Account/Register
 
     [Route("api/addrole")]
     public async Task<IActionResult> CreateRole([FromBody] RoleViewModel model)
     {
+      System.Threading.Thread.Sleep(5000);
       if (ModelState.IsValid)
       {
         IdentityResult result = await roleManager.CreateAsync(new IdentityRole(model.Name));

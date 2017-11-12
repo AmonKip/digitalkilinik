@@ -124,13 +124,14 @@
 
           <div class="form-group">
             <label>Reason</label>
-            <textarea class="form-control" [(ngModel)]="newUser.biography" name="biography"
-                   #biography="ngModel" required></textarea>
-            <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || biography.dirty) && biography.invalid">
-              <li *ngFor="let error of getValidationMessages(biography)">
+            <textarea class="form-control" [(ngModel)]="newUser.reason" name="reason"
+                   #reason="ngModel" required></textarea>
+            <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || reason.dirty) && reason.invalid">
+              <li *ngFor="let error of getValidationMessages(reason)">
                 {{error}}
               </li>
             </ul>
+
           </div>
 
           <!--<div class="form-group">

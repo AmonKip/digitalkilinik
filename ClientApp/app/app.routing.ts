@@ -14,6 +14,7 @@ import { PatientAdminComponent } from "./admin/patientAdmin.component";
 import { AppUserAdminComponent } from "./admin/appUserAdmin.component";
 import { PatientDetailAdminComponent } from "./admin/patientDetailAdmin.component";
 import { AuthenticationGuard } from "./auth/authentication.guard";
+import { AdminAuthGuard } from "./auth/adminauthentication.guard";
 import { AuthenticationComponent } from "./auth/authentication.component";
 import { AppUserDetailAdminComponent } from "./admin/AppUserDetailAdmin.component";
 import { AppUserRequestAdminComponent } from "./admin/AppUserRequestAdmin.component";
@@ -23,6 +24,7 @@ import { VisitAdminComponent } from "./admin/visitsAdmin.component"
 import { AppUserCreateAdminComponent } from "./admin/appUserCreateAdmin.Component";
 import { ForgotPasswordComponent } from "./auth/forgotpassword.component";
 import { ResetPasswordComponent } from "./auth/resetpassword.component";
+import { RolesTableComponent } from "./admin/rolestable.component";
 
 
 const routes: Routes = [
@@ -32,10 +34,11 @@ const routes: Routes = [
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
     {
         path: "admin", component: AdminComponent,
-        canActivateChild: [AuthenticationGuard],
+        canActivateChild: [AdminAuthGuard],
         children: [
             { path: "overview", component: OverviewComponent },
             { path: "patientdetail/:id", component: PatientDetailAdminComponent },
+            { path: "roleslist", component: RolesTableComponent },
             { path: "patientslist", component: PatientAdminComponent },
             { path: "visitdetail/:id", component: VisitDetailAdminComponent },
             { path: "visitslist", component: VisitAdminComponent },

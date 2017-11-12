@@ -11,6 +11,9 @@ export class AdminComponent {
         this.repo.getPatients();
         this.repo.getVisits();
         this.repo.getEmployees();
+        this.repo.getUsers();
+        this.repo.getAccountRequests();
+        this.repo.getRoles();
     }
 
 }

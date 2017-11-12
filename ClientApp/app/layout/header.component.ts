@@ -8,8 +8,12 @@ import { AuthenticationService } from "../auth/authentication.service";
 export class HeaderComponent {
 
     name: string;
+    isAdmin: boolean;
 
-    constructor(public authService: AuthenticationService) { this.name = this.authService.name; }
+    constructor(public authService: AuthenticationService) {
+        this.name = this.authService.name;
+        this.isAdmin = this.authService.isAdmin;
+    }
 
  
 }

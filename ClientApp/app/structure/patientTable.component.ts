@@ -2,16 +2,19 @@
 import { Repository } from "../models/repository";
 import { Patient } from "../models/patient.model";
 import { Router } from "@angular/router";
+import { Observable } from "rxjs/Observable";
 
 @Component({
     selector: "patient-table",
     templateUrl: "patientTable.component.html"
 })
 export class PatientTableComponent {
+   
+    constructor(private repo: Repository, private router: Router) {
+        this.repo.getPatients();
+    }
 
-    constructor(private repo: Repository, private router: Router) { }
-
-    get patients(): Patient[] {
+    get patients(){
         return this.repo.patients;
     }
 

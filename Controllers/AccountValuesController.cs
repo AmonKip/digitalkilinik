@@ -14,10 +14,17 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ePatientCare.Helpers;
+using Newtonsoft.Json;
+using ePatientCare.Auth;
+using Microsoft.Extensions.Options;
+using System.Security.Claims;
+
 
 namespace ePatientCare.Controllers
 {
-  [Authorize(Roles ="Admin")]
+  [Authorize(Roles = "Admin")]
+  [ValidateAntiForgeryToken]
   public class AccountValuesController : Controller
   {
     private readonly UserManager<AppUser> userManager;
@@ -29,7 +36,7 @@ namespace ePatientCare.Controllers
     private readonly ILogger _logger;
 
     public AccountValuesController(UserManager<AppUser> usrMgr, ApplicationDbContext ctx,
-                                      SignInManager<AppUser> signInMgr, IEmailSender eSender, 
+                                      SignInManager<AppUser> signInMgr, IEmailSender eSender,
                                       RoleManager<IdentityRole> roleMgr)
     {
       userManager = usrMgr;
@@ -37,15 +44,30 @@ namespace ePatientCare.Controllers
       signInManager = signInMgr;
       emailSender = eSender;
       roleManager = roleMgr;
+
     }
 
     [HttpGet]
+   // [Authorize(Roles = "Admin")]
+    //[ValidateAntiForgeryToken]
     [Route("api/users/{id}")]
     public UserDetails GetUser(long id) => context.UserDetails.Find(id);
 
     [HttpGet]
     [Route("api/users")]
-    public IEnumerable<UserDetails> GetUsers() => context.UserDetails;
+    [ValidateAntiForgeryToken]
+    public IEnumerable<UserDetails> GetUsers()
+    {
+      System.Threading.Thread.Sleep(5000);
+      try
+      {
+        return context.UserDetails;
+      }
+      catch(Exception e){
+        Console.WriteLine(e.Message);
+        return null;
+      }
+    }
 
     [HttpGet]
     [Route("api/getrequests")]
@@ -72,7 +94,7 @@ namespace ePatientCare.Controllers
     }
 
     [HttpPost]
-    // [AllowAnonymous]
+     [AllowAnonymous]
     //[ValidateAntiForgeryToken]
     [Route("api/addrequest")]
     public IActionResult Register([FromBody] RegisterViewModel model)
@@ -112,7 +134,9 @@ namespace ePatientCare.Controllers
     {
       if (ModelState.IsValid && await DoLogin(creds))
       {
-        return Ok();
+        var user = await userManager.FindByNameAsync(creds.Name);
+        var roles = await userManager.GetRolesAsync(user);
+        return Ok(new UserRoles{Usermame = creds.Name, Roles = roles.ToList()  });
       }
       return BadRequest();
     }
@@ -126,9 +150,8 @@ namespace ePatientCare.Controllers
     }
 
     // POST: /Account/ForgotPassword
-
     [AllowAnonymous]
-    //[ValidateAntiForgeryToken]
+   // [ValidateAntiForgeryToken]
     [HttpPost("/api/account/forgotpassword")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordViewModel model)
     {
@@ -146,7 +169,7 @@ namespace ePatientCare.Controllers
         var code = await userManager.GeneratePasswordResetTokenAsync(user);
         //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
         var protocol = HttpContext.Request.Scheme;
-     
+
         var callbackUrl = protocol + "://localhost:5000/resetpassword/?userid=" + user.Id + "&code=" + code;
         await emailSender.SendEmailAsync(model.Email, "Reset Password",
            $"Please reset your password by clicking <a href='{callbackUrl}'>here</a>");
@@ -157,26 +180,7 @@ namespace ePatientCare.Controllers
       return BadRequest();
     }
 
-    [AllowAnonymous]
-    //[ValidateAntiForgeryToken]
-    [HttpPost("/api/account/isadmin")]
-    public async Task<IActionResult>IsAdmin([FromBody] ForgotPasswordViewModel model)
-    {
-      if (ModelState.IsValid)
-      {
-        var user = await userManager.FindByEmailAsync(model.Email);
-        if (user == null)
-        {
-          // Don't reveal that the user does not exist or is not confirmed
-          return BadRequest();
-        }
-        var roles = await userManager.GetRolesAsync(user);
-        if(roles.Contains("Admin"))
-          return Ok();
-      }
-      return BadRequest();
-    }
-
+    
     // POST: /Account/ResetPassword
     [AllowAnonymous]
     //[ValidateAntiForgeryToken]
@@ -210,7 +214,7 @@ namespace ePatientCare.Controllers
     {
       var user = await context.UserDetails.FindAsync(id);
 
-      if(user == null){
+      if (user == null) {
         return BadRequest();
       }
       if (user.Enabled == 1)
@@ -224,7 +228,7 @@ namespace ePatientCare.Controllers
       context.Update(user);
       context.SaveChanges();
 
-      if(fromrequest){
+      if (fromrequest) {
         if (await CreateAccountFromRequest(id))
           return Ok();
         // If this is request and account is not properly created return bad request error
@@ -251,6 +255,7 @@ namespace ePatientCare.Controllers
       return false;
     }
 
+
     public class LoginViewModel
     {
       [Required]
@@ -273,7 +278,7 @@ namespace ePatientCare.Controllers
     {
 
       var userdetails = await context.UserDetails.FindAsync(id);
-      if(userdetails == null){
+      if (userdetails == null) {
         return false;
       }
       string password = "x&Password1!";
@@ -284,10 +289,10 @@ namespace ePatientCare.Controllers
       var appUser = new AppUser { Email = email, PhoneNumber = phone, UserName = username };
       var result = await userManager.CreateAsync(appUser, password);
 
-      if(result == null){
+      if (result == null) {
         return false;
       }
-      try{
+      try {
         // update userdetails and link with newly created user account
         userdetails.AppUser = appUser;
         userdetails.Enabled = 1;
@@ -295,16 +300,16 @@ namespace ePatientCare.Controllers
         context.Update(userdetails);
         context.SaveChanges();
         // email user 
-        if(!await EmailPasswordReset(id))
-            return false;
+        if (!await EmailPasswordReset(id))
+          return false;
 
         //return true if all goes well
         return true;
-      }catch(Exception e){
+      } catch (Exception e) {
         //log exception
         return false;
       }
-     
+
     }
     private async Task<Boolean> EmailPasswordReset(long id)
     {
@@ -316,18 +321,39 @@ namespace ePatientCare.Controllers
         var code = await userManager.GeneratePasswordResetTokenAsync(user);
         //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
         var protocol = HttpContext.Request.Scheme;
-        
+
         var callbackUrl = protocol + "://localhost:5000/resetpassword/?userid=" + user.Id + "&code=" + code;
         var message = $"Hello {userdetails.FirstName}, <br>Your Digital Kilinik account request has been approved!. Please use this <a href='{callbackUrl}'>link</a> to create your account password.";
         await emailSender.SendEmailAsync(userdetails.Email, "Your Digital Account Approved!", message);
         return true;
       }
-      catch(Exception e)
+      catch (Exception e)
       {
-        
+
         return false;
       }
     }
-    #endregion
+
   }
+    #endregion
 }
+
+  public class Role
+  { 
+     public string Name{ get; set; }
+  }
+
+  public class UserRoles
+  {
+    public string Usermame { get; set; }
+    public List<string> Roles { get; set; }
+  }
+  public class ApiResponse<TResult>
+  {
+    public bool Success { get; set; }
+    public string Message { get; set; }
+    public TResult Result { get; set; }
+  }
+
+
+

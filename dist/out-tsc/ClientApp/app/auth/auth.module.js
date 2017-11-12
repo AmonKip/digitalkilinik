@@ -13,6 +13,8 @@ var router_1 = require("@angular/router");
 var authentication_service_1 = require("./authentication.service");
 var authentication_component_1 = require("./authentication.component");
 var authentication_guard_1 = require("./authentication.guard");
+var forgotpassword_component_1 = require("./forgotpassword.component");
+var resetpassword_component_1 = require("./resetpassword.component");
 var AuthModule = (function () {
     function AuthModule() {
     }
@@ -21,7 +23,7 @@ var AuthModule = (function () {
 AuthModule = __decorate([
     core_1.NgModule({
         imports: [router_1.RouterModule, forms_1.FormsModule, platform_browser_1.BrowserModule],
-        declarations: [authentication_component_1.AuthenticationComponent],
+        declarations: [authentication_component_1.AuthenticationComponent, forgotpassword_component_1.ForgotPasswordComponent, resetpassword_component_1.ResetPasswordComponent],
         providers: [authentication_service_1.AuthenticationService, authentication_guard_1.AuthenticationGuard],
         exports: [authentication_component_1.AuthenticationComponent]
     })

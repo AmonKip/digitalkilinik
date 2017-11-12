@@ -18,11 +18,20 @@ using ePatientCare.Models.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ePatientCare.Configurations;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using ePatientCare.Auth;
+using ePatientCare.Helpers;
+using Microsoft.AspNetCore.Diagnostics;
+using System.Net;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace ePatientCare
 {
     public class Startup
     {
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -42,34 +51,34 @@ namespace ePatientCare
 
         public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-      // Add framework services.
-
+          // This method gets called by the runtime. Use this method to add services to the container.
+          public void ConfigureServices(IServiceCollection services)
+          {
+            // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ePatientCareConnection")));
 
-            //services.AddDbContext<ApplicationDbContext>(options =>
-            //    options.UseSqlServer(Configuration.GetConnectionString("AppUserIdentity")));
+          //services.AddDbContext<ApplicationDbContext>(options =>
+          //    options.UseSqlServer(Configuration.GetConnectionString("AppUserIdentity")));
+          services.AddIdentity<AppUser, IdentityRole>()
+                      .AddEntityFrameworkStores<ApplicationDbContext>()
+                      .AddDefaultTokenProviders();
 
-            services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+          services.AddMvc().AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling
+                                                = ReferenceLoopHandling.Serialize);
+            //services.AddAutoMapper();
+            // Add application services.
+          services.Configure<EmailConfig>(Configuration.GetSection("Email"));
+          services.AddTransient<IEmailSender, EmailSender>();
+          services.AddTransient<ISmsSender, AuthMessageSender>();
 
-            services.AddMvc().AddJsonOptions(opts => opts.SerializerSettings.ReferenceLoopHandling
-                                  = ReferenceLoopHandling.Serialize);
-
-      // Add application services.
-            services.Configure<EmailConfig>(Configuration.GetSection("Email"));
-            services.AddTransient<IEmailSender, EmailSender>();
-            services.AddTransient<ISmsSender, AuthMessageSender>();
-
-            services.Configure<IdentityOptions>(config => {
+          services.Configure<IdentityOptions>(config =>
+            {
               config.Cookies.ApplicationCookie.Events =
                   new CookieAuthenticationEvents
                   {
-                    OnRedirectToLogin = context => {
+                    OnRedirectToLogin = context =>
+                    {
                       if (context.Request.Path.StartsWithSegments("/api")
                                       && context.Response.StatusCode == 200)
                       {
@@ -82,11 +91,17 @@ namespace ePatientCare
                       return Task.FromResult<object>(null);
                     }
                   };
-            });
-    }
+           });
+          services.AddAntiforgery(options =>
+          {
+            options.HeaderName = "X-XSRF-TOKEN";
+          });
+
+          }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory,
+                              IAntiforgery antiforgery)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -95,34 +110,59 @@ namespace ePatientCare
             app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions{
                       HotModuleReplacement = true
             });
-            //if (env.IsDevelopment())
-            //{
-            //    app.UseDeveloperExceptionPage();
-            //    app.UseDatabaseErrorPage();
-            //    app.UseBrowserLink();
-            //}
-            //else
-            //{
-            //    app.UseExceptionHandler("/Home/Error");
-            //}
+          //if (env.IsDevelopment())
+          //{
+          //  app.UseDeveloperExceptionPage();
+          //  app.UseDatabaseErrorPage();
+          //  app.UseBrowserLink();
+          //}
+          //else
+          //{
+          //  app.UseExceptionHandler("/Home/Error");
+          //}
+          app.UseExceptionHandler(
+          builder =>
+          {
+              builder.Run(
+              async context =>
+              {
+                context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
 
-            app.UseStaticFiles();
+                var error = context.Features.Get<IExceptionHandlerFeature>();
+                if (error != null)
+                {
+                  //context.Response.AddApplicationError(error.Error.Message);
+                 await context.Response.WriteAsync(error.Error.Message).ConfigureAwait(false);
+                }
+              });
+          });
 
-            app.UseIdentity();
+        app.UseStaticFiles();
+        app.UseIdentity();
 
-            // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
+        // Add external authentication middleware below. To configure them please see https://go.microsoft.com/fwlink/?LinkID=532715
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+        app.Use(nextDelegate => context =>
+        {
+          if(context.Request.Path.StartsWithSegments("/api")
+               || context.Request.Path.StartsWithSegments("/")){
+            context.Response.Cookies.Append("XSRF-TOKEN", antiforgery.GetAndStoreTokens(context).RequestToken);
+          }
+          return nextDelegate(context);
+        });
 
-                routes.MapSpaFallbackRoute("angular-fallback", new { controller = "Home", action = "Index" });
-            });
-            SeedData.SeedDatabase(app.ApplicationServices.GetRequiredService<ApplicationDbContext>(), 
-                                  app.ApplicationServices.GetRequiredService<UserManager<AppUser>>(),
-                                  app.ApplicationServices.GetRequiredService<RoleManager<IdentityRole>>());
-        }
+        app.UseMvc(routes =>
+        {
+            routes.MapRoute(
+                name: "default",
+                template: "{controller=Home}/{action=Index}/{id?}");
+
+            routes.MapSpaFallbackRoute("angular-fallback", new { controller = "Home", action = "Index" });
+        });
+        SeedData.SeedDatabase(app.ApplicationServices.GetRequiredService<ApplicationDbContext>(), 
+                              app.ApplicationServices.GetRequiredService<UserManager<AppUser>>(),
+                              app.ApplicationServices.GetRequiredService<RoleManager<IdentityRole>>());
+     }
     }
 }

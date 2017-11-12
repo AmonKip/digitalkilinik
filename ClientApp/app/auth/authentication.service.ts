@@ -13,6 +13,9 @@ export class AuthenticationService implements OnInit {
     ngOnInit() {
         
     }
+    ngOnDestroy() {
+        console.log("Destroying...");
+    }
 
     authenticated: boolean = false;
     name: string;
@@ -22,33 +25,40 @@ export class AuthenticationService implements OnInit {
     confirmpassword: string;
     code: string;
     callbackUrl: string;
-    returnUrl: string;
 
     login(): Observable<boolean> {
         this.authenticated = false;
+        
         return this.repo.login(this.name, this.password)
             .map(response => {
-                if (response.ok) {
+                if (response) {
+                    if (response.json().roles.indexOf("Admin") != -1) {
+                        this.isAdmin = true;
+                    }
+
                     this.authenticated = true;
                     this.password = null;
-                   //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
                     this.router.navigateByUrl(this.callbackUrl || "/");
-                
+                    this.callbackUrl = "";
+
                 }
                 return this.authenticated;
             })
             .catch(e => {
-                console.log(e);
                 this.authenticated = false;
+                this.isAdmin = false;
                 return Observable.of(false);
             });
 
-    }
+    } 
 
     logout() {
         this.authenticated = false;
+        this.isAdmin = false;
         this.repo.logout();
-        this.router.navigateByUrl("/login");
+        window.location.reload();
+        //document.cookie = ".AspNetCore.Identity.Application; expires = Thu, 18 Dec 2013 12:00:00 UTC";
+        //this.router.navigateByUrl("/login");
     }
     resetPassword(): Observable<boolean> {
         this.authenticated = false;
@@ -57,19 +67,19 @@ export class AuthenticationService implements OnInit {
         .map(response => {
                 if (response.ok) {
                     this.authenticated = false;
+                    this.isAdmin = false;
                     this.password = null;
                     this.confirmpassword = null;
                     this.email = null;
                     this.code = null;
-                   //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
                     this.router.navigateByUrl(this.callbackUrl || "/login");
                 
                 }
                 return this.authenticated;
             })
             .catch(e => {
-                console.log(e);
                 this.authenticated = false;
+                this.isAdmin = false;
                 return Observable.of(false);
             });
     }
@@ -80,36 +90,17 @@ export class AuthenticationService implements OnInit {
         .map(response => {
             if (response.ok) {
                 this.authenticated = false;
+                this.isAdmin = false;
                 this.email = null;
-                //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
                 this.router.navigateByUrl(this.callbackUrl || "/forgotpasswordconfirmation");
                 
             }
             return this.authenticated;
         })
         .catch(e => {
-            console.log(e);
             this.authenticated = false;
+            this.isAdmin = false;
             return Observable.of(false);
         });
-    }
-    hasAdminRole(): Observable<boolean> {
-        this.isAdmin = false;
-        return this.repo.hasAdminRole(this.name)
-            .map(response => {
-                if (response.ok) {
-                    this.isAdmin = true;
-                   //this.router.navigateByUrl(this.callbackUrl || "/admin/overview");
-                    //this.router.navigateByUrl(this.callbackUrl || "/");
-                
-                }
-                return this.isAdmin;
-            })
-            .catch(e => {
-                console.log(e);
-                this.isAdmin = false;
-                return Observable.of(false);
-            });
-
     }
 }
