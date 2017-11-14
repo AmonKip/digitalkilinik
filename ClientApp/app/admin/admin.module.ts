@@ -14,6 +14,10 @@ import { VisitDetailAdminComponent } from "./visitsDetailAdmin.component"
 import { VisitAdminComponent } from "./visitsAdmin.component"
 import { AppUserCreateAdminComponent } from "./appUserCreateAdmin.Component";
 import { RolesTableComponent } from "./rolestable.component";
+import { RoleDetailComponent } from "./roledetail.component";
+import { RoleManagerComponent } from "./usersrolemanager.component";
+import { CreateRoleComponent } from "./createrole.component";
+
 
 @NgModule({
     imports: [BrowserModule, RouterModule, FormsModule],
@@ -22,7 +26,8 @@ import { RolesTableComponent } from "./rolestable.component";
         AppUserDetailAdminComponent, AppUserRequestAdminComponent,
         AppUserEditAdminComponent, VisitDetailAdminComponent,
         VisitAdminComponent, AppUserCreateAdminComponent,
-        RolesTableComponent]
+        RolesTableComponent, RoleDetailComponent, RoleManagerComponent,
+        CreateRoleComponent]
 })
 
 export class AdminModule{}

@@ -12,7 +12,7 @@ using System;
 namespace ePatientCare.Controllers
 {
 
-  [Authorize(Roles = "Admin")]
+  [Authorize(Roles = "Admin, Nurse")]
   [Route("api/patients")]
   [ValidateAntiForgeryToken]
   public class PatientValuesController : Controller

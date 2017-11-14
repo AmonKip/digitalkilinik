@@ -25,6 +25,10 @@ import { AppUserCreateAdminComponent } from "./admin/appUserCreateAdmin.Componen
 import { ForgotPasswordComponent } from "./auth/forgotpassword.component";
 import { ResetPasswordComponent } from "./auth/resetpassword.component";
 import { RolesTableComponent } from "./admin/rolestable.component";
+import { RoleDetailComponent } from "./admin/roledetail.component";
+import { RoleManagerComponent } from "./admin/usersrolemanager.component";
+import { CreateRoleComponent } from "./admin/createrole.component";
+
 
 
 const routes: Routes = [
@@ -39,6 +43,9 @@ const routes: Routes = [
             { path: "overview", component: OverviewComponent },
             { path: "patientdetail/:id", component: PatientDetailAdminComponent },
             { path: "roleslist", component: RolesTableComponent },
+            { path: "createrole", component: CreateRoleComponent },
+            { path: "roledetail/:id", component: RoleDetailComponent },
+            { path: "rolemanager/:id", component: RoleManagerComponent },
             { path: "patientslist", component: PatientAdminComponent },
             { path: "visitdetail/:id", component: VisitDetailAdminComponent },
             { path: "visitslist", component: VisitAdminComponent },

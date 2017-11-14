@@ -8,6 +8,7 @@ import { Employee } from "./employee.model";
 import { Visit } from "./visit.model";
 import { AppUser } from "./appuser.model";
 import { AppRole } from "./approle.model";
+import { RoleUser } from "./roleuser.model";
 import { ErrorHandlerService, ValidationError } from "../services/errorHandler.service";
 import "rxjs/add/operator/catch";
 
@@ -86,6 +87,11 @@ export class Repository {
     getRoles() {
         this.sendRequest(RequestMethod.Get, "/api/roles")
             .subscribe(response => { this.appRoles = response; });
+    }
+    // get roles by user
+    getRolesByUser(id: number) {
+        this.sendRequest(RequestMethod.Get, "/api/rolesbyuser/" + id)
+            .subscribe(response => { this.userRoles = response; });
     }
     // get account requests
     getAccountRequests() {
@@ -219,10 +225,35 @@ export class Repository {
         return this.http.post("/api/account/isadmin",
             { email: email});
     }
+    // enable / disable user
     toggleAccount(id: number, fromrequest = false){
       this.sendRequest(RequestMethod.Post, "/api/account/toggle/" + id +"?fromrequest=" + fromrequest)
             .subscribe(response => this.getUsers());
-   }
+    }
+    // get user roles
+    getUsersInRole(rolename: string) {
+        this.sendRequest(RequestMethod.Get, "/api/usersrole/" + rolename)
+            .subscribe(response => { this.roleUsers = response; });
+       
+    }
+    // add user to role
+    addUserToRole(id: number, rolename: string) {
+        this.sendRequest(RequestMethod.Get, "/api/addtorole/" + id + "?rolename=" + rolename)
+            .subscribe(response => { this.roleUsers = response; });
+
+    }
+    // remove user from role
+    removeUserFromRole(id: number, rolename: string) {
+        this.sendRequest(RequestMethod.Get, "/api/removefromrole/" + id + "?rolename=" + rolename)
+            .subscribe(response => { this.roleUsers = response; });
+
+    }
+    // add new role to roles table
+    addRole(approle: AppRole) {
+        let data = { name: approle.name };
+        this.sendRequest(RequestMethod.Post, "/api/addrole/", data)
+            .subscribe(response => this.appRoles = response);
+    }
     // properties 
     patient: Patient;
     patients: Patient[];
@@ -237,6 +268,9 @@ export class Repository {
     appRoles: AppRole[];
     appUserRequest: AppUser;
     appUserRequests: AppUser[];
+    roleUser: RoleUser;
+    roleUsers: RoleUser[];
+    userRoles: AppRole[];
 
     get filter(): Filter {
         return this.filterObject;

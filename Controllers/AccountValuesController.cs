@@ -55,7 +55,7 @@ namespace ePatientCare.Controllers
 
     [HttpGet]
     [Route("api/users")]
-    [ValidateAntiForgeryToken]
+    //[ValidateAntiForgeryToken]
     public IEnumerable<UserDetails> GetUsers()
     {
       System.Threading.Thread.Sleep(5000);
@@ -68,8 +68,46 @@ namespace ePatientCare.Controllers
         return null;
       }
     }
+    [HttpGet]
+   // [ValidateAntiForgeryToken]
+    [Route("api/usersrole/{roleName}")]
+    public async Task<IEnumerable<UserDetails>> GetUsersInRole(string roleName)
+    {
+      try
+      {
+    
+        var appUsers = await userManager.GetUsersInRoleAsync(roleName);
+
+        var query = from users in appUsers
+                    join details in context.UserDetails on users.Email equals details.Email
+                    select details;
+
+        return query;
+      }
+      catch (Exception e)
+      {
+        var x = e.InnerException;
+        return null;
+      }
+    
+    }
+    [HttpGet]
+    [Route("api/rolesbyuser/{id}")]
+    public async Task<IEnumerable<string>> GetRolesByUser(long id)
+    {
+      AppUser appuser = await userManager.FindByEmailAsync(context.UserDetails.Find(id).Email);
+
+      if(appuser != null)
+      {
+        var result = await userManager.GetRolesAsync(appuser);
+        return result;
+      }
+      return null;
+    }
+
 
     [HttpGet]
+    
     [Route("api/getrequests")]
     public IEnumerable<UserDetails> GetRequests() => context.UserDetails.Where(u => u.Enabled == 0);
 
@@ -353,6 +391,10 @@ namespace ePatientCare.Controllers
     public bool Success { get; set; }
     public string Message { get; set; }
     public TResult Result { get; set; }
+  }
+  public class AppUserDetails{
+    public AppUser AppUser{ get; set; }
+    public UserDetails UserDetails{ get; set; }
   }
 
 

@@ -1,0 +1,53 @@
+﻿
+<table class="table table-sm table-striped table-bordered">
+  <tr><th colspan="2" class="bg-info">Manage Roles For: {{user.firstName}} {{user.lastName}}</th></tr>
+  <tr>
+    <th>Role</th>
+    <th>Action</th>
+  </tr>
+  <tr *ngFor="let role of roles">
+    <td>{{role.name || 'Loading Data...'}}</td>
+    <td *ngIf="isAssigned(role.name)">
+      <button class="btn actionbtn enabledButton"  data-toggle="tooltip" data-placement="bottom" title="Disable" (click)="removeFromRole(user.userDetailsID, role.name)"><i class="fa fa-toggle-on"></i></button>
+    </td>
+    <td *ngIf="!isAssigned(role.name)">
+      <button class="btn actionbtn disabledButton" data-toggle="tooltip" data-placement="bottom" title="Enable" (click)="addToRole(user.userDetailsID, role.name)"><i class="fa fa-toggle-on"></i></button>
+    </td>
+  </tr>
+</table>
+<div class="text-center">
+  <button class="btn btn-primary" routerLink="/admin/roleslist">Cancel</button>
+</div>
+
+  <style>
+    .actionbtn {
+      background-color: Transparent;
+      background-repeat: no-repeat;
+      border: none;
+      cursor: pointer;
+      overflow: hidden;
+      outline: none;
+      margin-right: 0px !important;
+      padding: 2px;
+    }
+
+    .editButton {
+      color: #ffc805;
+    }
+
+    .deleteButton {
+      color: red;
+    }
+
+    .detailsButton {
+      color: #0571ff;
+    }
+
+    .enabledButton {
+      color: #07bc40;
+    }
+
+    .disabledButton {
+      color: #66645b;
+    }
+  </style>

@@ -1,0 +1,54 @@
+﻿
+<table class="table table-striped table-sm table-bordered">
+  <tr><th colspan="2" class="bg-info">Role Details</th></tr>
+  <tr><th>Role ID</th><td>{{ role?.id || 'Loading..' }}</td></tr>
+  <tr><th>Role Name</th><td>{{role?.name || 'Loading..'}}</td></tr>
+</table>
+<table class="table table-striped table-sm table-bordered">
+  <tr><th colspan="3" class="bg-info">Users In Role</th></tr>
+  <tr><th>First Name</th><th>Last Name</th><th>Action</th></tr>
+  <tr *ngFor="let user of users">
+    <td>{{user.firstName}}</td>
+    {{user.lastName}}
+    <td>
+    <button class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Manage User Role" [routerLink]="['/admin/rolemanager', user.userDetailsID]"><i class="fa fa-edit"></i></button>
+    </td>
+</tr>
+</table>
+<div class="text-center">
+  <button class="btn btn-primary" routerLink="/admin/roleslist"><i class="fa fa-backward"></i> Back</button>
+  <button class="btn btn-primary" routerLink="/admin/roleslist"><i class="fa fa-plus"></i> Add Users To Role</button>
+</div> 
+
+<style>
+  .actionbtn {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    margin-right: 0px !important;
+    padding: 2px;
+  }
+
+  .editButton {
+    color: #ffc805;
+  }
+
+  .deleteButton {
+    color: red;
+  }
+
+  .detailsButton {
+    color: #0571ff;
+  }
+
+  .enabledButton {
+    color: #07bc40;
+  }
+
+  .disabledButton {
+    color: #66645b;
+  }
+</style>

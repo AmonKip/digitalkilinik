@@ -20,18 +20,21 @@ namespace ePatientCare.Controllers
   {
     private readonly ApplicationDbContext context;
     private readonly RoleManager<IdentityRole> roleManager;
+    private readonly UserManager<AppUser> userManager;
     //private readonly SignInManager<AppUser> _signInManager;
     //private readonly IEmailSender _emailSender;
     //private readonly ISmsSender _smsSender;
     //private readonly ILogger _logger;
 
 
-    public RolesValuesController(ApplicationDbContext ctx, RoleManager<IdentityRole> roleMgr)
+    public RolesValuesController(ApplicationDbContext ctx, RoleManager<IdentityRole> roleMgr, UserManager<AppUser> usrManager)
     {
       context = ctx;
       roleManager = roleMgr;
+      userManager = usrManager;
     }
 
+    // get all roles from roles table
     [HttpGet]
     [Route("api/roles")]
     public IEnumerable<IdentityRole> GetRoles() 
@@ -42,6 +45,7 @@ namespace ePatientCare.Controllers
 
     // POST: /Account/Register
 
+    // add a new role to roles table
     [Route("api/addrole")]
     public async Task<IActionResult> CreateRole([FromBody] RoleViewModel model)
     {
@@ -57,6 +61,34 @@ namespace ePatientCare.Controllers
         AddErrors(result);
       }
       return BadRequest(ModelState);
+    }
+    // add user by user id to role
+    [Route("api/addtorole/{id}")]
+    public async Task<IActionResult> AddToRole(string rolename, long id)
+    {
+
+      var appuser = await userManager.FindByEmailAsync(context.UserDetails.Find(id).Email);
+
+      if(appuser !=null)
+      {
+        var result = await userManager.AddToRoleAsync(appuser, rolename);
+        return Ok();
+      }
+      return BadRequest();
+    }
+
+    // remove user from role
+    [Route("api/removefromrole/{id}")]
+    public async Task<IActionResult> RemoveFromRole(string rolename, long id)
+    {
+      var appuser = await userManager.FindByEmailAsync(context.UserDetails.Find(id).Email);
+
+      if (appuser != null)
+      {
+        var result = await userManager.RemoveFromRoleAsync(appuser, rolename);
+        return Ok();
+      }
+      return BadRequest();
     }
 
     #region Helpers

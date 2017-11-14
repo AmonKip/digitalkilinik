@@ -26,6 +26,10 @@ export class AppUserDetailAdminComponent {
         let id = Number.parseInt(activeRoute.snapshot.params["id"]);
         if (id) {
             this.repo.getUser(id);
+            // if not from request get user roles from db
+            if (!this.request) {
+                this.repo.getRolesByUser(id);
+            }
         } else {
             this.router.navigateByUrl("/");
         }
@@ -33,6 +37,11 @@ export class AppUserDetailAdminComponent {
 
     get user(): AppUser {
         return this.repo.appUser;
+    }
+    get userRoles(): any {
+        var result = this.repo.userRoles? this.repo.userRoles.join(): "";
+        //console.log(result);
+        return result;
     }
     approveRequest(id: number){
       this.repo.toggleAccount(id, true);

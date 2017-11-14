@@ -1,4 +1,5 @@
-﻿<table class="table table-sm table-striped table-bordered">
+﻿<div class="btn btn-primary btn-sm mb-2" routerLink="/admin/createrole"><i class="fa fa-plus"></i> Add Role</div>
+<table class="table table-sm table-striped table-bordered">
   <tr><th colspan="2" class="bg-info">Roles</th></tr>
   <tr>
     <th>Name</th>
@@ -8,8 +9,7 @@
     <td>{{role.name || 'Loading Data...'}}</td>
     <td>
 
-      <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
-              [routerLink]="['/admin/roledetail', role.id]">
+      <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom"  [routerLink]="['/admin/roledetail', role.name]" title="Details">
         <i class="fa fa-address-card-o"></i>
       </button>
       <button class="btn btn-sm btn-warning" data-toggle="tooltip" data-placement="bottom" title="Edit"><i class="fa fa-pencil"></i></button>
