@@ -3,6 +3,8 @@ import { Repository } from "../models/repository";
 import { Patient } from "../models/patient.model";
 import { Router } from "@angular/router";
 import { Observable } from "rxjs/Observable";
+import { AuthenticationService } from "../auth/authentication.service";
+
 
 @Component({
     selector: "patient-table",
@@ -10,11 +12,17 @@ import { Observable } from "rxjs/Observable";
 })
 export class PatientTableComponent {
    
-    constructor(private repo: Repository, private router: Router) {
-        this.repo.getPatients();
+    constructor(private repo: Repository, private router: Router, private authService: AuthenticationService) {
+
+        //if (!this.repo.patients && this.authService.authenticated) {
+       this.repo.getPatients();
+       //this.repo.getVisits();
+            // this.spinnerService.show();
+        //}
     }
 
-    get patients(){
+    get patients() {
+       // this.spinnerService.hide();
         return this.repo.patients;
     }
 

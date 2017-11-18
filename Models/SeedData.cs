@@ -23,7 +23,7 @@ namespace ePatientCare.Models
         string password1 = "Secret123$";
         string roleName = "Admin";
 
-        var user1 = new AppUser { Email = "kiprotich@gmail.com", PhoneNumber = "4102519310", UserName = username1 };
+        var user1 = new AppUser { Email = "kiprotich87@yahoo.com", PhoneNumber = "4102519310", UserName = username1 };
 
         var userdetails1 = new UserDetails
         {
@@ -39,7 +39,8 @@ namespace ePatientCare.Models
           PhoneNumber = "4102519310",
           Reason = "Developer, Administrator, Tester",
           Email = "kiprotich87@yahoo.com",
-          Enabled = 1
+          Enabled = 1,
+          IsRequest = 0
         };
 
         // new user

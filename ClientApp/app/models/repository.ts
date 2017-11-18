@@ -11,6 +11,7 @@ import { AppRole } from "./approle.model";
 import { RoleUser } from "./roleuser.model";
 import { ErrorHandlerService, ValidationError } from "../services/errorHandler.service";
 import "rxjs/add/operator/catch";
+import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
 
 const patientsUrl = "api/patients";
 const employeesUrl = "api/employees";
@@ -23,10 +24,10 @@ export class Repository {
 
     private filterObject = new Filter();
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private spinnerService: Ng4LoadingSpinnerService) {
         this.getPatients();
         this.getVisits();
-     
+       
     }
 
     getPatient(id: number) {
@@ -52,9 +53,14 @@ export class Repository {
         if (!this.filter.category && this.filter.search) {
             url += "?search=" + this.filter.search;
         }
-
-          this.sendRequest(RequestMethod.Get, url)
-           .subscribe(response => { this.patients = response; });
+        this.spinnerService.show();
+         this.sendRequest(RequestMethod.Get, url)
+             .subscribe(response => { this.patients = response; this.spinnerService.hide();});
+    }
+    getAllPatients() {
+        return Observable.create(observer => {
+            observer.next(this.patients);
+        })
     }
     getEmployees() {
         this.sendRequest(RequestMethod.Get, employeesUrl)
@@ -172,12 +178,15 @@ export class Repository {
     
     // consolidated request method
     private sendRequest(verb: RequestMethod, url: string, data?: any): Observable<any> {
+       // this.spinnerService.show();
         return this.http.request(new Request({ method: verb, url: url, body: data }))
             .map(response => {
+                //this.spinnerService.hide();
                 return response.headers.get("Content-Length") != "0"
                     ? response.json() : null;
             })
             .catch((errorResponse: Response) => {
+                this.spinnerService.hide();
                 if (errorResponse.status == 400) {
                     let jsonData: string;
                     try {
@@ -213,6 +222,7 @@ export class Repository {
     }
     //logout
     logout() {
+       
         this.http.post("/api/account/logout", null).subscribe(respone => { });
     }
 

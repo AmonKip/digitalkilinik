@@ -28,7 +28,7 @@ import { RolesTableComponent } from "./admin/rolestable.component";
 import { RoleDetailComponent } from "./admin/roledetail.component";
 import { RoleManagerComponent } from "./admin/usersrolemanager.component";
 import { CreateRoleComponent } from "./admin/createrole.component";
-
+//import { PatientResolver } from "./models/resolver.model";
 
 
 const routes: Routes = [
@@ -58,7 +58,7 @@ const routes: Routes = [
             {path: "**", redirectTo: "/admin/overview"}]
     },
 
-    { path: "table", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
+    { path: "table", component: PatientTableComponent, canActivate: [AuthenticationGuard]},
     { path: "patientedit/:id", component: PatientEditComponent, canActivate: [AuthenticationGuard] },
     { path: "visittable/:id", component: VisitTableComponent, canActivate: [AuthenticationGuard] },
     { path: "visittable", component: VisitTableComponent, canActivate: [AuthenticationGuard] },

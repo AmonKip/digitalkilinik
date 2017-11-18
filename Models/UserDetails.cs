@@ -37,6 +37,8 @@ namespace ePatientCare.Models
 
     public int Enabled { get; set; }
 
+    public int IsRequest{ get; set; }
+
     public DateTime CreatedDate { get; set; }
 
     public DateTime LastUpdatedDate { get; set; }

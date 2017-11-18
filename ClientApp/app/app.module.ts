@@ -23,6 +23,8 @@ import { ErrorHandlerService } from "./services/errorHandler.service";
 import { AuthModule } from "./auth/auth.module";
 import { HeaderComponent } from "./layout/header.component";
 import { FooterComponent } from "./layout/footer.component";
+import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
+import { PatientResolver } from "./models/resolver.model";
 
 const eHandler = new ErrorHandlerService();
 
@@ -40,10 +42,10 @@ export function handler() {
         HeaderComponent, FooterComponent],
 
     imports: [BrowserModule, FormsModule, ReactiveFormsModule,
-        HttpModule, ModelModule, RoutingConfig, AdminModule, AuthModule],
+        HttpModule, ModelModule, RoutingConfig, AdminModule, AuthModule, Ng4LoadingSpinnerModule],
 
     providers: [{ provide: ErrorHandlerService, useFactory: handler },
-                { provide: ErrorHandler, useFactory: handler }],
+                { provide: ErrorHandler, useFactory: handler }, PatientResolver],
     bootstrap:    [AppComponent]
 })
 export class AppModule { } 

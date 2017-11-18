@@ -25,4 +25,7 @@ export class OverviewComponent {
     get roles(): AppRole[] {
         return this.repo.appRoles;
     }
+    accountRequest(): AppUser[] {
+        return this.repo.appUserRequests;
+    }
 }

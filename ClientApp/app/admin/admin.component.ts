@@ -8,12 +8,21 @@ import { AuthenticationService } from "../auth/authentication.service";
 export class AdminComponent {
 
     constructor(private repo: Repository, public authService: AuthenticationService) {
-        this.repo.getPatients();
-        this.repo.getVisits();
-        this.repo.getEmployees();
-        this.repo.getUsers();
-        this.repo.getAccountRequests();
-        this.repo.getRoles();
+        if (!this.repo.patients) {
+            this.repo.getPatients();
+        }
+        if (!this.repo.visits) {
+            this.repo.getVisits();
+        }
+        if (!this.repo.appUsers) {
+            this.repo.getUsers();
+        }
+        if (!this.repo.appUserRequests) {
+            this.repo.getAccountRequests();
+        }
+        if (!this.repo.appRoles) {
+            this.repo.getRoles();
+        }
     }
 
 }

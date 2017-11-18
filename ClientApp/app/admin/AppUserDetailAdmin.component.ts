@@ -43,7 +43,11 @@ export class AppUserDetailAdminComponent {
         //console.log(result);
         return result;
     }
-    approveRequest(id: number){
+    approveRequest(id: number) {
+        var index = this.repo.appUserRequests.indexOf(id);
+        if (index > -1) {
+            this.repo.appUserRequests.slice(index, 1);
+        }
       this.repo.toggleAccount(id, true);
       this.router.navigateByUrl("/admin/overview");
     }

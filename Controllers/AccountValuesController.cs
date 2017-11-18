@@ -23,10 +23,12 @@ using System.Security.Claims;
 
 namespace ePatientCare.Controllers
 {
+  
   [Authorize(Roles = "Admin")]
   [ValidateAntiForgeryToken]
   public class AccountValuesController : Controller
   {
+
     private readonly UserManager<AppUser> userManager;
     private readonly ApplicationDbContext context;
     private readonly SignInManager<AppUser> signInManager;
@@ -61,7 +63,8 @@ namespace ePatientCare.Controllers
       System.Threading.Thread.Sleep(5000);
       try
       {
-        return context.UserDetails;
+        // return only users who have been approved
+        return context.UserDetails.Where(u =>u.IsRequest == 0);
       }
       catch(Exception e){
         Console.WriteLine(e.Message);
@@ -107,9 +110,8 @@ namespace ePatientCare.Controllers
 
 
     [HttpGet]
-    
     [Route("api/getrequests")]
-    public IEnumerable<UserDetails> GetRequests() => context.UserDetails.Where(u => u.Enabled == 0);
+    public IEnumerable<UserDetails> GetRequests() => context.UserDetails.Where(u => u.IsRequest == 1);
 
     [HttpPut]
     [Route("api/edituser/{id}")]
@@ -122,7 +124,8 @@ namespace ePatientCare.Controllers
         userInfo.LastUpdatedDate = DateTime.UtcNow;
         context.Update(userInfo);
         context.SaveChanges();
-        await emailSender.SendEmailAsync("kiprotich87@yahoo.com", "User Account Updated", "User account has been updated in <a href='http://localhost:5000'>digital kilinik</a>");
+        await emailSender.SendEmailAsync("kiprotich87@yahoo.com", "User Account Updated", "User account has been updated in <a href='"+ HttpContext.Request.Protocol
+                                                            + HttpContext.Request.Host + "'>digital kilinik</a>");
         return Ok();
       }
       else
@@ -156,6 +159,7 @@ namespace ePatientCare.Controllers
         userInfo.Reason = model.Reason;
         userInfo.Enabled = 0;
         userInfo.CreatedDate = DateTime.UtcNow;
+        userInfo.IsRequest = 1;
         //userInfo.AppUser = user;
 
         userdetails.Add(userInfo);
@@ -207,8 +211,8 @@ namespace ePatientCare.Controllers
         var code = await userManager.GeneratePasswordResetTokenAsync(user);
         //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
         var protocol = HttpContext.Request.Scheme;
-
-        var callbackUrl = protocol + "://localhost:5000/resetpassword/?userid=" + user.Id + "&code=" + code;
+        var host = HttpContext.Request.Host;
+        var callbackUrl = protocol + "://" + host + "/resetpassword/?userid=" + user.Id + "&code=" + code;
         await emailSender.SendEmailAsync(model.Email, "Reset Password",
            $"Please reset your password by clicking <a href='{callbackUrl}'>here</a>");
         return Ok();
@@ -265,7 +269,7 @@ namespace ePatientCare.Controllers
       }
       context.Update(user);
       context.SaveChanges();
-
+      
       if (fromrequest) {
         if (await CreateAccountFromRequest(id))
           return Ok();
@@ -280,14 +284,20 @@ namespace ePatientCare.Controllers
 
     private async Task<bool> DoLogin(LoginViewModel creds)
     {
+      var userInfo = context.UserDetails.Where(u => u.Username == creds.Name).FirstOrDefault();
+      // check if account is disabled
+      if(userInfo.Enabled == 0)
+      {
+        return false;
+      }
       AppUser user = await userManager.FindByNameAsync(creds.Name);
       if (user != null)
       {
 
         await signInManager.SignOutAsync();
         Microsoft.AspNetCore.Identity.SignInResult result =
-            await signInManager.PasswordSignInAsync(user, creds.Password,
-                false, false);
+        await signInManager.PasswordSignInAsync(user, creds.Password, false, false);
+
         return result.Succeeded;
       }
       return false;
@@ -334,6 +344,7 @@ namespace ePatientCare.Controllers
         // update userdetails and link with newly created user account
         userdetails.AppUser = appUser;
         userdetails.Enabled = 1;
+        userdetails.IsRequest = 0;
         userdetails.LastUpdatedDate = DateTime.UtcNow;
         context.Update(userdetails);
         context.SaveChanges();

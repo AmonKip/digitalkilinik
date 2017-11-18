@@ -20,8 +20,8 @@ export class AuthenticationComponent {
                 this.repo.getVisits();
             }
             if (this.authService.isAdmin) {
-                this.repo.getUsers();
-                this.repo.getRoles();
+                //this.repo.getUsers();
+                //this.repo.getRoles();
             }
         });
     }
