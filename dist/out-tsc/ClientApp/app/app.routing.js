@@ -29,10 +29,12 @@ var roledetail_component_1 = require("./admin/roledetail.component");
 var usersrolemanager_component_1 = require("./admin/usersrolemanager.component");
 var createrole_component_1 = require("./admin/createrole.component");
 var passwordresetconfirmation_component_1 = require("./structure/passwordresetconfirmation.component");
+var forgotpasswordconfirm_component_1 = require("./structure/forgotpasswordconfirm.component");
 //import { PatientResolver } from "./models/resolver.model";
 var routes = [
     { path: "login", component: authentication_component_1.AuthenticationComponent },
     { path: "passwordresetconfirm", component: passwordresetconfirmation_component_1.PasswordResetConfirmComponent },
+    { path: "forgotpasswordconfirm", component: forgotpasswordconfirm_component_1.ForgotPasswordConfirmComponent },
     { path: "forgotpassword", component: forgotpassword_component_1.ForgotPasswordComponent },
     { path: "resetpassword", component: resetpassword_component_1.ResetPasswordComponent },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },

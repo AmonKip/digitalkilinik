@@ -72,7 +72,7 @@ export class AuthenticationService implements OnInit {
                     this.confirmpassword = null;
                     this.email = null;
                     this.code = null;
-                    this.router.navigateByUrl(this.callbackUrl || "/passwordresetconfirm");
+                    this.router.navigateByUrl("/passwordresetconfirm");
                 
                 }
                 return this.authenticated;
@@ -92,7 +92,7 @@ export class AuthenticationService implements OnInit {
                 this.authenticated = false;
                 this.isAdmin = false;
                 this.email = null;
-                this.router.navigateByUrl(this.callbackUrl || "/forgotpasswordconfirmation");
+                this.router.navigateByUrl("/forgotpasswordconfirmation");
                 
             }
             return this.authenticated;
