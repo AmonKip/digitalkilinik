@@ -410,7 +410,7 @@ var AuthenticationService = (function () {
                 _this.authenticated = false;
                 _this.isAdmin = false;
                 _this.email = null;
-                _this.router.navigateByUrl("/forgotpasswordconfirmation");
+                _this.router.navigateByUrl("/forgotpasswordconfirm");
             }
             return _this.authenticated;
         })

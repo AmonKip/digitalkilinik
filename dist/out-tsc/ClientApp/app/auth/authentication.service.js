@@ -69,7 +69,7 @@ var AuthenticationService = (function () {
                 _this.confirmpassword = null;
                 _this.email = null;
                 _this.code = null;
-                _this.router.navigateByUrl(_this.callbackUrl || "/passwordresetconfirm");
+                _this.router.navigateByUrl("/passwordresetconfirm");
             }
             return _this.authenticated;
         })
@@ -88,7 +88,7 @@ var AuthenticationService = (function () {
                 _this.authenticated = false;
                 _this.isAdmin = false;
                 _this.email = null;
-                _this.router.navigateByUrl(_this.callbackUrl || "/forgotpasswordconfirmation");
+                _this.router.navigateByUrl("/forgotpasswordconfirmation");
             }
             return _this.authenticated;
         })

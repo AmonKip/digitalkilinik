@@ -92,7 +92,7 @@ export class AuthenticationService implements OnInit {
                 this.authenticated = false;
                 this.isAdmin = false;
                 this.email = null;
-                this.router.navigateByUrl("/forgotpasswordconfirmation");
+                this.router.navigateByUrl("/forgotpasswordconfirm");
                 
             }
             return this.authenticated;
