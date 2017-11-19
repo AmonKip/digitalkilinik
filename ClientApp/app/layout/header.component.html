@@ -1,13 +1,16 @@
-﻿<div class="navArea row">
+﻿<div id="navArea" class="navArea row">
+  <div>
+   <p class="btn mt-0.8 ml-2 mr-1 pb-1.1 logo" routerLink="/table"><i class="fa fa-medkit" style="color:red"></i> <i class="font-weight-bold" style="color:red">Digital</i><i>Kilinik</i></p>
+  </div>
     <div class="">
-      <a class="btn ml-3"
-              routerLink="/table">
+      <a class="btn ml-1"
+              routerLink="/table" [routerLinkActive]="['active']">
         Patients
       </a>
     </div>
-    <div class="">
-      <a class="btn btn-default ml-2"
-              routerLink="/visittable">
+    <div class="" >
+      <a id="visit"class="btn btn-default ml-2"
+              routerLink="/visittable" [routerLinkActive]="['active']">
         Visits
       </a>
     </div>
@@ -19,7 +22,7 @@
    </div>-->
   <div *ngIf="isAdmin" class="">
     <a class="btn btn-default ml-2"
-            routerLink="/admin/overview">
+            routerLink="/admin/overview" [routerLinkActive]="['active']">
       Admin
     </a>
   </div>
@@ -46,14 +49,29 @@
     color: white;
     
   }
+  .btn{
+    padding: 7px 3px 7px 3px;
+    margin-top: 3px;
+  }
 
   a:hover {
     border: 1px solid;
     outline-color: dodgerblue;
     color: white;
   }
+  .active {
+    border: 1px solid;
+    outline-color: dodgerblue;
+    color: white;
+  }
+  .logo:hover {
+    border: 1px solid;
+    outline-color: dodgerblue;
+    color: white;
+  }
   .userwelcome {
     color: dimgrey !important;
+    padding-top: 5px;
 
   }
   .userwelcome:hover {

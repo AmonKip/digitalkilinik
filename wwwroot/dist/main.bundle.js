@@ -295,7 +295,7 @@ var Repository = (function () {
     return Repository;
 }());
 Repository = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_http__["d" /* Http */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_7_ng4_loading_spinner__["b" /* Ng4LoadingSpinnerService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_7_ng4_loading_spinner__["b" /* Ng4LoadingSpinnerService */]) === "function" && _b || Object])
 ], Repository);
 
@@ -423,7 +423,7 @@ var AuthenticationService = (function () {
     return AuthenticationService;
 }());
 AuthenticationService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["b" /* Router */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_router__["c" /* ActivatedRoute */]) === "function" && _c || Object])
 ], AuthenticationService);
 
@@ -503,7 +503,7 @@ var ErrorHandlerService = (function () {
     return ErrorHandlerService;
 }());
 ErrorHandlerService = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])()
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])()
 ], ErrorHandlerService);
 
 var ValidationError = (function () {
@@ -638,7 +638,7 @@ var AppUserDetailAdminComponent = (function () {
     return AppUserDetailAdminComponent;
 }());
 AppUserDetailAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "user-detail",
         template: __webpack_require__(149)
     }),
@@ -721,7 +721,7 @@ var AppUserEditAdminComponent = (function () {
     return AppUserEditAdminComponent;
 }());
 AppUserEditAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "user-edit",
         template: __webpack_require__(150)
     }),
@@ -769,7 +769,7 @@ var AppUserRequestAdminComponent = (function () {
     return AppUserRequestAdminComponent;
 }());
 AppUserRequestAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "appUserRequestAdmin-table",
         template: __webpack_require__(151)
     }),
@@ -823,7 +823,7 @@ var AdminComponent = (function () {
     return AdminComponent;
 }());
 AdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         template: __webpack_require__(152)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__auth_authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
@@ -888,7 +888,7 @@ var AppUserAdminComponent = (function () {
     return AppUserAdminComponent;
 }());
 AppUserAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "appUserAdmin-table",
         template: __webpack_require__(153)
     }),
@@ -962,7 +962,7 @@ var AppUserCreateAdminComponent = (function () {
     return AppUserCreateAdminComponent;
 }());
 AppUserCreateAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "useradmin-create",
         template: __webpack_require__(154)
     }),
@@ -1036,7 +1036,7 @@ var CreateRoleComponent = (function () {
     return CreateRoleComponent;
 }());
 CreateRoleComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "rolesmanage-table",
         template: __webpack_require__(155)
     }),
@@ -1103,7 +1103,7 @@ var OverviewComponent = (function () {
     return OverviewComponent;
 }());
 OverviewComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         template: __webpack_require__(156)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__models_repository__["a" /* Repository */]) === "function" && _a || Object])
@@ -1166,7 +1166,7 @@ var PatientAdminComponent = (function () {
     return PatientAdminComponent;
 }());
 PatientAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "patientAdmin-table",
         template: __webpack_require__(157)
     }),
@@ -1237,7 +1237,7 @@ var PatientDetailAdminComponent = (function () {
     return PatientDetailAdminComponent;
 }());
 PatientDetailAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "patient-detailAdmin",
         template: __webpack_require__(158)
     }),
@@ -1298,7 +1298,7 @@ var RoleDetailComponent = (function () {
     return RoleDetailComponent;
 }());
 RoleDetailComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "role-detail",
         template: __webpack_require__(159)
     }),
@@ -1349,7 +1349,7 @@ var RolesTableComponent = (function () {
     return RolesTableComponent;
 }());
 RolesTableComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "roles-table",
         template: __webpack_require__(160)
     }),
@@ -1438,7 +1438,7 @@ var RoleManagerComponent = (function () {
     return RoleManagerComponent;
 }());
 RoleManagerComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "rolemanager-table",
         template: __webpack_require__(161)
     }),
@@ -1488,7 +1488,7 @@ var VisitAdminComponent = (function () {
     return VisitAdminComponent;
 }());
 VisitAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "visitsadmin-table",
         template: __webpack_require__(162)
     }),
@@ -1541,7 +1541,7 @@ var VisitDetailAdminComponent = (function () {
     return VisitDetailAdminComponent;
 }());
 VisitDetailAdminComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "visitsadmin-detail",
         template: __webpack_require__(163)
     }),
@@ -1600,7 +1600,7 @@ var AdminAuthGuard = (function () {
     return AdminAuthGuard;
 }());
 AdminAuthGuard = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
 ], AdminAuthGuard);
 
@@ -1652,7 +1652,7 @@ var AuthenticationComponent = (function () {
     return AuthenticationComponent;
 }());
 AuthenticationComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         template: __webpack_require__(165)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__models_repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__models_repository__["a" /* Repository */]) === "function" && _b || Object])
@@ -1710,7 +1710,7 @@ var AuthenticationGuard = (function () {
     return AuthenticationGuard;
 }());
 AuthenticationGuard = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__angular_router__["b" /* Router */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__authentication_service__["a" /* AuthenticationService */]) === "function" && _b || Object])
 ], AuthenticationGuard);
 
@@ -1751,7 +1751,7 @@ var ForgotPasswordComponent = (function () {
     return ForgotPasswordComponent;
 }());
 ForgotPasswordComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         template: __webpack_require__(166)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object])
@@ -1802,7 +1802,7 @@ var ResetPasswordComponent = (function () {
     return ResetPasswordComponent;
 }());
 ResetPasswordComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         template: __webpack_require__(167)
     }),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__authentication_service__["a" /* AuthenticationService */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__angular_router__["c" /* ActivatedRoute */]) === "function" && _b || Object])
@@ -1904,7 +1904,7 @@ var AppUserCreateComponent = (function () {
     return AppUserCreateComponent;
 }());
 AppUserCreateComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "user-create",
         template: __webpack_require__(171)
     }),
@@ -1990,7 +1990,7 @@ var PatientCreateComponent = (function () {
     return PatientCreateComponent;
 }());
 PatientCreateComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "patient-create",
         template: __webpack_require__(175)
     }),
@@ -2061,7 +2061,7 @@ var PatientDetailComponent = (function () {
     return PatientDetailComponent;
 }());
 PatientDetailComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "patient-detail",
         template: __webpack_require__(176)
     }),
@@ -2144,7 +2144,7 @@ var PatientEditComponent = (function () {
     return PatientEditComponent;
 }());
 PatientEditComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "patient-edit",
         template: __webpack_require__(177)
     }),
@@ -2214,7 +2214,7 @@ var PatientTableComponent = (function () {
     return PatientTableComponent;
 }());
 PatientTableComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "patient-table",
         template: __webpack_require__(178)
     }),
@@ -2266,7 +2266,7 @@ var VisitDetailComponent = (function () {
     return VisitDetailComponent;
 }());
 VisitDetailComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "visit-detail",
         template: __webpack_require__(179)
     }),
@@ -2317,7 +2317,7 @@ var VisitTableComponent = (function () {
     return VisitTableComponent;
 }());
 VisitTableComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "visit-table",
         template: __webpack_require__(180)
     }),
@@ -2362,23 +2362,25 @@ var _a, _b;
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(182);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_app_module__ = __webpack_require__(133);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__ = __webpack_require__(182);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__app_app_module__ = __webpack_require__(133);
+
 
 
 var bootApplication = function () {
-    //enableProdMode();
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_app_module__["a" /* AppModule */]);
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* enableProdMode */])();
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_2__app_app_module__["a" /* AppModule */]);
 };
-if (true) {
-    module["hot"].accept();
-    module["hot"].dispose(function () {
-        var oldRootElem = document.querySelector("app-root");
-        var newRootElem = document.createElement("app-root");
-        oldRootElem.parentNode.insertBefore(newRootElem, oldRootElem);
-        __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().destroy();
-    });
-}
+//if (module["hot"]) {
+//    module["hot"].accept();
+//    module["hot"].dispose(() => {
+//        const oldRootElem = document.querySelector("app-root");
+//        const newRootElem = document.createElement("app-root");
+//        oldRootElem.parentNode.insertBefore(newRootElem, oldRootElem);
+//        platformBrowserDynamic().destroy();
+//    });
+//}
 if (document.readyState === "complete") {
     bootApplication();
 }
@@ -2445,7 +2447,7 @@ var AdminModule = (function () {
     return AdminModule;
 }());
 AdminModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_router__["a" /* RouterModule */], __WEBPACK_IMPORTED_MODULE_3__angular_forms__["a" /* FormsModule */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_5__admin_component__["a" /* AdminComponent */], __WEBPACK_IMPORTED_MODULE_4__overview_component__["a" /* OverviewComponent */], __WEBPACK_IMPORTED_MODULE_6__patientAdmin_component__["a" /* PatientAdminComponent */],
             __WEBPACK_IMPORTED_MODULE_7__appUserAdmin_component__["a" /* AppUserAdminComponent */], __WEBPACK_IMPORTED_MODULE_8__patientDetailAdmin_component__["a" /* PatientDetailAdminComponent */],
@@ -2512,7 +2514,7 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 AppComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: 'app-root',
         template: __webpack_require__(164),
         styles: [__webpack_require__(148)]
@@ -2555,6 +2557,7 @@ var _a, _b;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_24_ng4_loading_spinner__ = __webpack_require__(113);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_25__models_resolver_model__ = __webpack_require__(143);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__structure_passwordresetconfirmation_component__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__structure_forgotpasswordconfirm_component__ = __webpack_require__(283);
 /* unused harmony export handler */
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -2563,6 +2566,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+
 
 
 
@@ -2601,18 +2605,19 @@ var AppModule = (function () {
     return AppModule;
 }());
 AppModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["a" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* NgModule */])({
         declarations: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */], __WEBPACK_IMPORTED_MODULE_6__structure_patientTable_component__["a" /* PatientTableComponent */],
             __WEBPACK_IMPORTED_MODULE_9__structure_visitTable_component__["a" /* VisitTableComponent */], __WEBPACK_IMPORTED_MODULE_10__structure_visitDetail_component__["a" /* VisitDetailComponent */],
             __WEBPACK_IMPORTED_MODULE_7__structure_categoryFilter_component__["a" /* CategoryFilterComponent */], __WEBPACK_IMPORTED_MODULE_8__structure_patientDetail_component__["a" /* PatientDetailComponent */],
             __WEBPACK_IMPORTED_MODULE_11__structure_employeeTable_component__["a" /* EmployeeTableComponent */], __WEBPACK_IMPORTED_MODULE_12__structure_employeeDetail_component__["a" /* EmployeeDetailComponent */],
             __WEBPACK_IMPORTED_MODULE_13__structure_patientCreate_component__["a" /* PatientCreateComponent */], __WEBPACK_IMPORTED_MODULE_17__structure_appUserCreate_Component__["a" /* AppUserCreateComponent */],
             __WEBPACK_IMPORTED_MODULE_18__filter_patient_pipe__["a" /* PatientFilterPipe */], __WEBPACK_IMPORTED_MODULE_19__shared_search_component__["a" /* SearchComponent */], __WEBPACK_IMPORTED_MODULE_14__structure_patientEdit_component__["a" /* PatientEditComponent */],
-            __WEBPACK_IMPORTED_MODULE_22__layout_header_component__["a" /* HeaderComponent */], __WEBPACK_IMPORTED_MODULE_23__layout_footer_component__["a" /* FooterComponent */], __WEBPACK_IMPORTED_MODULE_26__structure_passwordresetconfirmation_component__["a" /* PasswordResetConfirmComponent */]],
+            __WEBPACK_IMPORTED_MODULE_22__layout_header_component__["a" /* HeaderComponent */], __WEBPACK_IMPORTED_MODULE_23__layout_footer_component__["a" /* FooterComponent */], __WEBPACK_IMPORTED_MODULE_26__structure_passwordresetconfirmation_component__["a" /* PasswordResetConfirmComponent */],
+            __WEBPACK_IMPORTED_MODULE_27__structure_forgotpasswordconfirm_component__["a" /* ForgotPasswordConfirmComponent */]],
         imports: [__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_forms__["b" /* ReactiveFormsModule */],
             __WEBPACK_IMPORTED_MODULE_3__angular_http__["a" /* HttpModule */], __WEBPACK_IMPORTED_MODULE_5__models_model_module__["a" /* ModelModule */], __WEBPACK_IMPORTED_MODULE_15__app_routing__["a" /* RoutingConfig */], __WEBPACK_IMPORTED_MODULE_16__admin_admin_module__["a" /* AdminModule */], __WEBPACK_IMPORTED_MODULE_21__auth_auth_module__["a" /* AuthModule */], __WEBPACK_IMPORTED_MODULE_24_ng4_loading_spinner__["a" /* Ng4LoadingSpinnerModule */]],
         providers: [{ provide: __WEBPACK_IMPORTED_MODULE_20__services_errorHandler_service__["a" /* ErrorHandlerService */], useFactory: handler },
-            { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["b" /* ErrorHandler */], useFactory: handler }, __WEBPACK_IMPORTED_MODULE_25__models_resolver_model__["a" /* PatientResolver */]],
+            { provide: __WEBPACK_IMPORTED_MODULE_1__angular_core__["c" /* ErrorHandler */], useFactory: handler }, __WEBPACK_IMPORTED_MODULE_25__models_resolver_model__["a" /* PatientResolver */]],
         bootstrap: [__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* AppComponent */]]
     })
 ], AppModule);
@@ -2653,7 +2658,9 @@ AppModule = __decorate([
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_26__admin_usersrolemanager_component__ = __webpack_require__(83);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_27__admin_createrole_component__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_28__structure_passwordresetconfirmation_component__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_29__structure_forgotpasswordconfirm_component__ = __webpack_require__(283);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return RoutingConfig; });
+
 
 
 
@@ -2687,6 +2694,7 @@ AppModule = __decorate([
 var routes = [
     { path: "login", component: __WEBPACK_IMPORTED_MODULE_15__auth_authentication_component__["a" /* AuthenticationComponent */] },
     { path: "passwordresetconfirm", component: __WEBPACK_IMPORTED_MODULE_28__structure_passwordresetconfirmation_component__["a" /* PasswordResetConfirmComponent */] },
+    { path: "forgotpasswordconfirm", component: __WEBPACK_IMPORTED_MODULE_29__structure_forgotpasswordconfirm_component__["a" /* ForgotPasswordConfirmComponent */] },
     { path: "forgotpassword", component: __WEBPACK_IMPORTED_MODULE_22__auth_forgotpassword_component__["a" /* ForgotPasswordComponent */] },
     { path: "resetpassword", component: __WEBPACK_IMPORTED_MODULE_23__auth_resetpassword_component__["a" /* ResetPasswordComponent */] },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
@@ -2764,7 +2772,7 @@ var AuthModule = (function () {
     return AuthModule;
 }());
 AuthModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         imports: [__WEBPACK_IMPORTED_MODULE_3__angular_router__["a" /* RouterModule */], __WEBPACK_IMPORTED_MODULE_1__angular_forms__["a" /* FormsModule */], __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["a" /* BrowserModule */]],
         declarations: [__WEBPACK_IMPORTED_MODULE_5__authentication_component__["a" /* AuthenticationComponent */], __WEBPACK_IMPORTED_MODULE_8__forgotpassword_component__["a" /* ForgotPasswordComponent */], __WEBPACK_IMPORTED_MODULE_9__resetpassword_component__["a" /* ResetPasswordComponent */]],
         providers: [__WEBPACK_IMPORTED_MODULE_4__authentication_service__["a" /* AuthenticationService */], __WEBPACK_IMPORTED_MODULE_6__authentication_guard__["a" /* AuthenticationGuard */], __WEBPACK_IMPORTED_MODULE_7__adminauthentication_guard__["a" /* AdminAuthGuard */]],
@@ -2802,7 +2810,7 @@ var PatientFilterPipe = (function () {
     return PatientFilterPipe;
 }());
 PatientFilterPipe = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Y" /* Pipe */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["Z" /* Pipe */])({
         name: 'patientFilter'
     })
 ], PatientFilterPipe);
@@ -2830,7 +2838,7 @@ var FooterComponent = (function () {
     return FooterComponent;
 }());
 FooterComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: 'layout-footer',
         template: __webpack_require__(168)
     })
@@ -2866,7 +2874,7 @@ var HeaderComponent = (function () {
     return HeaderComponent;
 }());
 HeaderComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: 'layout-header',
         template: __webpack_require__(169)
     }),
@@ -2931,7 +2939,7 @@ var ModelModule = (function () {
     return ModelModule;
 }());
 ModelModule = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["a" /* NgModule */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["b" /* NgModule */])({
         providers: [__WEBPACK_IMPORTED_MODULE_1__repository__["a" /* Repository */]]
     })
 ], ModelModule);
@@ -2995,7 +3003,7 @@ var PatientResolver = (function () {
     return PatientResolver;
 }());
 PatientResolver = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["c" /* Injectable */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Injectable */])(),
     __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__repository__["a" /* Repository */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__repository__["a" /* Repository */]) === "function" && _a || Object])
 ], PatientResolver);
 
@@ -3021,7 +3029,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 var SearchComponent = (function () {
     function SearchComponent() {
-        this.change = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* EventEmitter */]();
+        this.change = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["H" /* EventEmitter */]();
     }
     SearchComponent.prototype.getEachChar = function (value) {
         this.change.emit(value);
@@ -3038,15 +3046,15 @@ var SearchComponent = (function () {
     return SearchComponent;
 }());
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["d" /* Input */])(),
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Input */])(),
     __metadata("design:type", String)
 ], SearchComponent.prototype, "title", void 0);
 __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_5" /* Output */])(),
-    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["G" /* EventEmitter */]) === "function" && _a || Object)
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["_6" /* Output */])(),
+    __metadata("design:type", typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_core__["H" /* EventEmitter */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_core__["H" /* EventEmitter */]) === "function" && _a || Object)
 ], SearchComponent.prototype, "change", void 0);
 SearchComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: 'search-list',
         template: __webpack_require__(170)
     })
@@ -3086,7 +3094,7 @@ var CategoryFilterComponent = (function () {
     return CategoryFilterComponent;
 }());
 CategoryFilterComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "category-filter",
         template: __webpack_require__(172)
     }),
@@ -3138,7 +3146,7 @@ var EmployeeDetailComponent = (function () {
     return EmployeeDetailComponent;
 }());
 EmployeeDetailComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "employee-detail",
         template: __webpack_require__(173)
     }),
@@ -3188,7 +3196,7 @@ var EmployeeTableComponent = (function () {
     return EmployeeTableComponent;
 }());
 EmployeeTableComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         selector: "employee-table",
         template: __webpack_require__(174)
     }),
@@ -3339,7 +3347,7 @@ module.exports = "<footer>\r\n  <div class=\"container footer\">\r\n    <a class
 /* 169 */
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"navArea row\">\r\n    <div class=\"\">\r\n      <a class=\"btn ml-3\"\r\n              routerLink=\"/table\">\r\n        Patients\r\n      </a>\r\n    </div>\r\n    <div class=\"\">\r\n      <a class=\"btn btn-default ml-2\"\r\n              routerLink=\"/visittable\">\r\n        Visits\r\n      </a>\r\n    </div>\r\n   <!--<div class=\"\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/\">\r\n      Settings\r\n    </a>\r\n   </div>-->\r\n  <div *ngIf=\"isAdmin\" class=\"\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/admin/overview\">\r\n      Admin\r\n    </a>\r\n  </div>\r\n  <div class=\"col text-right mr-2\">\r\n      <a class=\"userwelcome\" routerLink=\"/login\">Welcome, {{name}}</a>\r\n      <a class=\"btn btn-default\"\r\n              (click)=\"authService.logout()\">\r\n        Log Out\r\n      </a>\r\n   </div>\r\n</div>\r\n\r\n<style>\r\n  .navArea {\r\n    background-color: #080c5e;\r\n    color: white;\r\n    height: 45px;\r\n    padding-bottom: 0;\r\n    padding-top: 5px;\r\n  }\r\n\r\n  .a{\r\n    text-decoration: none;\r\n    color: white;\r\n    \r\n  }\r\n\r\n  a:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }\r\n  .userwelcome {\r\n    color: dimgrey !important;\r\n\r\n  }\r\n  .userwelcome:hover {\r\n    text-decoration: underline !important;\r\n    border: none;\r\n    cursor: pointer;\r\n    color: deepskyblue !important;\r\n  }\r\n  /*.btnLogout{\r\n    color: dodgerblue !important;\r\n  }\r\n  btnLogout:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }*/\r\n\r\n</style>"
+module.exports = "<div id=\"navArea\" class=\"navArea row\">\r\n  <div>\r\n   <p class=\"btn mt-0.8 ml-2 mr-1 pb-1.1 logo\" routerLink=\"/table\"><i class=\"fa fa-medkit\" style=\"color:red\"></i> <i class=\"font-weight-bold\" style=\"color:red\">Digital</i><i>Kilinik</i></p>\r\n  </div>\r\n    <div class=\"\">\r\n      <a class=\"btn ml-1\"\r\n              routerLink=\"/table\" [routerLinkActive]=\"['active']\">\r\n        Patients\r\n      </a>\r\n    </div>\r\n    <div class=\"\" >\r\n      <a id=\"visit\"class=\"btn btn-default ml-2\"\r\n              routerLink=\"/visittable\" [routerLinkActive]=\"['active']\">\r\n        Visits\r\n      </a>\r\n    </div>\r\n   <!--<div class=\"\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/\">\r\n      Settings\r\n    </a>\r\n   </div>-->\r\n  <div *ngIf=\"isAdmin\" class=\"\">\r\n    <a class=\"btn btn-default ml-2\"\r\n            routerLink=\"/admin/overview\" [routerLinkActive]=\"['active']\">\r\n      Admin\r\n    </a>\r\n  </div>\r\n  <div class=\"col text-right mr-2\">\r\n      <a class=\"userwelcome\" routerLink=\"/login\">Welcome, {{name}}</a>\r\n      <a class=\"btn btn-default\"\r\n              (click)=\"authService.logout()\">\r\n        Log Out\r\n      </a>\r\n   </div>\r\n</div>\r\n\r\n<style>\r\n  .navArea {\r\n    background-color: #080c5e;\r\n    color: white;\r\n    height: 45px;\r\n    padding-bottom: 0;\r\n    padding-top: 5px;\r\n  }\r\n\r\n  .a{\r\n    text-decoration: none;\r\n    color: white;\r\n    \r\n  }\r\n  .btn{\r\n    padding: 7px 3px 7px 3px;\r\n    margin-top: 3px;\r\n  }\r\n\r\n  a:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }\r\n  .active {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }\r\n  .logo:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }\r\n  .userwelcome {\r\n    color: dimgrey !important;\r\n    padding-top: 5px;\r\n\r\n  }\r\n  .userwelcome:hover {\r\n    text-decoration: underline !important;\r\n    border: none;\r\n    cursor: pointer;\r\n    color: deepskyblue !important;\r\n  }\r\n  /*.btnLogout{\r\n    color: dodgerblue !important;\r\n  }\r\n  btnLogout:hover {\r\n    border: 1px solid;\r\n    outline-color: dodgerblue;\r\n    color: white;\r\n  }*/\r\n\r\n</style>"
 
 /***/ }),
 /* 170 */
@@ -3540,7 +3548,7 @@ var PasswordResetConfirmComponent = (function () {
     return PasswordResetConfirmComponent;
 }());
 PasswordResetConfirmComponent = __decorate([
-    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["e" /* Component */])({
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
         template: __webpack_require__(282)
     }),
     __metadata("design:paramtypes", [])
@@ -3553,6 +3561,46 @@ PasswordResetConfirmComponent = __decorate([
 /***/ (function(module, exports) {
 
 module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <a class=\"navbar-brand text-white\"> Password Reset Confirmation </a>\r\n</div>\r\n\r\n<div class=\"alert alert-success mt-3\">\r\n  <div class=\"card-body\">{{message}}</div>\r\n</div>\r\n<div class=\"btn btn-primary mt-4\" routerLink=\"/login\">\r\n  Login\r\n</div>"
+
+/***/ }),
+/* 283 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return ForgotPasswordConfirmComponent; });
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+//import { AuthenticationService } from "./authentication.service";
+//import { Repository } from "../models/repository";
+var ForgotPasswordConfirmComponent = (function () {
+    function ForgotPasswordConfirmComponent() {
+        this.message = "Email reset has been sent! Please check your inbox to reset your password.";
+    }
+    return ForgotPasswordConfirmComponent;
+}());
+ForgotPasswordConfirmComponent = __decorate([
+    __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["f" /* Component */])({
+        template: __webpack_require__(284)
+    }),
+    __metadata("design:paramtypes", [])
+], ForgotPasswordConfirmComponent);
+
+//# sourceMappingURL=forgotpasswordconfirm.component.js.map
+
+/***/ }),
+/* 284 */
+/***/ (function(module, exports) {
+
+module.exports = "<div class=\"navbar bg-info mb-1\">\r\n  <a class=\"navbar-brand text-white\"> Email Sent Confirmation </a>\r\n</div>\r\n\r\n<div class=\"alert alert-success mt-3\">\r\n  <div class=\"card-body\">{{message}}</div>\r\n</div>\r\n<div class=\"btn btn-primary mt-4\" routerLink=\"/login\">\r\n  Login\r\n</div>"
 
 /***/ })
 ],[278]);

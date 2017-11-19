@@ -38,4 +38,9 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="ClientApp\app\structure\passwordresetconfirm.component.html" />
+    <None Include="ClientApp\app\structure\passwordresetconfirm.component.ts" />
+  </ItemGroup>
+
 </Project>

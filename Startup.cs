@@ -36,8 +36,8 @@ namespace ePatientCare
         {
       var builder = new ConfigurationBuilder()
           .SetBasePath(env.ContentRootPath)
-          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-                //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -106,11 +106,11 @@ namespace ePatientCare
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-        app.UseDeveloperExceptionPage();
-        app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-        {
-          HotModuleReplacement = true
-        });
+        //app.UseDeveloperExceptionPage();
+        //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+        //{
+        //  HotModuleReplacement = true
+        //});
       //if (env.IsDevelopment())
       //{
       //  app.UseDeveloperExceptionPage();
