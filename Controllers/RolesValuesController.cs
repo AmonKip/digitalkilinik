@@ -39,7 +39,7 @@ namespace ePatientCare.Controllers
     [Route("api/roles")]
     public IEnumerable<IdentityRole> GetRoles() 
     { 
-       System.Threading.Thread.Sleep(5000);
+      // System.Threading.Thread.Sleep(5000);
       return roleManager.Roles;
     }
 
@@ -49,7 +49,7 @@ namespace ePatientCare.Controllers
     [Route("api/addrole")]
     public async Task<IActionResult> CreateRole([FromBody] RoleViewModel model)
     {
-      System.Threading.Thread.Sleep(5000);
+     // System.Threading.Thread.Sleep(5000);
       if (ModelState.IsValid)
       {
         IdentityResult result = await roleManager.CreateAsync(new IdentityRole(model.Name));

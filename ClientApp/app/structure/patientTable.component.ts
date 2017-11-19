@@ -25,6 +25,9 @@ export class PatientTableComponent {
        // this.spinnerService.hide();
         return this.repo.patients;
     }
+    get patientCount(){
+        return this.repo.patients ? this.repo.patients.length: [];
+    }
 
     selectPatient(id: number) {
         this.repo.getPatient(id);

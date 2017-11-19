@@ -28,11 +28,14 @@ import { RolesTableComponent } from "./admin/rolestable.component";
 import { RoleDetailComponent } from "./admin/roledetail.component";
 import { RoleManagerComponent } from "./admin/usersrolemanager.component";
 import { CreateRoleComponent } from "./admin/createrole.component";
+import { PasswordResetConfirmComponent } from "./structure/passwordresetconfirmation.component";
+
 //import { PatientResolver } from "./models/resolver.model";
 
 
 const routes: Routes = [
     { path: "login", component: AuthenticationComponent },
+    { path: "passwordresetconfirm", component: PasswordResetConfirmComponent },
     { path: "forgotpassword", component: ForgotPasswordComponent },
     { path: "resetpassword", component: ResetPasswordComponent },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
@@ -58,6 +61,7 @@ const routes: Routes = [
             {path: "**", redirectTo: "/admin/overview"}]
     },
 
+    //{ path: "login", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
     { path: "table", component: PatientTableComponent, canActivate: [AuthenticationGuard]},
     { path: "patientedit/:id", component: PatientEditComponent, canActivate: [AuthenticationGuard] },
     { path: "visittable/:id", component: VisitTableComponent, canActivate: [AuthenticationGuard] },
@@ -66,7 +70,7 @@ const routes: Routes = [
     { path: "visitdetail/:id", component: VisitDetailComponent, canActivate: [AuthenticationGuard] },
     { path: "patientcreate", component: PatientCreateComponent, canActivate: [AuthenticationGuard] },
     { path: "accountcreate", component: AppUserCreateComponent },
-    { path: "**", redirectTo: "/table" }
+    { path: "**", redirectTo: "/login" }
     ]
 
 export const RoutingConfig = RouterModule.forRoot(routes);

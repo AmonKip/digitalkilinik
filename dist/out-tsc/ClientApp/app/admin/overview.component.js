@@ -43,6 +43,9 @@ var OverviewComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    OverviewComponent.prototype.accountRequest = function () {
+        return this.repo.appUserRequests;
+    };
     return OverviewComponent;
 }());
 OverviewComponent = __decorate([

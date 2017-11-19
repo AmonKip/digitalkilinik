@@ -38,7 +38,7 @@ export class AuthenticationService implements OnInit {
 
                     this.authenticated = true;
                     this.password = null;
-                    this.router.navigateByUrl(this.callbackUrl || "/");
+                    this.router.navigateByUrl(this.callbackUrl || "/table");
                     this.callbackUrl = "";
 
                 }
@@ -56,7 +56,7 @@ export class AuthenticationService implements OnInit {
         this.authenticated = false;
         this.isAdmin = false;
         this.repo.logout();
-        window.location.reload();
+        window.location.replace("/login");
         //document.cookie = ".AspNetCore.Identity.Application; expires = Thu, 18 Dec 2013 12:00:00 UTC";
         //this.router.navigateByUrl("/login");
     }
@@ -72,7 +72,7 @@ export class AuthenticationService implements OnInit {
                     this.confirmpassword = null;
                     this.email = null;
                     this.code = null;
-                    this.router.navigateByUrl(this.callbackUrl || "/login");
+                    this.router.navigateByUrl(this.callbackUrl || "/passwordresetconfirm");
                 
                 }
                 return this.authenticated;

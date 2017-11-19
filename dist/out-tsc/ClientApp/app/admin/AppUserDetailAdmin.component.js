@@ -29,9 +29,13 @@ var AppUserDetailAdminComponent = (function () {
         var id = Number.parseInt(activeRoute.snapshot.params["id"]);
         if (id) {
             this.repo.getUser(id);
+            // if not from request get user roles from db
+            if (!this.request) {
+                this.repo.getRolesByUser(id);
+            }
         }
         else {
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl("/table");
         }
     }
     Object.defineProperty(AppUserDetailAdminComponent.prototype, "user", {
@@ -41,7 +45,20 @@ var AppUserDetailAdminComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(AppUserDetailAdminComponent.prototype, "userRoles", {
+        get: function () {
+            var result = this.repo.userRoles ? this.repo.userRoles.join() : "";
+            //console.log(result);
+            return result;
+        },
+        enumerable: true,
+        configurable: true
+    });
     AppUserDetailAdminComponent.prototype.approveRequest = function (id) {
+        var index = this.repo.appUserRequests.indexOf(id);
+        if (index > -1) {
+            this.repo.appUserRequests.slice(index, 1);
+        }
         this.repo.toggleAccount(id, true);
         this.router.navigateByUrl("/admin/overview");
     };

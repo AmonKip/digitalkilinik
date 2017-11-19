@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,26 +10,24 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var Observable_1 = require("rxjs/Observable");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
 var configClasses_repository_1 = require("./configClasses.repository");
 var errorHandler_service_1 = require("../services/errorHandler.service");
 require("rxjs/add/operator/catch");
+var ng4_loading_spinner_1 = require("ng4-loading-spinner");
 var patientsUrl = "api/patients";
 var employeesUrl = "api/employees";
 var visitsUrl = "api/visits";
 var addRequestUrl = "api/addrequest";
 var Repository = (function () {
-    function Repository(http) {
+    function Repository(http, spinnerService) {
         this.http = http;
+        this.spinnerService = spinnerService;
         this.filterObject = new configClasses_repository_1.Filter();
-        //this.filter.category = "";
         this.getPatients();
-        this.getEmployees();
         this.getVisits();
-        this.getUsers();
-        this.getRoles();
-        this.getAccountRequests();
     }
     Repository.prototype.getPatient = function (id) {
         var _this = this;
@@ -53,8 +51,15 @@ var Repository = (function () {
         if (!this.filter.category && this.filter.search) {
             url += "?search=" + this.filter.search;
         }
+        //this.spinnerService.show();
         this.sendRequest(http_1.RequestMethod.Get, url)
             .subscribe(function (response) { _this.patients = response; });
+    };
+    Repository.prototype.getAllPatients = function () {
+        var _this = this;
+        return Observable_1.Observable.create(function (observer) {
+            observer.next(_this.patients);
+        });
     };
     Repository.prototype.getEmployees = function () {
         var _this = this;
@@ -90,6 +95,12 @@ var Repository = (function () {
         var _this = this;
         this.sendRequest(http_1.RequestMethod.Get, "/api/roles")
             .subscribe(function (response) { _this.appRoles = response; });
+    };
+    // get roles by user
+    Repository.prototype.getRolesByUser = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/rolesbyuser/" + id)
+            .subscribe(function (response) { _this.userRoles = response; });
     };
     // get account requests
     Repository.prototype.getAccountRequests = function () {
@@ -174,12 +185,16 @@ var Repository = (function () {
     };
     // consolidated request method
     Repository.prototype.sendRequest = function (verb, url, data) {
+        var _this = this;
+        // this.spinnerService.show();
         return this.http.request(new http_1.Request({ method: verb, url: url, body: data }))
             .map(function (response) {
+            //this.spinnerService.hide();
             return response.headers.get("Content-Length") != "0"
                 ? response.json() : null;
         })
             .catch(function (errorResponse) {
+            _this.spinnerService.hide();
             if (errorResponse.status == 400) {
                 var jsonData_1;
                 try {
@@ -205,7 +220,7 @@ var Repository = (function () {
     };
     // login
     Repository.prototype.login = function (name, password) {
-        return this.http.post("/token/login", { name: name, password: password });
+        return this.http.post("/api/account/login", { name: name, password: password });
     };
     // email password reset 
     Repository.prototype.resetPassword = function (email, password, confirmpassword, code) {
@@ -222,11 +237,37 @@ var Repository = (function () {
     Repository.prototype.hasAdminRole = function (email) {
         return this.http.post("/api/account/isadmin", { email: email });
     };
+    // enable / disable user
     Repository.prototype.toggleAccount = function (id, fromrequest) {
         var _this = this;
         if (fromrequest === void 0) { fromrequest = false; }
         this.sendRequest(http_1.RequestMethod.Post, "/api/account/toggle/" + id + "?fromrequest=" + fromrequest)
             .subscribe(function (response) { return _this.getUsers(); });
+    };
+    // get user roles
+    Repository.prototype.getUsersInRole = function (rolename) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/usersrole/" + rolename)
+            .subscribe(function (response) { _this.roleUsers = response; });
+    };
+    // add user to role
+    Repository.prototype.addUserToRole = function (id, rolename) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/addtorole/" + id + "?rolename=" + rolename)
+            .subscribe(function (response) { _this.roleUsers = response; });
+    };
+    // remove user from role
+    Repository.prototype.removeUserFromRole = function (id, rolename) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/removefromrole/" + id + "?rolename=" + rolename)
+            .subscribe(function (response) { _this.roleUsers = response; });
+    };
+    // add new role to roles table
+    Repository.prototype.addRole = function (approle) {
+        var _this = this;
+        var data = { name: approle.name };
+        this.sendRequest(http_1.RequestMethod.Post, "/api/addrole/", data)
+            .subscribe(function (response) { return _this.appRoles = response; });
     };
     Object.defineProperty(Repository.prototype, "filter", {
         get: function () {
@@ -239,7 +280,7 @@ var Repository = (function () {
 }());
 Repository = __decorate([
     core_1.Injectable(),
-    __metadata("design:paramtypes", [http_1.Http])
+    __metadata("design:paramtypes", [http_1.Http, ng4_loading_spinner_1.Ng4LoadingSpinnerService])
 ], Repository);
 exports.Repository = Repository;
 //# sourceMappingURL=repository.js.map

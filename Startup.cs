@@ -34,10 +34,10 @@ namespace ePatientCare
 
         public Startup(IHostingEnvironment env)
         {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+      var builder = new ConfigurationBuilder()
+          .SetBasePath(env.ContentRootPath)
+          .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+                //.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
             if (env.IsDevelopment())
             {
@@ -106,21 +106,22 @@ namespace ePatientCare
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-          //  app.UseDeveloperExceptionPage();
-         //   app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions{
-              //        HotModuleReplacement = true
-          //  });
-          //if (env.IsDevelopment())
-          //{
-          //  app.UseDeveloperExceptionPage();
-          //  app.UseDatabaseErrorPage();
-          //  app.UseBrowserLink();
-          //}
-          //else
-          //{
-          //  app.UseExceptionHandler("/Home/Error");
-          //}
-          app.UseExceptionHandler(
+        app.UseDeveloperExceptionPage();
+        app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+        {
+          HotModuleReplacement = true
+        });
+      //if (env.IsDevelopment())
+      //{
+      //  app.UseDeveloperExceptionPage();
+      //  app.UseDatabaseErrorPage();
+      //  app.UseBrowserLink();
+      //}
+      //else
+      //{
+      //  app.UseExceptionHandler("/Home/Error");
+      //}
+      app.UseExceptionHandler(
           builder =>
           {
               builder.Run(

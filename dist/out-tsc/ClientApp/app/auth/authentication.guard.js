@@ -23,8 +23,6 @@ var AuthenticationGuard = (function () {
         }
         else {
             this.authService.callbackUrl = state.url.toString();
-            //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-            //console.log("1 pos" + state.url);
             this.router.navigateByUrl("/login");
             return false;
         }
@@ -35,8 +33,6 @@ var AuthenticationGuard = (function () {
         }
         else {
             this.authService.callbackUrl = state.url.toString();
-            //this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
-            //console.log("1 pos" + state.url);
             this.router.navigateByUrl("/login");
             return false;
         }

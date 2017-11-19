@@ -28,7 +28,7 @@ var AppUserCreateComponent = (function () {
             this.newUser = new appuser_model_1.AppUser();
             form.reset();
             this.formSubmitted = false;
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl("/table");
         }
     };
     AppUserCreateComponent.prototype.getValidationMessages = function (state, thingName) {

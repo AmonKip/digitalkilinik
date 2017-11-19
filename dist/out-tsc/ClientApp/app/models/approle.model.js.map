@@ -1,1 +1,1 @@
-{"version":3,"file":"approle.model.js","sourceRoot":"","sources":["../../../../../ClientApp/app/models/approle.model.ts"],"names":[],"mappings":";;AAAA;IACI,iBAAoB,IAAa;QAAb,SAAI,GAAJ,IAAI,CAAS;IAAE,CAAC;IACxC,cAAC;AAAD,CAAC,AAFD,IAEC;AAFY,0BAAO"}
+{"version":3,"file":"approle.model.js","sourceRoot":"","sources":["../../../../../ClientApp/app/models/approle.model.ts"],"names":[],"mappings":";;AAAA;IACI,iBACW,EAAW,EACX,IAAa;QADb,OAAE,GAAF,EAAE,CAAS;QACX,SAAI,GAAJ,IAAI,CAAS;IAAI,CAAC;IACjC,cAAC;AAAD,CAAC,AAJD,IAIC;AAJY,0BAAO"}

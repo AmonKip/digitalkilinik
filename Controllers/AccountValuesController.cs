@@ -60,7 +60,7 @@ namespace ePatientCare.Controllers
     //[ValidateAntiForgeryToken]
     public IEnumerable<UserDetails> GetUsers()
     {
-      System.Threading.Thread.Sleep(5000);
+      //System.Threading.Thread.Sleep(5000);
       try
       {
         // return only users who have been approved
@@ -277,7 +277,7 @@ namespace ePatientCare.Controllers
         return BadRequest();
       }
       // to be removed --for testing app latency response
-      System.Threading.Thread.Sleep(5000);
+      //System.Threading.Thread.Sleep(5000);
       // not request and all goes well return ok
       return Ok();
     }
@@ -370,8 +370,8 @@ namespace ePatientCare.Controllers
         var code = await userManager.GeneratePasswordResetTokenAsync(user);
         //var callbackUrl = Url.Action(nameof(ResetPassword), "Account", new { userId = user.Id, code = code }, protocol: HttpContext.Request.Scheme);
         var protocol = HttpContext.Request.Scheme;
-
-        var callbackUrl = protocol + "://localhost:5000/resetpassword/?userid=" + user.Id + "&code=" + code;
+        var host = HttpContext.Request.Host;
+        var callbackUrl = protocol + "://" + host + "/resetpassword/?userid=" + user.Id + "&code=" + code;
         var message = $"Hello {userdetails.FirstName}, <br>Your Digital Kilinik account request has been approved!. Please use this <a href='{callbackUrl}'>link</a> to create your account password.";
         await emailSender.SendEmailAsync(userdetails.Email, "Your Digital Account Approved!", message);
         return true;

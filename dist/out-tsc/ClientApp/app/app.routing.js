@@ -14,6 +14,7 @@ var patientAdmin_component_1 = require("./admin/patientAdmin.component");
 var appUserAdmin_component_1 = require("./admin/appUserAdmin.component");
 var patientDetailAdmin_component_1 = require("./admin/patientDetailAdmin.component");
 var authentication_guard_1 = require("./auth/authentication.guard");
+var adminauthentication_guard_1 = require("./auth/adminauthentication.guard");
 var authentication_component_1 = require("./auth/authentication.component");
 var AppUserDetailAdmin_component_1 = require("./admin/AppUserDetailAdmin.component");
 var AppUserRequestAdmin_component_1 = require("./admin/AppUserRequestAdmin.component");
@@ -23,17 +24,28 @@ var visitsAdmin_component_1 = require("./admin/visitsAdmin.component");
 var appUserCreateAdmin_Component_1 = require("./admin/appUserCreateAdmin.Component");
 var forgotpassword_component_1 = require("./auth/forgotpassword.component");
 var resetpassword_component_1 = require("./auth/resetpassword.component");
+var rolestable_component_1 = require("./admin/rolestable.component");
+var roledetail_component_1 = require("./admin/roledetail.component");
+var usersrolemanager_component_1 = require("./admin/usersrolemanager.component");
+var createrole_component_1 = require("./admin/createrole.component");
+var passwordresetconfirmation_component_1 = require("./structure/passwordresetconfirmation.component");
+//import { PatientResolver } from "./models/resolver.model";
 var routes = [
     { path: "login", component: authentication_component_1.AuthenticationComponent },
+    { path: "passwordresetconfirm", component: passwordresetconfirmation_component_1.PasswordResetConfirmComponent },
     { path: "forgotpassword", component: forgotpassword_component_1.ForgotPasswordComponent },
     { path: "resetpassword", component: resetpassword_component_1.ResetPasswordComponent },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
     {
         path: "admin", component: admin_component_1.AdminComponent,
-        canActivateChild: [authentication_guard_1.AuthenticationGuard],
+        canActivateChild: [adminauthentication_guard_1.AdminAuthGuard],
         children: [
             { path: "overview", component: overview_component_1.OverviewComponent },
             { path: "patientdetail/:id", component: patientDetailAdmin_component_1.PatientDetailAdminComponent },
+            { path: "roleslist", component: rolestable_component_1.RolesTableComponent },
+            { path: "createrole", component: createrole_component_1.CreateRoleComponent },
+            { path: "roledetail/:id", component: roledetail_component_1.RoleDetailComponent },
+            { path: "rolemanager/:id", component: usersrolemanager_component_1.RoleManagerComponent },
             { path: "patientslist", component: patientAdmin_component_1.PatientAdminComponent },
             { path: "visitdetail/:id", component: visitsDetailAdmin_component_1.VisitDetailAdminComponent },
             { path: "visitslist", component: visitsAdmin_component_1.VisitAdminComponent },
@@ -46,6 +58,7 @@ var routes = [
             { path: "**", redirectTo: "/admin/overview" }
         ]
     },
+    //{ path: "login", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
     { path: "table", component: patientTable_component_1.PatientTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
     { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
     { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
@@ -54,7 +67,7 @@ var routes = [
     { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
     { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
     { path: "accountcreate", component: appUserCreate_Component_1.AppUserCreateComponent },
-    { path: "**", redirectTo: "/table" }
+    { path: "**", redirectTo: "/login" }
 ];
 exports.RoutingConfig = router_1.RouterModule.forRoot(routes);
 //# sourceMappingURL=app.routing.js.map

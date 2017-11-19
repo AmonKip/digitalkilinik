@@ -43,7 +43,7 @@ namespace ePatientCare.Controllers
     
     public IEnumerable<Patient> GetPatients(string category, string search)
     {
-      System.Threading.Thread.Sleep(5000);
+      //System.Threading.Thread.Sleep(5000);
       try
       {
         if (!string.IsNullOrWhiteSpace(category))

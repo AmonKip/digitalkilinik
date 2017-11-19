@@ -24,7 +24,7 @@ export class AppUserCreateComponent {
             this.newUser = new AppUser();
             form.reset();
             this.formSubmitted = false;
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl("/table");
         }
     }
 

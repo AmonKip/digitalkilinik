@@ -16,6 +16,7 @@ var VisitTableComponent = (function () {
     function VisitTableComponent(repo, router) {
         this.repo = repo;
         this.router = router;
+        this.repo.getVisits();
     }
     Object.defineProperty(VisitTableComponent.prototype, "visits", {
         get: function () {

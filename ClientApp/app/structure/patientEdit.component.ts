@@ -34,7 +34,7 @@ export class PatientEditComponent {
         if (form.valid) {
             this.repo.replacePatient(this.patient);
             this.formSubmitted = false;
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl("/table");
         }
     }
 

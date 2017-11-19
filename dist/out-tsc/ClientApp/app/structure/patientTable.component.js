@@ -12,14 +12,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var repository_1 = require("../models/repository");
 var router_1 = require("@angular/router");
+var authentication_service_1 = require("../auth/authentication.service");
 var PatientTableComponent = (function () {
-    function PatientTableComponent(repo, router) {
+    function PatientTableComponent(repo, router, authService) {
         this.repo = repo;
         this.router = router;
+        this.authService = authService;
+        //if (!this.repo.patients && this.authService.authenticated) {
+        this.repo.getPatients();
+        //this.repo.getVisits();
+        // this.spinnerService.show();
+        //}
     }
     Object.defineProperty(PatientTableComponent.prototype, "patients", {
         get: function () {
+            // this.spinnerService.hide();
             return this.repo.patients;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PatientTableComponent.prototype, "patientCount", {
+        get: function () {
+            return this.repo.patients ? this.repo.patients.length : [];
         },
         enumerable: true,
         configurable: true
@@ -39,7 +54,7 @@ PatientTableComponent = __decorate([
         selector: "patient-table",
         templateUrl: "patientTable.component.html"
     }),
-    __metadata("design:paramtypes", [repository_1.Repository, router_1.Router])
+    __metadata("design:paramtypes", [repository_1.Repository, router_1.Router, authentication_service_1.AuthenticationService])
 ], PatientTableComponent);
 exports.PatientTableComponent = PatientTableComponent;
 //# sourceMappingURL=patientTable.component.js.map

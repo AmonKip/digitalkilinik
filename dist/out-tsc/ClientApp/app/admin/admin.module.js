@@ -21,6 +21,10 @@ var AppUserEditAdmin_component_1 = require("./AppUserEditAdmin.component");
 var visitsDetailAdmin_component_1 = require("./visitsDetailAdmin.component");
 var visitsAdmin_component_1 = require("./visitsAdmin.component");
 var appUserCreateAdmin_Component_1 = require("./appUserCreateAdmin.Component");
+var rolestable_component_1 = require("./rolestable.component");
+var roledetail_component_1 = require("./roledetail.component");
+var usersrolemanager_component_1 = require("./usersrolemanager.component");
+var createrole_component_1 = require("./createrole.component");
 var AdminModule = (function () {
     function AdminModule() {
     }
@@ -33,7 +37,9 @@ AdminModule = __decorate([
             appUserAdmin_component_1.AppUserAdminComponent, patientDetailAdmin_component_1.PatientDetailAdminComponent,
             AppUserDetailAdmin_component_1.AppUserDetailAdminComponent, AppUserRequestAdmin_component_1.AppUserRequestAdminComponent,
             AppUserEditAdmin_component_1.AppUserEditAdminComponent, visitsDetailAdmin_component_1.VisitDetailAdminComponent,
-            visitsAdmin_component_1.VisitAdminComponent, appUserCreateAdmin_Component_1.AppUserCreateAdminComponent]
+            visitsAdmin_component_1.VisitAdminComponent, appUserCreateAdmin_Component_1.AppUserCreateAdminComponent,
+            rolestable_component_1.RolesTableComponent, roledetail_component_1.RoleDetailComponent, usersrolemanager_component_1.RoleManagerComponent,
+            createrole_component_1.CreateRoleComponent]
     })
 ], AdminModule);
 exports.AdminModule = AdminModule;

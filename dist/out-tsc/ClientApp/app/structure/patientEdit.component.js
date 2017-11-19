@@ -38,7 +38,7 @@ var PatientEditComponent = (function () {
         if (form.valid) {
             this.repo.replacePatient(this.patient);
             this.formSubmitted = false;
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl("/table");
         }
     };
     PatientEditComponent.prototype.getValidationMessages = function (state, thingName) {

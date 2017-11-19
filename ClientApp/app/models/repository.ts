@@ -53,9 +53,9 @@ export class Repository {
         if (!this.filter.category && this.filter.search) {
             url += "?search=" + this.filter.search;
         }
-        this.spinnerService.show();
+        //this.spinnerService.show();
          this.sendRequest(RequestMethod.Get, url)
-             .subscribe(response => { this.patients = response; this.spinnerService.hide();});
+             .subscribe(response => { this.patients = response; });
     }
     getAllPatients() {
         return Observable.create(observer => {

@@ -31,7 +31,7 @@ export class AppUserDetailAdminComponent {
                 this.repo.getRolesByUser(id);
             }
         } else {
-            this.router.navigateByUrl("/");
+            this.router.navigateByUrl("/table");
         }
     }
 

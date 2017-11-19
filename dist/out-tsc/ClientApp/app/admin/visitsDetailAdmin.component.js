@@ -17,6 +17,7 @@ var VisitDetailAdminComponent = (function () {
         this.repo = repo;
         var id = Number.parseInt(activeRoute.snapshot.params["id"]);
         if (id) {
+            //this.visit = this.repo.visits.find(v => v.visitId == id);
             this.repo.getVisit(id);
         }
         else {

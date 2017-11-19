@@ -11,9 +11,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var authentication_service_1 = require("./authentication.service");
+var repository_1 = require("../models/repository");
 var AuthenticationComponent = (function () {
-    function AuthenticationComponent(authService) {
+    function AuthenticationComponent(authService, repo) {
         this.authService = authService;
+        this.repo = repo;
         this.showError = false;
     }
     AuthenticationComponent.prototype.login = function () {
@@ -21,6 +23,14 @@ var AuthenticationComponent = (function () {
         this.showError = false;
         this.authService.login().subscribe(function (result) {
             _this.showError = !result;
+            if (_this.authService.authenticated) {
+                _this.repo.getPatients();
+                _this.repo.getVisits();
+            }
+            if (_this.authService.isAdmin) {
+                //this.repo.getUsers();
+                //this.repo.getRoles();
+            }
         });
     };
     return AuthenticationComponent;
@@ -29,7 +39,7 @@ AuthenticationComponent = __decorate([
     core_1.Component({
         templateUrl: "authentication.component.html"
     }),
-    __metadata("design:paramtypes", [authentication_service_1.AuthenticationService])
+    __metadata("design:paramtypes", [authentication_service_1.AuthenticationService, repository_1.Repository])
 ], AuthenticationComponent);
 exports.AuthenticationComponent = AuthenticationComponent;
 //# sourceMappingURL=authentication.component.js.map
