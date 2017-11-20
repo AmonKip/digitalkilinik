@@ -9,7 +9,7 @@ import { Router } from "@angular/router";
 })
 export class RolesTableComponent {
 
-    constructor(private repo: Repository, private router: Router) { }
+    constructor(private repo: Repository, private router: Router) { this.repo.getRoles(); }
 
     get roles(): AppRole[] {
         return this.repo.appRoles;

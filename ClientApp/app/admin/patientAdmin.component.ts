@@ -12,7 +12,7 @@ import { AppRole } from "../models/approle.model";
 
 export class PatientAdminComponent {
 
-    constructor(private repo: Repository) { }
+    constructor(private repo: Repository) { this.repo.getPatients(); }
 
     get patients(): Patient[] {
         return this.repo.patients;

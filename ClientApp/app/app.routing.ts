@@ -30,6 +30,7 @@ import { RoleManagerComponent } from "./admin/usersrolemanager.component";
 import { CreateRoleComponent } from "./admin/createrole.component";
 import { PasswordResetConfirmComponent } from "./structure/passwordresetconfirmation.component";
 import { ForgotPasswordConfirmComponent } from "./structure/forgotpasswordconfirm.component";
+import { RequestConfirmComponent } from "./structure/requestconfirmation.component";
 
 //import { PatientResolver } from "./models/resolver.model";
 
@@ -38,6 +39,7 @@ const routes: Routes = [
     { path: "login", component: AuthenticationComponent },
     { path: "passwordresetconfirm", component: PasswordResetConfirmComponent },
     { path: "forgotpasswordconfirm", component: ForgotPasswordConfirmComponent },
+    { path: "requestconfirm", component: RequestConfirmComponent },
     { path: "forgotpassword", component: ForgotPasswordComponent },
     { path: "resetpassword", component: ResetPasswordComponent },
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },

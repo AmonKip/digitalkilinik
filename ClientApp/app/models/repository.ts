@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { Http, RequestMethod, Request, Response, Headers, RequestOptions } from "@angular/http";
 import "rxjs/add/operator/map";
+//import 'rxjs/add/operator/delay';
 import { Filter } from "./configClasses.repository";
 import { Employee } from "./employee.model";
 import { Visit } from "./visit.model";

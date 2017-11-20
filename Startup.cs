@@ -106,11 +106,11 @@ namespace ePatientCare
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-        //app.UseDeveloperExceptionPage();
-        //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
-        //{
-        //  HotModuleReplacement = true
-        //});
+      //app.UseDeveloperExceptionPage();
+      //app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+      //{
+      //  HotModuleReplacement = true
+      //});
       //if (env.IsDevelopment())
       //{
       //  app.UseDeveloperExceptionPage();

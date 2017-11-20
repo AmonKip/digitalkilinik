@@ -13,12 +13,10 @@ import { AuthenticationService } from "../auth/authentication.service";
 export class PatientTableComponent {
    
     constructor(private repo: Repository, private router: Router, private authService: AuthenticationService) {
-
-        //if (!this.repo.patients && this.authService.authenticated) {
-       this.repo.getPatients();
-       //this.repo.getVisits();
-            // this.spinnerService.show();
-        //}
+        this.repo.getPatients();
+        //while (!this.repo.patients) {
+            //this.repo.getPatients();
+       // }
     }
 
     get patients() {

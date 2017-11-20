@@ -12,7 +12,7 @@ export class AppUserAdminComponent {
     returnUrl = "/admin/userslist";
     myusers: AppUser[];
     
-    constructor(private repo: Repository, private router: Router) {}
+    constructor(private repo: Repository, private router: Router) { this.repo.getUsers();}
     
     get users(): AppUser[] {
         return this.repo.appUsers;

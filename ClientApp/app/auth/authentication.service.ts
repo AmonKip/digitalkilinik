@@ -3,6 +3,7 @@ import { Repository } from "../models/repository";
 import { Observable } from "rxjs/Observable";
 import { Router, ActivatedRoute } from "@angular/router";
 import "rxjs/add/observable/of";
+import 'rxjs/add/operator/delay';
 
 @Injectable()
 export class AuthenticationService implements OnInit {
@@ -14,7 +15,7 @@ export class AuthenticationService implements OnInit {
         
     }
     ngOnDestroy() {
-        console.log("Destroying...");
+      
     }
 
     authenticated: boolean = false;
@@ -38,6 +39,7 @@ export class AuthenticationService implements OnInit {
 
                     this.authenticated = true;
                     this.password = null;
+                   
                     this.router.navigateByUrl(this.callbackUrl || "/table");
                     this.callbackUrl = "";
 
@@ -57,8 +59,7 @@ export class AuthenticationService implements OnInit {
         this.isAdmin = false;
         this.repo.logout();
         window.location.replace("/login");
-        //document.cookie = ".AspNetCore.Identity.Application; expires = Thu, 18 Dec 2013 12:00:00 UTC";
-        //this.router.navigateByUrl("/login");
+       
     }
     resetPassword(): Observable<boolean> {
         this.authenticated = false;

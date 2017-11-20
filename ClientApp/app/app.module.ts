@@ -27,6 +27,7 @@ import { Ng4LoadingSpinnerModule } from 'ng4-loading-spinner';
 import { PatientResolver } from "./models/resolver.model";
 import { PasswordResetConfirmComponent } from "./structure/passwordresetconfirmation.component"; 
 import { ForgotPasswordConfirmComponent } from "./structure/forgotpasswordconfirm.component";
+import { RequestConfirmComponent } from "./structure/requestconfirmation.component";
 
 const eHandler = new ErrorHandlerService();
 
@@ -42,7 +43,7 @@ export function handler() {
         PatientCreateComponent, AppUserCreateComponent,
         PatientFilterPipe, SearchComponent, PatientEditComponent,
         HeaderComponent, FooterComponent, PasswordResetConfirmComponent,
-        ForgotPasswordConfirmComponent],
+        ForgotPasswordConfirmComponent, RequestConfirmComponent],
 
     imports: [BrowserModule, FormsModule, ReactiveFormsModule,
         HttpModule, ModelModule, RoutingConfig, AdminModule, AuthModule, Ng4LoadingSpinnerModule],

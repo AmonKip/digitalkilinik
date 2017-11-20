@@ -11,7 +11,7 @@ export class AppUserRequestAdminComponent {
 
     request = true;
     returnUrl = "/admin/usersrequests";
-    constructor(private repo: Repository, private router: Router) { }
+    constructor(private repo: Repository, private router: Router) { this.repo.getAccountRequests(); }
 
     get users(): AppUser[] {
         return this.repo.appUserRequests;
