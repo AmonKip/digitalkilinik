@@ -3,11 +3,11 @@ import { platformBrowserDynamic } from "@angular/platform-browser-dynamic";
 import { AppModule } from "./app/app.module";
 
 const bootApplication = () => {
-   // enableProdMode();
+    enableProdMode();
     platformBrowserDynamic().bootstrapModule(AppModule);
 };
 
-if (module["hot"]) {
+/*if (module["hot"]) {
     module["hot"].accept();
     module["hot"].dispose(() => {
         const oldRootElem = document.querySelector("app-root");
@@ -15,7 +15,7 @@ if (module["hot"]) {
         oldRootElem.parentNode.insertBefore(newRootElem, oldRootElem);
         platformBrowserDynamic().destroy();
     });
-} 
+} */
 
 if (document.readyState === "complete") {
     bootApplication();
