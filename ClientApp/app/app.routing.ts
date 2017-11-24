@@ -45,7 +45,10 @@ const routes: Routes = [
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
     {
         path: "admin", component: AdminComponent,
-        canActivateChild: [AdminAuthGuard],
+        canActivateChild: [AuthenticationGuard],
+        data: {
+            expectedRole: 'Admin'
+        }, 
         children: [
             { path: "overview", component: OverviewComponent },
             { path: "patientdetail/:id", component: PatientDetailAdminComponent },
@@ -66,13 +69,13 @@ const routes: Routes = [
     },
 
     //{ path: "login", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
-    { path: "table", component: PatientTableComponent, canActivate: [AuthenticationGuard]},
-    { path: "patientedit/:id", component: PatientEditComponent, canActivate: [AuthenticationGuard] },
-    { path: "visittable/:id", component: VisitTableComponent, canActivate: [AuthenticationGuard] },
-    { path: "visittable", component: VisitTableComponent, canActivate: [AuthenticationGuard] },
-    { path: "detail/:id", component: PatientDetailComponent, canActivate: [AuthenticationGuard] },
-    { path: "visitdetail/:id", component: VisitDetailComponent, canActivate: [AuthenticationGuard] },
-    { path: "patientcreate", component: PatientCreateComponent, canActivate: [AuthenticationGuard] },
+    { path: "table", component: PatientTableComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse'}},
+    { path: "patientedit/:id", component: PatientEditComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visittable/:id", component: VisitTableComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visittable", component: VisitTableComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "detail/:id", component: PatientDetailComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visitdetail/:id", component: VisitDetailComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "patientcreate", component: PatientCreateComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "accountcreate", component: AppUserCreateComponent },
     { path: "**", redirectTo: "/login" }
     ]

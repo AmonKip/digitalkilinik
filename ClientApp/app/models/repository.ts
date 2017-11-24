@@ -22,7 +22,7 @@ const addRequestUrl = "api/addrequest";
 
 @Injectable()
 export class Repository {
-
+    
     private filterObject = new Filter();
 
     constructor(private http: Http, private spinnerService: Ng4LoadingSpinnerService) {
@@ -179,15 +179,22 @@ export class Repository {
     
     // consolidated request method
     private sendRequest(verb: RequestMethod, url: string, data?: any): Observable<any> {
-       // this.spinnerService.show();
-        return this.http.request(new Request({ method: verb, url: url, body: data }))
+        let authToken = localStorage.getItem('auth_token');
+        let headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', `Bearer ${authToken}`);
+        let request = new Request({
+            method: verb, url: url, body: data, headers: headers
+        });
+       
+        return this.http.request(request)
             .map(response => {
                 //this.spinnerService.hide();
                 return response.headers.get("Content-Length") != "0"
                     ? response.json() : null;
             })
             .catch((errorResponse: Response) => {
-                this.spinnerService.hide();
+                //this.spinnerService.hide();
                 if (errorResponse.status == 400) {
                     let jsonData: string;
                     try {
@@ -210,11 +217,27 @@ export class Repository {
             .subscribe(response => { this.singlePatientVisits = response; });
        
     }
-    // login
-    login(name: string, password: string): Observable<Response> {
-        return this.http.post("/api/account/login",
-            { name: name, password: password });
-    }
+    // cookie login
+    //login(name: string, password: string): Observable<Response> {
+    //    return this.http.post("/api/account/login",
+    //        { name: name, password: password });
+    //}
+    // jwt token login
+    //tokenLogin(name: string, password: string): Observable<boolean> {
+    //    return this.http.request(new Request({
+    //        method: RequestMethod.Post,
+    //        url: "api/token",
+    //        body: { name: name, password: password }
+    //    })).map(response => {
+    //        let r = response.json();
+    //        this.auth_token = r.token;
+    //        console.log(this.auth_token);
+    //        if (this.auth_token) {
+    //            return true;
+    //        }
+    //        return false;
+    //    });
+    //}
 
     // email password reset 
     resetPassword(email: string, password: string, confirmpassword: string, code: string): Observable<Response> {

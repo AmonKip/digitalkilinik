@@ -14,8 +14,7 @@ using System.Threading.Tasks;
 
 namespace ePatientCare.Controllers
 {
-  [Authorize(Roles = "Admin")]
-  [ValidateAntiForgeryToken]
+  [Authorize(Roles = "Admin", ActiveAuthenticationSchemes ="Bearer")]
   public class RolesValuesController : Controller
   {
     private readonly ApplicationDbContext context;
@@ -35,8 +34,10 @@ namespace ePatientCare.Controllers
     }
 
     // get all roles from roles table
+    
     [HttpGet]
     [Route("api/roles")]
+   [Authorize(ActiveAuthenticationSchemes ="Bearer")]
     public IEnumerable<IdentityRole> GetRoles() 
     { 
       // System.Threading.Thread.Sleep(5000);

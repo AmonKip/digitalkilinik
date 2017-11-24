@@ -18,7 +18,8 @@ var AuthenticationGuard = (function () {
         this.authService = authService;
     }
     AuthenticationGuard.prototype.canActivateChild = function (route, state) {
-        if (this.authService.authenticated) {
+        //if (this.authService.authenticated) {
+        if (this.authService.tokenAuthenticated) {
             return true;
         }
         else {
@@ -28,7 +29,8 @@ var AuthenticationGuard = (function () {
         }
     };
     AuthenticationGuard.prototype.canActivate = function (route, state) {
-        if (this.authService.authenticated) {
+        if (this.authService.tokenAuthenticated) {
+            //if (this.authService.authenticated) {
             return true;
         }
         else {

@@ -11,18 +11,28 @@ export class AuthenticationComponent {
 
     showError: boolean = false;
 
-    login() {
+    //login() {
+    //    console.log("cookie login");
+    //    this.showError = false;
+    //    this.authService.login().subscribe(result => {
+    //        this.showError = !result;
+    //        if (this.authService.authenticated) {
+    //            this.repo.getPatients();
+    //            this.repo.getVisits();
+    //        }
+      
+    //    });
+    //}
+    tokenLogin() {
+        console.log("component");
         this.showError = false;
-        this.authService.login().subscribe(result => {
+        this.authService.tokenLogin().subscribe(result => {
             this.showError = !result;
-            if (this.authService.authenticated) {
+            if (this.authService.tokenAuthenticated) {
                 this.repo.getPatients();
                 this.repo.getVisits();
             }
-            if (this.authService.isAdmin) {
-                //this.repo.getUsers();
-                //this.repo.getRoles();
-            }
+       
         });
     }
 }

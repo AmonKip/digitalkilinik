@@ -43,9 +43,13 @@ var OverviewComponent = (function () {
         enumerable: true,
         configurable: true
     });
-    OverviewComponent.prototype.accountRequest = function () {
-        return this.repo.appUserRequests;
-    };
+    Object.defineProperty(OverviewComponent.prototype, "accountRequests", {
+        get: function () {
+            return this.repo.appUserRequests;
+        },
+        enumerable: true,
+        configurable: true
+    });
     return OverviewComponent;
 }());
 OverviewComponent = __decorate([

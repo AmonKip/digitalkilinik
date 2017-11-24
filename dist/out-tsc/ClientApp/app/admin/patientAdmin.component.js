@@ -14,6 +14,7 @@ var repository_1 = require("../models/repository");
 var PatientAdminComponent = (function () {
     function PatientAdminComponent(repo) {
         this.repo = repo;
+        this.repo.getPatients();
     }
     Object.defineProperty(PatientAdminComponent.prototype, "patients", {
         get: function () {

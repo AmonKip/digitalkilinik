@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 
 namespace ePatientCare.Controllers
 {
-  [Authorize(Roles ="Admin, Nurse")]
-  [ValidateAntiForgeryToken]
+  [Authorize(Roles ="Nurse", ActiveAuthenticationSchemes = "Bearer")]
   public class VisitValuesController : Controller
   {
     private ApplicationDbContext context;

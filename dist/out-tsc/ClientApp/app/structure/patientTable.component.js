@@ -18,11 +18,7 @@ var PatientTableComponent = (function () {
         this.repo = repo;
         this.router = router;
         this.authService = authService;
-        //if (!this.repo.patients && this.authService.authenticated) {
         this.repo.getPatients();
-        //this.repo.getVisits();
-        // this.spinnerService.show();
-        //}
     }
     Object.defineProperty(PatientTableComponent.prototype, "patients", {
         get: function () {

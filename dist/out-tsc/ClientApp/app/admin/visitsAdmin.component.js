@@ -16,6 +16,7 @@ var VisitAdminComponent = (function () {
     function VisitAdminComponent(repo, router) {
         this.repo = repo;
         this.router = router;
+        this.repo.getVisits();
     }
     Object.defineProperty(VisitAdminComponent.prototype, "visits", {
         get: function () {

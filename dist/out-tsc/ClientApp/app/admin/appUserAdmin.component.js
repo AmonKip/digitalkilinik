@@ -18,6 +18,7 @@ var AppUserAdminComponent = (function () {
         this.router = router;
         this.request = false;
         this.returnUrl = "/admin/userslist";
+        this.repo.getUsers();
     }
     Object.defineProperty(AppUserAdminComponent.prototype, "users", {
         get: function () {

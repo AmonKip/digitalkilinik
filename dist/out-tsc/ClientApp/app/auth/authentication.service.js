@@ -14,6 +14,7 @@ var repository_1 = require("../models/repository");
 var Observable_1 = require("rxjs/Observable");
 var router_1 = require("@angular/router");
 require("rxjs/add/observable/of");
+require("rxjs/add/operator/delay");
 var AuthenticationService = (function () {
     function AuthenticationService(repo, router, route) {
         this.repo = repo;
@@ -21,41 +22,51 @@ var AuthenticationService = (function () {
         this.route = route;
         this.authenticated = false;
         this.isAdmin = false;
+        this.tokenAuthenticated = false;
     }
     AuthenticationService.prototype.ngOnInit = function () {
     };
     AuthenticationService.prototype.ngOnDestroy = function () {
-        console.log("Destroying...");
     };
-    AuthenticationService.prototype.login = function () {
-        var _this = this;
-        this.authenticated = false;
-        return this.repo.login(this.name, this.password)
-            .map(function (response) {
-            if (response) {
-                if (response.json().roles.indexOf("Admin") != -1) {
-                    _this.isAdmin = true;
-                }
-                _this.authenticated = true;
-                _this.password = null;
-                _this.router.navigateByUrl(_this.callbackUrl || "/table");
-                _this.callbackUrl = "";
-            }
-            return _this.authenticated;
-        })
-            .catch(function (e) {
-            _this.authenticated = false;
-            _this.isAdmin = false;
-            return Observable_1.Observable.of(false);
-        });
+    // cookie login
+    //login(): Observable<boolean> {
+    //    this.authenticated = false;
+    //    return this.repo.login(this.name, this.password)
+    //        .map(response => {
+    //            if (response) {
+    //                if (response.json().roles.indexOf("Admin") != -1) {
+    //                    this.isAdmin = true;
+    //                }
+    //                this.authenticated = true;
+    //                this.password = null;
+    //                this.router.navigateByUrl(this.callbackUrl || "/table");
+    //                this.callbackUrl = "";
+    //            }
+    //            return this.authenticated;
+    //        })
+    //        .catch(e => {
+    //            this.authenticated = false;
+    //            this.isAdmin = false;
+    //            return Observable.of(false);
+    //        });
+    //} 
+    AuthenticationService.prototype.tokenLogin = function () {
+        console.log("token login auth service");
+        return this.repo.tokenLogin(this.name, this.password);
     };
+    AuthenticationService.prototype.isTokenAuthenticated = function () {
+        return this.tokenAuthenticated = this.repo.auth_token != null;
+    };
+    AuthenticationService.prototype.tokenLogout = function () {
+        this.tokenAuthenticated = false;
+        this.repo.auth_token = null;
+    };
+    // cookie logout
     AuthenticationService.prototype.logout = function () {
         this.authenticated = false;
         this.isAdmin = false;
         this.repo.logout();
         window.location.replace("/login");
-        //document.cookie = ".AspNetCore.Identity.Application; expires = Thu, 18 Dec 2013 12:00:00 UTC";
-        //this.router.navigateByUrl("/login");
     };
     AuthenticationService.prototype.resetPassword = function () {
         var _this = this;

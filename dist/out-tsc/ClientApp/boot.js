@@ -7,15 +7,15 @@ var bootApplication = function () {
     core_1.enableProdMode();
     platform_browser_dynamic_1.platformBrowserDynamic().bootstrapModule(app_module_1.AppModule);
 };
-//if (module["hot"]) {
-//    module["hot"].accept();
-//    module["hot"].dispose(() => {
-//        const oldRootElem = document.querySelector("app-root");
-//        const newRootElem = document.createElement("app-root");
-//        oldRootElem.parentNode.insertBefore(newRootElem, oldRootElem);
-//        platformBrowserDynamic().destroy();
-//    });
-//}
+if (module["hot"]) {
+    module["hot"].accept();
+    module["hot"].dispose(function () {
+        var oldRootElem = document.querySelector("app-root");
+        var newRootElem = document.createElement("app-root");
+        oldRootElem.parentNode.insertBefore(newRootElem, oldRootElem);
+        platform_browser_dynamic_1.platformBrowserDynamic().destroy();
+    });
+}
 if (document.readyState === "complete") {
     bootApplication();
 }

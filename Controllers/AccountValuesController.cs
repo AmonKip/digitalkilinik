@@ -19,13 +19,13 @@ using Newtonsoft.Json;
 using ePatientCare.Auth;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
-
+using System.IdentityModel.Tokens.Jwt;
+using ePatientCare.Middleware.DataModels;
 
 namespace ePatientCare.Controllers
 {
   
-  [Authorize(Roles = "Admin")]
-  [ValidateAntiForgeryToken]
+  [Authorize(Roles = "Admin", ActiveAuthenticationSchemes ="Bearer")]
   public class AccountValuesController : Controller
   {
 
@@ -36,22 +36,23 @@ namespace ePatientCare.Controllers
     private readonly IEmailSender emailSender;
     //private readonly ISmsSender _smsSender;
     private readonly ILogger _logger;
+    private readonly TokenProviderOptions _options;
 
     public AccountValuesController(UserManager<AppUser> usrMgr, ApplicationDbContext ctx,
                                       SignInManager<AppUser> signInMgr, IEmailSender eSender,
-                                      RoleManager<IdentityRole> roleMgr)
+                                      RoleManager<IdentityRole> roleMgr,
+                                      IOptions<TokenProviderOptions> options)
     {
       userManager = usrMgr;
       context = ctx;
       signInManager = signInMgr;
       emailSender = eSender;
       roleManager = roleMgr;
+      _options = options.Value;
 
     }
 
     [HttpGet]
-   // [Authorize(Roles = "Admin")]
-    //[ValidateAntiForgeryToken]
     [Route("api/users/{id}")]
     public UserDetails GetUser(long id) => context.UserDetails.Find(id);
 
@@ -72,7 +73,6 @@ namespace ePatientCare.Controllers
       }
     }
     [HttpGet]
-   // [ValidateAntiForgeryToken]
     [Route("api/usersrole/{roleName}")]
     public async Task<IEnumerable<UserDetails>> GetUsersInRole(string roleName)
     {
@@ -135,8 +135,7 @@ namespace ePatientCare.Controllers
     }
 
     [HttpPost]
-     [AllowAnonymous]
-    //[ValidateAntiForgeryToken]
+    [AllowAnonymous]
     [Route("api/addrequest")]
     public IActionResult Register([FromBody] RegisterViewModel model)
     {
@@ -170,6 +169,7 @@ namespace ePatientCare.Controllers
 
       return BadRequest(ModelState);
     }
+
     [AllowAnonymous]
     [HttpPost("/api/account/login")]
     public async Task<IActionResult> Login([FromBody] LoginViewModel creds)
@@ -184,6 +184,48 @@ namespace ePatientCare.Controllers
     }
 
     [AllowAnonymous]
+    [HttpPost("/api/token")]
+    public async Task<IActionResult> GenerateToken([FromBody] LoginViewModel creds)
+    {
+      if(ModelState.IsValid)
+      {
+        var user = await userManager.FindByNameAsync(creds.Name);
+        if(user != null)
+        {
+          var result = await signInManager.CheckPasswordSignInAsync(user, creds.Password, false);
+          if(result.Succeeded){
+            var userClaims = await userManager.GetRolesAsync(user);
+
+            var now = DateTime.UtcNow;
+
+            List<Claim> claims = new List<Claim>();
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, creds.Name));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Iat, DateTimeOffset.UtcNow.ToUnixTimeSeconds().ToString(), ClaimValueTypes.Integer64));
+            //claims.AddRange(user.Claims.ToArray());
+
+            foreach (var x in userClaims)
+            {
+              claims.Add(new Claim("roles", x));
+            }
+
+            var jwt = new JwtSecurityToken(
+              issuer: _options.Issuer,
+              audience: _options.Audience,
+              claims: claims,
+              notBefore: now,
+              expires: now.Add(_options.Expiration),
+              signingCredentials: _options.SigningCredentials);
+
+
+            return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(jwt) });
+          }
+        }
+      }
+      return BadRequest("Could not create token");
+    }
+
+  [AllowAnonymous]
     [HttpPost("/api/account/logout")]
     public async Task<IActionResult> Logout()
     {
@@ -193,7 +235,6 @@ namespace ePatientCare.Controllers
 
     // POST: /Account/ForgotPassword
     [AllowAnonymous]
-   // [ValidateAntiForgeryToken]
     [HttpPost("/api/account/forgotpassword")]
     public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordViewModel model)
     {
@@ -225,7 +266,6 @@ namespace ePatientCare.Controllers
     
     // POST: /Account/ResetPassword
     [AllowAnonymous]
-    //[ValidateAntiForgeryToken]
     [HttpPost("/api/account/resetpassword")]
     public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordViewModel model)
     {

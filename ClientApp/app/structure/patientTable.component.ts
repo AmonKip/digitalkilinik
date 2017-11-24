@@ -14,9 +14,6 @@ export class PatientTableComponent {
    
     constructor(private repo: Repository, private router: Router, private authService: AuthenticationService) {
         this.repo.getPatients();
-        //while (!this.repo.patients) {
-            //this.repo.getPatients();
-       // }
     }
 
     get patients() {

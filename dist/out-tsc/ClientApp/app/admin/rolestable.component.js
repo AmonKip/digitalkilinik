@@ -16,6 +16,7 @@ var RolesTableComponent = (function () {
     function RolesTableComponent(repo, router) {
         this.repo = repo;
         this.router = router;
+        this.repo.getRoles();
     }
     Object.defineProperty(RolesTableComponent.prototype, "roles", {
         get: function () {

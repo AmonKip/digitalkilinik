@@ -18,18 +18,26 @@ var AuthenticationComponent = (function () {
         this.repo = repo;
         this.showError = false;
     }
-    AuthenticationComponent.prototype.login = function () {
+    //login() {
+    //    console.log("cookie login");
+    //    this.showError = false;
+    //    this.authService.login().subscribe(result => {
+    //        this.showError = !result;
+    //        if (this.authService.authenticated) {
+    //            this.repo.getPatients();
+    //            this.repo.getVisits();
+    //        }
+    //    });
+    //}
+    AuthenticationComponent.prototype.tokenLogin = function () {
         var _this = this;
+        console.log("component");
         this.showError = false;
-        this.authService.login().subscribe(function (result) {
+        this.authService.tokenLogin().subscribe(function (result) {
             _this.showError = !result;
-            if (_this.authService.authenticated) {
+            if (_this.authService.tokenAuthenticated) {
                 _this.repo.getPatients();
                 _this.repo.getVisits();
-            }
-            if (_this.authService.isAdmin) {
-                //this.repo.getUsers();
-                //this.repo.getRoles();
             }
         });
     };

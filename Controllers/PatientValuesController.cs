@@ -12,9 +12,7 @@ using System;
 namespace ePatientCare.Controllers
 {
 
-  [Authorize(Roles = "Admin, Nurse")]
-  [Route("api/patients")]
-  [ValidateAntiForgeryToken]
+  [Authorize(Roles = "Nurse", ActiveAuthenticationSchemes ="Bearer")]
   public class PatientValuesController : Controller
   {
     private ApplicationDbContext context;
@@ -25,7 +23,8 @@ namespace ePatientCare.Controllers
       context = ctx;
       this.logger = logger.CreateLogger<PatientValuesController>();
     }
-    [HttpGet("{id}")]
+    [HttpGet]
+    [Route("api/patients/{id}")]
     public Patient GetPatient(long id)
     {
       //System.Threading.Thread.Sleep(5000);
@@ -40,7 +39,7 @@ namespace ePatientCare.Controllers
       }
     }
     [HttpGet]
-    
+    [Route("api/patients")]
     public IEnumerable<Patient> GetPatients(string category, string search)
     {
       //System.Threading.Thread.Sleep(5000);

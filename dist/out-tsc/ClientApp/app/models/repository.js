@@ -13,6 +13,7 @@ var core_1 = require("@angular/core");
 var Observable_1 = require("rxjs/Observable");
 var http_1 = require("@angular/http");
 require("rxjs/add/operator/map");
+//import 'rxjs/add/operator/delay';
 var configClasses_repository_1 = require("./configClasses.repository");
 var errorHandler_service_1 = require("../services/errorHandler.service");
 require("rxjs/add/operator/catch");
@@ -184,17 +185,22 @@ var Repository = (function () {
             .subscribe(function (response) { return _this.getEmployees(); });
     };
     // consolidated request method
-    Repository.prototype.sendRequest = function (verb, url, data) {
-        var _this = this;
-        // this.spinnerService.show();
-        return this.http.request(new http_1.Request({ method: verb, url: url, body: data }))
+    Repository.prototype.sendRequest = function (verb, url, data, auth) {
+        if (auth === void 0) { auth = false; }
+        var request = new http_1.Request({
+            method: verb, url: url, body: data
+        });
+        if (auth && this.auth_token != null) {
+            request.headers.set("Authorization:", "Bearer " + this.auth_token);
+        }
+        return this.http.request(request)
             .map(function (response) {
             //this.spinnerService.hide();
             return response.headers.get("Content-Length") != "0"
                 ? response.json() : null;
         })
             .catch(function (errorResponse) {
-            _this.spinnerService.hide();
+            //this.spinnerService.hide();
             if (errorResponse.status == 400) {
                 var jsonData_1;
                 try {
@@ -218,9 +224,23 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, "api/patientvisits/" + id)
             .subscribe(function (response) { _this.singlePatientVisits = response; });
     };
-    // login
-    Repository.prototype.login = function (name, password) {
-        return this.http.post("/api/account/login", { name: name, password: password });
+    // cookie login
+    //login(name: string, password: string): Observable<Response> {
+    //    return this.http.post("/api/account/login",
+    //        { name: name, password: password });
+    //}
+    // jwt token login
+    Repository.prototype.tokenLogin = function (name, password) {
+        var _this = this;
+        return this.http.request(new http_1.Request({
+            method: http_1.RequestMethod.Post,
+            url: "api/token",
+            body: { name: name, password: password }
+        })).map(function (response) {
+            var r = response.json();
+            _this.auth_token = r.success ? r.token : null;
+            return r.success;
+        });
     };
     // email password reset 
     Repository.prototype.resetPassword = function (email, password, confirmpassword, code) {
