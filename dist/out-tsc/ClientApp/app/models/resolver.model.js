@@ -17,7 +17,6 @@ var PatientResolver = (function () {
     }
     /// not used yet
     PatientResolver.prototype.resolve = function (route, state) {
-        console.log("reached resolver");
         return this.repo.getAllPatients().length == 0 ? this.repo.getAllPatients() : null;
     };
     return PatientResolver;

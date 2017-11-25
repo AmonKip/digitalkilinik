@@ -48,7 +48,6 @@ var AppUserDetailAdminComponent = (function () {
     Object.defineProperty(AppUserDetailAdminComponent.prototype, "userRoles", {
         get: function () {
             var result = this.repo.userRoles ? this.repo.userRoles.join() : "";
-            //console.log(result);
             return result;
         },
         enumerable: true,

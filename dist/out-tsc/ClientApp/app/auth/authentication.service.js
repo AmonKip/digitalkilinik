@@ -12,17 +12,29 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var repository_1 = require("../models/repository");
 var Observable_1 = require("rxjs/Observable");
+var Rx_1 = require("rxjs/Rx");
 var router_1 = require("@angular/router");
 require("rxjs/add/observable/of");
 require("rxjs/add/operator/delay");
+var http_1 = require("@angular/http");
+var jwt_decode_1 = require("jwt-decode");
 var AuthenticationService = (function () {
-    function AuthenticationService(repo, router, route) {
+    function AuthenticationService(repo, router, route, http) {
         this.repo = repo;
         this.router = router;
         this.route = route;
+        this.http = http;
+        // Observable navItem source
+        this._authNavStatusSource = new Rx_1.BehaviorSubject(false);
+        // Observable navItem stream
+        this.authNavStatus$ = this._authNavStatusSource.asObservable();
         this.authenticated = false;
         this.isAdmin = false;
         this.tokenAuthenticated = false;
+        this.tokenAuthenticated = !!localStorage.getItem('auth_token');
+        // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
+        // header component resulting in authed user nav links disappearing despite the fact user is still logged in
+        this._authNavStatusSource.next(this.tokenAuthenticated);
     }
     AuthenticationService.prototype.ngOnInit = function () {
     };
@@ -51,15 +63,40 @@ var AuthenticationService = (function () {
     //        });
     //} 
     AuthenticationService.prototype.tokenLogin = function () {
-        console.log("token login auth service");
-        return this.repo.tokenLogin(this.name, this.password);
+        var _this = this;
+        return this.http.request(new http_1.Request({
+            method: http_1.RequestMethod.Post,
+            url: "api/token",
+            body: { name: this.name, password: this.password }
+        })).map(function (res) { return (res.json()); })
+            .map(function (res) {
+            localStorage.setItem('auth_token', res.token);
+            var tokenPayload = jwt_decode_1.default(res.token);
+            if (tokenPayload.roles.indexOf("Admin") > -1) {
+                _this.isAdmin = true;
+            }
+            _this.tokenAuthenticated = true;
+            _this._authNavStatusSource.next(true);
+            _this.router.navigateByUrl(_this.callbackUrl || "/table");
+            return true;
+        })
+            .catch(function (res) {
+            throw new Error("Network Error");
+        });
     };
     AuthenticationService.prototype.isTokenAuthenticated = function () {
-        return this.tokenAuthenticated = this.repo.auth_token != null;
+        return this.tokenAuthenticated = this.auth_token != null;
     };
+    // token logout
     AuthenticationService.prototype.tokenLogout = function () {
+        localStorage.removeItem('auth_token');
         this.tokenAuthenticated = false;
-        this.repo.auth_token = null;
+        this.isAdmin = false;
+        this._authNavStatusSource.next(false);
+        this.router.navigateByUrl("/login");
+    };
+    AuthenticationService.prototype.isLoggedIn = function () {
+        return this.tokenAuthenticated;
     };
     // cookie logout
     AuthenticationService.prototype.logout = function () {
@@ -114,7 +151,7 @@ var AuthenticationService = (function () {
 AuthenticationService = __decorate([
     core_1.Injectable(),
     __metadata("design:paramtypes", [repository_1.Repository,
-        router_1.Router, router_1.ActivatedRoute])
+        router_1.Router, router_1.ActivatedRoute, http_1.Http])
 ], AuthenticationService);
 exports.AuthenticationService = AuthenticationService;
 //# sourceMappingURL=authentication.service.js.map

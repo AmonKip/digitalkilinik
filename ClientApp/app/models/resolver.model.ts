@@ -12,7 +12,6 @@ export class PatientResolver implements Resolve<any>{
      /// not used yet
     resolve(route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): Observable<Patient[]> {
-        console.log("reached resolver");
         return this.repo.getAllPatients().length == 0 ? this.repo.getAllPatients() : null;
     }
 

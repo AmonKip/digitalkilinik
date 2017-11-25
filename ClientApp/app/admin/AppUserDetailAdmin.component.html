@@ -10,7 +10,7 @@
   <tr><th>Reason</th><td>{{ user?.reason || 'No Data' }}</td></tr>
   <tr><th>Phone</th><td>{{ user?.phoneNumber || 'No Data' }}</td></tr>
   <tr><th>Biography</th><td>{{ user?.biography || 'No Data' }}</td></tr>
-  <tr><th class="btn-link" [routerLink]="['/admin/rolemanager', user?.userDetailsID]">Roles</th><td>{{ userRoles || 'None' }}</td></tr>
+  <tr *ngIf="!request"><th class="btn-link" [routerLink]="['/admin/rolemanager', user?.userDetailsID]">Roles</th><td>{{ userRoles || 'None' }}</td></tr>
 </table>
 <div class="text-center">
   <button class="btn btn-primary" [routerLink]="[returnUrl]"><i class="fa fa-backward"></i> Back</button>

@@ -20,7 +20,6 @@ export class HeaderComponent {
     //   // var x = document.getElementById("navArea");
     //   // var x = document.getElementById(event.toElement.attributes.id.nodeValue).className += " active"
         
-    //    console.log(x);
     //}
 
  

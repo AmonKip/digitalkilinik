@@ -19,7 +19,6 @@ var AuthenticationComponent = (function () {
         this.showError = false;
     }
     //login() {
-    //    console.log("cookie login");
     //    this.showError = false;
     //    this.authService.login().subscribe(result => {
     //        this.showError = !result;
@@ -31,7 +30,6 @@ var AuthenticationComponent = (function () {
     //}
     AuthenticationComponent.prototype.tokenLogin = function () {
         var _this = this;
-        console.log("component");
         this.showError = false;
         this.authService.tokenLogin().subscribe(function (result) {
             _this.showError = !result;

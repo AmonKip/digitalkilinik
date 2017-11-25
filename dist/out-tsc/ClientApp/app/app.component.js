@@ -36,7 +36,7 @@ var AppComponent = (function () {
     };
     Object.defineProperty(AppComponent.prototype, "loggedIn", {
         get: function () {
-            return this.authService.authenticated;
+            return this.authService.tokenAuthenticated;
         },
         enumerable: true,
         configurable: true

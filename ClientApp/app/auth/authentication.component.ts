@@ -12,7 +12,6 @@ export class AuthenticationComponent {
     showError: boolean = false;
 
     //login() {
-    //    console.log("cookie login");
     //    this.showError = false;
     //    this.authService.login().subscribe(result => {
     //        this.showError = !result;
@@ -24,15 +23,15 @@ export class AuthenticationComponent {
     //    });
     //}
     tokenLogin() {
-        console.log("component");
         this.showError = false;
         this.authService.tokenLogin().subscribe(result => {
+        
             this.showError = !result;
             if (this.authService.tokenAuthenticated) {
                 this.repo.getPatients();
                 this.repo.getVisits();
             }
-       
+        
         });
     }
 }

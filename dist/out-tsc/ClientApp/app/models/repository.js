@@ -185,14 +185,14 @@ var Repository = (function () {
             .subscribe(function (response) { return _this.getEmployees(); });
     };
     // consolidated request method
-    Repository.prototype.sendRequest = function (verb, url, data, auth) {
-        if (auth === void 0) { auth = false; }
+    Repository.prototype.sendRequest = function (verb, url, data) {
+        var authToken = localStorage.getItem('auth_token');
+        var headers = new http_1.Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', "Bearer " + authToken);
         var request = new http_1.Request({
-            method: verb, url: url, body: data
+            method: verb, url: url, body: data, headers: headers
         });
-        if (auth && this.auth_token != null) {
-            request.headers.set("Authorization:", "Bearer " + this.auth_token);
-        }
         return this.http.request(request)
             .map(function (response) {
             //this.spinnerService.hide();
@@ -230,18 +230,21 @@ var Repository = (function () {
     //        { name: name, password: password });
     //}
     // jwt token login
-    Repository.prototype.tokenLogin = function (name, password) {
-        var _this = this;
-        return this.http.request(new http_1.Request({
-            method: http_1.RequestMethod.Post,
-            url: "api/token",
-            body: { name: name, password: password }
-        })).map(function (response) {
-            var r = response.json();
-            _this.auth_token = r.success ? r.token : null;
-            return r.success;
-        });
-    };
+    //tokenLogin(name: string, password: string): Observable<boolean> {
+    //    return this.http.request(new Request({
+    //        method: RequestMethod.Post,
+    //        url: "api/token",
+    //        body: { name: name, password: password }
+    //    })).map(response => {
+    //        let r = response.json();
+    //        this.auth_token = r.token;
+    //        console.log(this.auth_token);
+    //        if (this.auth_token) {
+    //            return true;
+    //        }
+    //        return false;
+    //    });
+    //}
     // email password reset 
     Repository.prototype.resetPassword = function (email, password, confirmpassword, code) {
         return this.http.post("/api/account/resetpassword", { email: email, password: password, confirmpassword: confirmpassword, code: code });

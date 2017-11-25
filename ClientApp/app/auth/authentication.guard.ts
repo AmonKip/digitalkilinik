@@ -37,12 +37,11 @@ export class AuthenticationGuard {
         // on the data property
         const adminRole = "Admin";
         const token = localStorage.getItem('auth_token');
-        console.log("token:" + token);
+ 
         // decode the token to get its payload
         const tokenPayload = decode(token);
-        console.log("payload exp: " + tokenPayload.sub);
-        //console.log("Admin indx: " + tokenPayload.roles.indexOf(expectedRole));
-        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(adminRole) == -1 || !this.isNotExpiredToken() ) {
+
+        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(adminRole) == -1) {
             this.router.navigateByUrl("/login");
             return false;
         }
@@ -58,8 +57,8 @@ export class AuthenticationGuard {
 
         // decode the token to get its payload
         const tokenPayload = decode(token);
-        console.log(tokenPayload.exp);
-        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(expectedRole) == -1 || !this.isNotExpiredToken()) {
+      
+        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(expectedRole) == -1) {
             this.router.navigateByUrl("/login");
             return false;
         }
@@ -69,14 +68,14 @@ export class AuthenticationGuard {
         const token = localStorage.getItem('auth_token');
 
         var tokenExpirationTime = decode(token).exp
-        var currentTime = Math.floor((new Date).getTime()/1000);
-        console.log("token exp: " + tokenExpirationTime);
-        console.log("current time: " + currentTime);
+        var currentTime = Math.floor((new Date).getTime() / 1000);
+
         if (tokenExpirationTime > currentTime) {
             
             return true;
         }
         this.authService.tokenAuthenticated = false;
+        localStorage.removeItem('auth_token');
         return false;
     }
    

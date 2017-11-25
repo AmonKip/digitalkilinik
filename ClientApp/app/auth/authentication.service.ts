@@ -14,7 +14,7 @@ export class AuthenticationService implements OnInit {
     constructor(private repo: Repository,
         private router: Router, private route: ActivatedRoute, private http: Http) {
 
-        this.tokenAuthenticated = !!localStorage.getItem('auth_token');
+        this.tokenAuthenticated = !!localStorage.getItem('auth_token') && this.isNotExpiredToken();
         // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
         // header component resulting in authed user nav links disappearing despite the fact user is still logged in
         this._authNavStatusSource.next(this.tokenAuthenticated)
@@ -70,7 +70,7 @@ export class AuthenticationService implements OnInit {
 
     //} 
 
-    tokenLogin() {
+    tokenLogin(): Observable<boolean> {
         return this.http.request(new Request({
             method: RequestMethod.Post,
             url: "api/token",
@@ -88,12 +88,14 @@ export class AuthenticationService implements OnInit {
                 return true;
             })
             .catch(res => {
-                throw new Error("Network Error");
+                return Observable.of(false);
+                
             })
+       
     }
 
     isTokenAuthenticated(): boolean {
-        return this.tokenAuthenticated = this.auth_token != null;
+        return this.tokenAuthenticated;
     }
     // token logout
     tokenLogout() {
@@ -157,5 +159,17 @@ export class AuthenticationService implements OnInit {
             this.isAdmin = false;
             return Observable.of(false);
         });
+    }
+    isNotExpiredToken() {
+        const token = localStorage.getItem('auth_token');
+
+        var tokenExpirationTime = decode(token).exp
+        var currentTime = Math.floor((new Date).getTime() / 1000);
+
+        if (tokenExpirationTime > currentTime) {
+
+            return true;
+        }
+        return false;
     }
 }

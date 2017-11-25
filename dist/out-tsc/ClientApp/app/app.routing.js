@@ -14,7 +14,6 @@ var patientAdmin_component_1 = require("./admin/patientAdmin.component");
 var appUserAdmin_component_1 = require("./admin/appUserAdmin.component");
 var patientDetailAdmin_component_1 = require("./admin/patientDetailAdmin.component");
 var authentication_guard_1 = require("./auth/authentication.guard");
-var adminauthentication_guard_1 = require("./auth/adminauthentication.guard");
 var authentication_component_1 = require("./auth/authentication.component");
 var AppUserDetailAdmin_component_1 = require("./admin/AppUserDetailAdmin.component");
 var AppUserRequestAdmin_component_1 = require("./admin/AppUserRequestAdmin.component");
@@ -42,7 +41,10 @@ var routes = [
     { path: "admin", redirectTo: "/admin/overview", pathMatch: "full" },
     {
         path: "admin", component: admin_component_1.AdminComponent,
-        canActivateChild: [adminauthentication_guard_1.AdminAuthGuard],
+        canActivateChild: [authentication_guard_1.AuthenticationGuard],
+        data: {
+            expectedRole: 'Admin'
+        },
         children: [
             { path: "overview", component: overview_component_1.OverviewComponent },
             { path: "patientdetail/:id", component: patientDetailAdmin_component_1.PatientDetailAdminComponent },
@@ -63,13 +65,13 @@ var routes = [
         ]
     },
     //{ path: "login", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
-    { path: "table", component: patientTable_component_1.PatientTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
-    { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
-    { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
-    { path: "visittable", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
-    { path: "detail/:id", component: patientDetail_component_1.PatientDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
-    { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
-    { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard] },
+    { path: "table", component: patientTable_component_1.PatientTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visittable", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "detail/:id", component: patientDetail_component_1.PatientDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "accountcreate", component: appUserCreate_Component_1.AppUserCreateComponent },
     { path: "**", redirectTo: "/login" }
 ];

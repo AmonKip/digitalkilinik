@@ -220,9 +220,11 @@ namespace ePatientCare.Controllers
 
             return Ok(new { token = new JwtSecurityTokenHandler().WriteToken(jwt) });
           }
+          return BadRequest("Invalid");
         }
+        return BadRequest("Invalid");
       }
-      return BadRequest("Could not create token");
+      return BadRequest("Invalid");
     }
 
   [AllowAnonymous]
