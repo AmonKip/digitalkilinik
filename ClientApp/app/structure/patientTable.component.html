@@ -20,7 +20,7 @@
       <td>{{patient?.dob | date: 'mediumDate' || 'Loading Data...'}}</td>
       <td>{{patient?.sublocation || 'Loading Data...'}}</td>
       <td>
-        <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Check In"><i class="fa fa-sign-in"></i></button>
+        <button class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="bottom" title="Check In" [routerLink]="['/visitcreate', patient.patientID]"><i class="fa fa-sign-in"></i></button>
         <button class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="bottom" title="Details"
                 [routerLink]="['/detail', patient?.patientID]">
           <i class="fa fa-address-card-o"></i>

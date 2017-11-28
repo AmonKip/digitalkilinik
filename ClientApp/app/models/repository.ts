@@ -13,6 +13,9 @@ import { RoleUser } from "./roleuser.model";
 import { ErrorHandlerService, ValidationError } from "../services/errorHandler.service";
 import "rxjs/add/operator/catch";
 import { Ng4LoadingSpinnerService } from 'ng4-loading-spinner';
+import { VitalSigns } from "./vitalsigns.model";
+import { Assessment } from "./assessment.model";
+import { DoctorsOrder } from "./doctorsOrder.model";
 
 const patientsUrl = "api/patients";
 const employeesUrl = "api/employees";
@@ -58,6 +61,11 @@ export class Repository {
          this.sendRequest(RequestMethod.Get, url)
              .subscribe(response => { this.patients = response; });
     }
+
+    getPatientByVisitId(id: number) {
+        this.sendRequest(RequestMethod.Get, "/api/patientbyVisitId/" + id)
+            .subscribe(response => { this.patient = response; })
+    }
     getAllPatients() {
         return Observable.create(observer => {
             observer.next(this.patients);
@@ -77,7 +85,21 @@ export class Repository {
         this.sendRequest(RequestMethod.Get, "/api/visits/" + id)
             .subscribe(response => { this.visit = response; });
     }
-
+    // get vital signs by visit id
+    getVitalSigns(id: number) {
+        this.sendRequest(RequestMethod.Get, "/api/vitalsignsbyVisitId/" + id)
+            .subscribe(response => { this.vitalSigns = response; });
+    }
+    // get doctor's assessment notes by visit id
+    getAssessment(id: number) {
+        this.sendRequest(RequestMethod.Get, "/api/assessmentbyVisitId/" + id)
+            .subscribe(response => { this.assessment = response; });
+    }
+    // get doctor's orders by visit id
+    getDoctorOrders(id: number) {
+        this.sendRequest(RequestMethod.Get, "/api/ordersbyVisitId/" + id)
+            .subscribe(response => { this.doctorOrders = response; });
+    }
     // get single user by id
     getUser(id: number) {
         this.sendRequest(RequestMethod.Get, "/api/users/" + id)
@@ -116,6 +138,17 @@ export class Repository {
             .subscribe(response => {
                 pat.patientID = response;
                 this.patients.push(pat);
+            })
+    }
+    // create visit
+    createVisit(visit: Visit) {
+        let data = {
+            complaint: visit.complaint, background: visit.background
+        };
+        this.sendRequest(RequestMethod.Post, "/api/addVisit")
+            .subscribe(response => {
+                visit.visitId = response;
+                this.visits.push(visit);
             })
     }
     // creates appUser
@@ -179,7 +212,7 @@ export class Repository {
     
     // consolidated request method
     private sendRequest(verb: RequestMethod, url: string, data?: any): Observable<any> {
-        let authToken = localStorage.getItem('auth_token');
+        let authToken = sessionStorage.getItem('auth_token');
         let headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', `Bearer ${authToken}`);
@@ -305,6 +338,9 @@ export class Repository {
     roleUser: RoleUser;
     roleUsers: RoleUser[];
     userRoles: AppRole[];
+    vitalSigns: VitalSigns;
+    assessment: Assessment;
+    doctorOrders: DoctorsOrder[];
 
     get filter(): Filter {
         return this.filterObject;

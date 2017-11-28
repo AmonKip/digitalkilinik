@@ -22,13 +22,13 @@
        <tr>
          <th>Date</th>
          <th>Complain</th>
-         <th>Medications</th>
+         <th>Background</th>
          <th></th>
        </tr>
        <tr *ngFor="let visit of singlePatientVisits">
          <td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td>
-         <td>{{visit?.complain || 'No Data'}}</td>
-         <td>{{visit?.medications ||'No Data'}}</td>
+         <td>{{visit?.complaint || 'No Data'}}</td>
+         <td>{{visit?.background ||'No Data'}}</td>
          <td>
            <button class="btn btn-primary btn-sm"
                    [routerLink]="['/visitdetail', visit?.visitId]">

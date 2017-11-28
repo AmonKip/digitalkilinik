@@ -30,6 +30,7 @@ var createrole_component_1 = require("./admin/createrole.component");
 var passwordresetconfirmation_component_1 = require("./structure/passwordresetconfirmation.component");
 var forgotpasswordconfirm_component_1 = require("./structure/forgotpasswordconfirm.component");
 var requestconfirmation_component_1 = require("./structure/requestconfirmation.component");
+var patientVisitCreate_component_1 = require("./structure/patientVisitCreate.component");
 //import { PatientResolver } from "./models/resolver.model";
 var routes = [
     { path: "login", component: authentication_component_1.AuthenticationComponent },
@@ -69,6 +70,7 @@ var routes = [
     { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visittable", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visitcreate/:id", component: patientVisitCreate_component_1.PatientVisitCreate, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "detail/:id", component: patientDetail_component_1.PatientDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },

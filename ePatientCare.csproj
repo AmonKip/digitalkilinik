@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="ClientApp\app\models\doctorsOrder.model.ts" />
     <None Include="ClientApp\app\structure\passwordresetconfirm.component.html" />
     <None Include="ClientApp\app\structure\passwordresetconfirm.component.ts" />
   </ItemGroup>

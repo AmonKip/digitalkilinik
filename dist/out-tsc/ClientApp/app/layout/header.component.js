@@ -15,7 +15,8 @@ var HeaderComponent = (function () {
     function HeaderComponent(authService) {
         this.authService = authService;
         this.name = this.authService.name;
-        this.isAdmin = this.authService.isAdmin;
+        // this.isAdmin = this.authService.isAdmin;
+        this.isAdmin = !!sessionStorage.getItem("isAdmin");
     }
     return HeaderComponent;
 }());

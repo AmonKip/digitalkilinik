@@ -31,6 +31,7 @@ import { CreateRoleComponent } from "./admin/createrole.component";
 import { PasswordResetConfirmComponent } from "./structure/passwordresetconfirmation.component";
 import { ForgotPasswordConfirmComponent } from "./structure/forgotpasswordconfirm.component";
 import { RequestConfirmComponent } from "./structure/requestconfirmation.component";
+import { PatientVisitCreate } from "./structure/patientVisitCreate.component";
 
 //import { PatientResolver } from "./models/resolver.model";
 
@@ -73,6 +74,7 @@ const routes: Routes = [
     { path: "patientedit/:id", component: PatientEditComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visittable/:id", component: VisitTableComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visittable", component: VisitTableComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "visitcreate/:id", component: PatientVisitCreate, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "detail/:id", component: PatientDetailComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visitdetail/:id", component: VisitDetailComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "patientcreate", component: PatientCreateComponent, canActivate: [AuthenticationGuard], data: { expectedRole: 'Nurse' } },

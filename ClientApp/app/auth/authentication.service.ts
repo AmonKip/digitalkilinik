@@ -14,7 +14,7 @@ export class AuthenticationService implements OnInit {
     constructor(private repo: Repository,
         private router: Router, private route: ActivatedRoute, private http: Http) {
 
-        this.tokenAuthenticated = !!localStorage.getItem('auth_token') && this.isNotExpiredToken();
+        this.tokenAuthenticated = !!sessionStorage.getItem('auth_token') && this.isNotExpiredToken();
         // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
         // header component resulting in authed user nav links disappearing despite the fact user is still logged in
         this._authNavStatusSource.next(this.tokenAuthenticated)
@@ -77,10 +77,11 @@ export class AuthenticationService implements OnInit {
             body: { name: this.name, password: this.password }
         })).map(res => (res.json()))
             .map(res => {
-                localStorage.setItem('auth_token', res.token);
+                sessionStorage.setItem('auth_token', res.token);
                 const tokenPayload = decode(res.token);
                 if (tokenPayload.roles.indexOf("Admin") > -1) {
                     this.isAdmin = true;
+                    sessionStorage.setItem('isAdmin', "true");
                 }
                 this.tokenAuthenticated = true;
                 this._authNavStatusSource.next(true);
@@ -99,7 +100,8 @@ export class AuthenticationService implements OnInit {
     }
     // token logout
     tokenLogout() {
-        localStorage.removeItem('auth_token');
+        sessionStorage.removeItem('auth_token');
+        sessionStorage.removeItem('isAdmin');
         this.tokenAuthenticated = false;
         this.isAdmin = false;
         this._authNavStatusSource.next(false);
@@ -161,7 +163,7 @@ export class AuthenticationService implements OnInit {
         });
     }
     isNotExpiredToken() {
-        const token = localStorage.getItem('auth_token');
+        const token = sessionStorage.getItem('auth_token');
 
         var tokenExpirationTime = decode(token).exp
         var currentTime = Math.floor((new Date).getTime() / 1000);
@@ -170,6 +172,8 @@ export class AuthenticationService implements OnInit {
 
             return true;
         }
+        this.tokenAuthenticated = false;
+        sessionStorage.removeItem('auth_token');
         return false;
     }
 }

@@ -18,6 +18,10 @@ var VisitDetailComponent = (function () {
         var id = Number.parseInt(activeRoute.snapshot.params["id"]);
         if (id) {
             this.repo.getVisit(id);
+            this.repo.getPatientByVisitId(id);
+            this.repo.getVitalSigns(id);
+            this.repo.getAssessment(id);
+            this.repo.getDoctorOrders(id);
         }
         else {
             router.navigateByUrl("/");
@@ -26,6 +30,34 @@ var VisitDetailComponent = (function () {
     Object.defineProperty(VisitDetailComponent.prototype, "visit", {
         get: function () {
             return this.repo.visit;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VisitDetailComponent.prototype, "patient", {
+        get: function () {
+            return this.repo.patient;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VisitDetailComponent.prototype, "vitalSigns", {
+        get: function () {
+            return this.repo.vitalSigns;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VisitDetailComponent.prototype, "assessment", {
+        get: function () {
+            return this.repo.assessment;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VisitDetailComponent.prototype, "orders", {
+        get: function () {
+            return this.repo.doctorOrders;
         },
         enumerable: true,
         configurable: true

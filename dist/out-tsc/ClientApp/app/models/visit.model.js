@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Visit = (function () {
-    function Visit(visitId, date, complain, medications, provider, patient) {
+    function Visit(visitId, date, complaint, background, patientID, current) {
         this.visitId = visitId;
         this.date = date;
-        this.complain = complain;
-        this.medications = medications;
-        this.provider = provider;
-        this.patient = patient;
+        this.complaint = complaint;
+        this.background = background;
+        this.patientID = patientID;
+        this.current = current;
     }
     return Visit;
 }());

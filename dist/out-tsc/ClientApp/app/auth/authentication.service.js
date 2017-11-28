@@ -31,7 +31,7 @@ var AuthenticationService = (function () {
         this.authenticated = false;
         this.isAdmin = false;
         this.tokenAuthenticated = false;
-        this.tokenAuthenticated = !!localStorage.getItem('auth_token');
+        this.tokenAuthenticated = !!sessionStorage.getItem('auth_token') && this.isNotExpiredToken();
         // ?? not sure if this the best way to broadcast the status but seems to resolve issue on page refresh where auth status is lost in
         // header component resulting in authed user nav links disappearing despite the fact user is still logged in
         this._authNavStatusSource.next(this.tokenAuthenticated);
@@ -70,10 +70,11 @@ var AuthenticationService = (function () {
             body: { name: this.name, password: this.password }
         })).map(function (res) { return (res.json()); })
             .map(function (res) {
-            localStorage.setItem('auth_token', res.token);
+            sessionStorage.setItem('auth_token', res.token);
             var tokenPayload = jwt_decode_1.default(res.token);
             if (tokenPayload.roles.indexOf("Admin") > -1) {
                 _this.isAdmin = true;
+                sessionStorage.setItem('isAdmin', "true");
             }
             _this.tokenAuthenticated = true;
             _this._authNavStatusSource.next(true);
@@ -81,15 +82,16 @@ var AuthenticationService = (function () {
             return true;
         })
             .catch(function (res) {
-            throw new Error("Network Error");
+            return Observable_1.Observable.of(false);
         });
     };
     AuthenticationService.prototype.isTokenAuthenticated = function () {
-        return this.tokenAuthenticated = this.auth_token != null;
+        return this.tokenAuthenticated;
     };
     // token logout
     AuthenticationService.prototype.tokenLogout = function () {
-        localStorage.removeItem('auth_token');
+        sessionStorage.removeItem('auth_token');
+        sessionStorage.removeItem('isAdmin');
         this.tokenAuthenticated = false;
         this.isAdmin = false;
         this._authNavStatusSource.next(false);
@@ -145,6 +147,17 @@ var AuthenticationService = (function () {
             _this.isAdmin = false;
             return Observable_1.Observable.of(false);
         });
+    };
+    AuthenticationService.prototype.isNotExpiredToken = function () {
+        var token = sessionStorage.getItem('auth_token');
+        var tokenExpirationTime = jwt_decode_1.default(token).exp;
+        var currentTime = Math.floor((new Date).getTime() / 1000);
+        if (tokenExpirationTime > currentTime) {
+            return true;
+        }
+        this.tokenAuthenticated = false;
+        sessionStorage.removeItem('auth_token');
+        return false;
     };
     return AuthenticationService;
 }());

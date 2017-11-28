@@ -214,9 +214,9 @@ namespace ePatientCare
 
             routes.MapSpaFallbackRoute("angular-fallback", new { controller = "Home", action = "Index" });
         });
-           SeedData.SeedDatabase(app.ApplicationServices.GetRequiredService<ApplicationDbContext>(), 
-                              app.ApplicationServices.GetRequiredService<UserManager<AppUser>>(),
-                              app.ApplicationServices.GetRequiredService<RoleManager<IdentityRole>>());
-        }
+      SeedData.SeedDatabase(app.ApplicationServices.GetRequiredService<ApplicationDbContext>(),
+                         app.ApplicationServices.GetRequiredService<UserManager<AppUser>>(),
+                         app.ApplicationServices.GetRequiredService<RoleManager<IdentityRole>>());
+    }
     }
 }

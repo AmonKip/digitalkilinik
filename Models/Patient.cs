@@ -33,6 +33,8 @@ namespace ePatientCare.Models
 
         public string IDNumber { get; set; }
 
-        public List<Visit> Visits { get; set; }
+        public int Current { get; set; }
+
+        //public List<Visit> Visits { get; set; }
   }
 }

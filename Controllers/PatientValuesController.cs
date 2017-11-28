@@ -38,7 +38,25 @@ namespace ePatientCare.Controllers
         return null;
       }
     }
-    [HttpGet]
+
+  [HttpGet]
+  [Route("api/patientbyVisitId/{id}")]
+  public Patient GetPatientByVisitId(long id)
+  {
+      //System.Threading.Thread.Sleep(5000);
+      try
+      {
+                long patientId = context.Visits.Find(id).PatientID;
+                return context.Patients.Find(patientId);
+      }
+      catch (Exception e)
+      {
+          var error = e.InnerException.ToString() ?? e.Message;
+          logger.LogInformation(1, error);
+          return null;
+      }
+  }
+        [HttpGet]
     [Route("api/patients")]
     public IEnumerable<Patient> GetPatients(string category, string search)
     {

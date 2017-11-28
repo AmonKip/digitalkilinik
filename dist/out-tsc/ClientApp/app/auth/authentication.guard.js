@@ -44,7 +44,7 @@ var AuthenticationGuard = (function () {
         // this will be passed from the route config
         // on the data property
         var adminRole = "Admin";
-        var token = localStorage.getItem('auth_token');
+        var token = sessionStorage.getItem('auth_token');
         // decode the token to get its payload
         var tokenPayload = jwt_decode_1.default(token);
         if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(adminRole) == -1 || !this.isNotExpiredToken()) {
@@ -57,7 +57,7 @@ var AuthenticationGuard = (function () {
         // this will be passed from the route config
         // on the data property
         var expectedRole = route.data.expectedRole;
-        var token = localStorage.getItem('auth_token');
+        var token = sessionStorage.getItem('auth_token');
         // decode the token to get its payload
         var tokenPayload = jwt_decode_1.default(token);
         if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(expectedRole) == -1 || !this.isNotExpiredToken()) {
@@ -67,7 +67,7 @@ var AuthenticationGuard = (function () {
         return true;
     };
     AuthenticationGuard.prototype.isNotExpiredToken = function () {
-        var token = localStorage.getItem('auth_token');
+        var token = sessionStorage.getItem('auth_token');
         var tokenExpirationTime = jwt_decode_1.default(token).exp;
         var currentTime = Math.floor((new Date).getTime() / 1000);
         if (tokenExpirationTime > currentTime) {

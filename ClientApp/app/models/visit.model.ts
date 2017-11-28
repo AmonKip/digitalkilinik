@@ -5,8 +5,8 @@ export class Visit {
     constructor(
         public visitId?: number,
         public date?: string,
-        public complain?: string,
-        public medications?: string,
-        public provider?: Employee,
-        public patient?: Patient) { }
+        public complaint?: string,
+        public background?: string,
+        public patientID?: number,
+        public current?: number) { }
 }

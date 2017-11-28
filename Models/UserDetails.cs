@@ -43,7 +43,7 @@ namespace ePatientCare.Models
 
     public DateTime LastUpdatedDate { get; set; }
 
-    public IEnumerable<Visit> Visits { get; set; }
+    //public IEnumerable<Visit> Visits { get; set; }
     public AppUser AppUser { get; set; }
   }
 

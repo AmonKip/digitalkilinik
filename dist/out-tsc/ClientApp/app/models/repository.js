@@ -56,6 +56,11 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, url)
             .subscribe(function (response) { _this.patients = response; });
     };
+    Repository.prototype.getPatientByVisitId = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/patientbyVisitId/" + id)
+            .subscribe(function (response) { _this.patient = response; });
+    };
     Repository.prototype.getAllPatients = function () {
         var _this = this;
         return Observable_1.Observable.create(function (observer) {
@@ -78,6 +83,24 @@ var Repository = (function () {
         var _this = this;
         this.sendRequest(http_1.RequestMethod.Get, "/api/visits/" + id)
             .subscribe(function (response) { _this.visit = response; });
+    };
+    // get vital signs by visit id
+    Repository.prototype.getVitalSigns = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/vitalsignsbyVisitId/" + id)
+            .subscribe(function (response) { _this.vitalSigns = response; });
+    };
+    // get doctor's assessment notes by visit id
+    Repository.prototype.getAssessment = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/assessmentbyVisitId/" + id)
+            .subscribe(function (response) { _this.assessment = response; });
+    };
+    // get doctor's orders by visit id
+    Repository.prototype.getDoctorOrders = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/ordersbyVisitId/" + id)
+            .subscribe(function (response) { _this.doctorOrders = response; });
     };
     // get single user by id
     Repository.prototype.getUser = function (id) {
@@ -121,6 +144,18 @@ var Repository = (function () {
             .subscribe(function (response) {
             pat.patientID = response;
             _this.patients.push(pat);
+        });
+    };
+    // create visit
+    Repository.prototype.createVisit = function (visit) {
+        var _this = this;
+        var data = {
+            complaint: visit.complaint, background: visit.background
+        };
+        this.sendRequest(http_1.RequestMethod.Post, "/api/addVisit")
+            .subscribe(function (response) {
+            visit.visitId = response;
+            _this.visits.push(visit);
         });
     };
     // creates appUser
@@ -186,7 +221,7 @@ var Repository = (function () {
     };
     // consolidated request method
     Repository.prototype.sendRequest = function (verb, url, data) {
-        var authToken = localStorage.getItem('auth_token');
+        var authToken = sessionStorage.getItem('auth_token');
         var headers = new http_1.Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', "Bearer " + authToken);

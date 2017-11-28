@@ -12,15 +12,8 @@ export class HeaderComponent {
 
     constructor(public authService: AuthenticationService) {
         this.name = this.authService.name;
-        this.isAdmin = this.authService.isAdmin;
+       // this.isAdmin = this.authService.isAdmin;
+        this.isAdmin = !!sessionStorage.getItem("isAdmin");
     }
-    //activeTab(event)
-    //{
-    //   // var y = document.getElementById("active").className -= " active"
-    //   // var x = document.getElementById("navArea");
-    //   // var x = document.getElementById(event.toElement.attributes.id.nodeValue).className += " active"
-        
-    //}
 
- 
 }

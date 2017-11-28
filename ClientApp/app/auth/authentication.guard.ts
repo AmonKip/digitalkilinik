@@ -36,12 +36,12 @@ export class AuthenticationGuard {
         // this will be passed from the route config
         // on the data property
         const adminRole = "Admin";
-        const token = localStorage.getItem('auth_token');
+        const token = sessionStorage.getItem('auth_token');
  
         // decode the token to get its payload
         const tokenPayload = decode(token);
 
-        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(adminRole) == -1) {
+        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(adminRole) == -1 || !this.isNotExpiredToken()) {
             this.router.navigateByUrl("/login");
             return false;
         }
@@ -53,19 +53,19 @@ export class AuthenticationGuard {
         // on the data property
         const expectedRole = route.data.expectedRole;
 
-        const token = localStorage.getItem('auth_token');
+        const token = sessionStorage.getItem('auth_token');
 
         // decode the token to get its payload
         const tokenPayload = decode(token);
       
-        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(expectedRole) == -1) {
+        if (!this.authService.tokenAuthenticated || tokenPayload.roles.indexOf(expectedRole) == -1 || !this.isNotExpiredToken()) {
             this.router.navigateByUrl("/login");
             return false;
         }
         return true;
     }
     isNotExpiredToken(){
-        const token = localStorage.getItem('auth_token');
+        const token = sessionStorage.getItem('auth_token');
 
         var tokenExpirationTime = decode(token).exp
         var currentTime = Math.floor((new Date).getTime() / 1000);
@@ -75,7 +75,6 @@ export class AuthenticationGuard {
             return true;
         }
         this.authService.tokenAuthenticated = false;
-        localStorage.removeItem('auth_token');
         return false;
     }
    

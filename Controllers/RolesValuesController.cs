@@ -20,10 +20,11 @@ namespace ePatientCare.Controllers
     private readonly ApplicationDbContext context;
     private readonly RoleManager<IdentityRole> roleManager;
     private readonly UserManager<AppUser> userManager;
-    //private readonly SignInManager<AppUser> _signInManager;
-    //private readonly IEmailSender _emailSender;
-    //private readonly ISmsSender _smsSender;
-    //private readonly ILogger _logger;
+
+        //private readonly SignInManager<AppUser> _signInManager;
+        //private readonly IEmailSender _emailSender;
+        //private readonly ISmsSender _smsSender;
+        //private readonly ILogger _logger;
 
 
     public RolesValuesController(ApplicationDbContext ctx, RoleManager<IdentityRole> roleMgr, UserManager<AppUser> usrManager)
@@ -33,15 +34,20 @@ namespace ePatientCare.Controllers
       userManager = usrManager;
     }
 
-    // get all roles from roles table
-    
-    [HttpGet]
-    [Route("api/roles")]
-   [Authorize(ActiveAuthenticationSchemes ="Bearer")]
-    public IEnumerable<IdentityRole> GetRoles() 
-    { 
-      // System.Threading.Thread.Sleep(5000);
-      return roleManager.Roles;
+        // get all roles from roles table
+
+        [HttpGet]
+        [Route("api/roles")]
+        [Authorize(ActiveAuthenticationSchemes = "Bearer")]
+        public IQueryable<Object> GetRoles()
+        {
+            // System.Threading.Thread.Sleep(5000);
+            // return roleManager.Roles;
+            //  return roleManager.Roles.Select
+           var query = from r in roleManager.Roles
+            select new { Id = r.Id, Name = r.Name };
+
+            return query;
     }
 
     // POST: /Account/Register

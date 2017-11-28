@@ -31,5 +31,11 @@ namespace ePatientCare.Data
        // public DbSet<Employee> Employees { get; set; }
         public DbSet<Visit> Visits { get; set; }
         public DbSet<UserDetails> UserDetails { get; set; }
+        public DbSet<VitalSigns> VitalSigns { get; set; }
+        public DbSet<Assessment> Assessments { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<Lab> LabWorks { get; set; }
+        public DbSet <Pharmacy> Pharmacy { get; set; }
+        public DbSet<Imaging> Imaging { get; set; }
   }
 }

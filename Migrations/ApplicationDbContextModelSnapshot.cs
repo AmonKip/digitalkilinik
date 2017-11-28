@@ -16,10 +16,96 @@ namespace ePatientCare.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("ePatientCare.Models.Assessment", b =>
+                {
+                    b.Property<int>("AssessmentId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Notes");
+
+                    b.Property<long>("UserDetailsID");
+
+                    b.Property<long>("VisitId");
+
+                    b.HasKey("AssessmentId");
+
+                    b.ToTable("Assessments");
+                });
+
+            modelBuilder.Entity("ePatientCare.Models.Imaging", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Fulfilled");
+
+                    b.Property<DateTime>("FulfillmentDate");
+
+                    b.Property<long>("OrderId");
+
+                    b.Property<long>("PatientID");
+
+                    b.Property<long>("UserDetailsID");
+
+                    b.Property<string>("XRay");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Imaging");
+                });
+
+            modelBuilder.Entity("ePatientCare.Models.Lab", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Blood");
+
+                    b.Property<int>("Fulfilled");
+
+                    b.Property<DateTime>("FulfillmentDate");
+
+                    b.Property<long>("OrderId");
+
+                    b.Property<long>("PatientID");
+
+                    b.Property<string>("Stool");
+
+                    b.Property<string>("Urianalysis");
+
+                    b.Property<long>("UserDetailsID");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("LabWorks");
+                });
+
+            modelBuilder.Entity("ePatientCare.Models.Order", b =>
+                {
+                    b.Property<long>("OrderId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("Notes");
+
+                    b.Property<string>("OrderType");
+
+                    b.Property<long>("VisitId");
+
+                    b.HasKey("OrderId");
+
+                    b.ToTable("Orders");
+                });
+
             modelBuilder.Entity("ePatientCare.Models.Patient", b =>
                 {
                     b.Property<long>("PatientID")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<int>("Current");
 
                     b.Property<DateTime>("DOB");
 
@@ -44,6 +130,28 @@ namespace ePatientCare.Migrations
                     b.HasKey("PatientID");
 
                     b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("ePatientCare.Models.Pharmacy", b =>
+                {
+                    b.Property<long>("ID")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Comments");
+
+                    b.Property<int>("Fulfilled");
+
+                    b.Property<DateTime>("FulfillmentDate");
+
+                    b.Property<long>("OrderId");
+
+                    b.Property<long>("PatientID");
+
+                    b.Property<long>("UserDetailsID");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Pharmacy");
                 });
 
             modelBuilder.Entity("ePatientCare.Models.Security.AppUser", b =>
@@ -145,25 +253,45 @@ namespace ePatientCare.Migrations
                     b.Property<long>("VisitId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Complain");
+                    b.Property<string>("Background");
+
+                    b.Property<string>("Complaint");
+
+                    b.Property<int>("Current");
 
                     b.Property<DateTime>("Date");
 
-                    b.Property<string>("Diagnosis");
-
-                    b.Property<string>("Medications");
-
-                    b.Property<long?>("PatientID");
-
-                    b.Property<long?>("UserDetailsID");
+                    b.Property<long>("PatientID");
 
                     b.HasKey("VisitId");
 
-                    b.HasIndex("PatientID");
-
-                    b.HasIndex("UserDetailsID");
-
                     b.ToTable("Visits");
+                });
+
+            modelBuilder.Entity("ePatientCare.Models.VitalSigns", b =>
+                {
+                    b.Property<long>("VitalSignsId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("BloodPressure");
+
+                    b.Property<DateTime>("Date");
+
+                    b.Property<string>("OxygenSaturation");
+
+                    b.Property<string>("Pulse");
+
+                    b.Property<string>("Respiration");
+
+                    b.Property<string>("Temperature");
+
+                    b.Property<long>("UserDetailsID");
+
+                    b.Property<long>("VisitId");
+
+                    b.HasKey("VitalSignsId");
+
+                    b.ToTable("VitalSigns");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -278,17 +406,6 @@ namespace ePatientCare.Migrations
                     b.HasOne("ePatientCare.Models.Security.AppUser", "AppUser")
                         .WithMany()
                         .HasForeignKey("AppUserId");
-                });
-
-            modelBuilder.Entity("ePatientCare.Models.Visit", b =>
-                {
-                    b.HasOne("ePatientCare.Models.Patient", "Patient")
-                        .WithMany("Visits")
-                        .HasForeignKey("PatientID");
-
-                    b.HasOne("ePatientCare.Models.UserDetails", "UserDetails")
-                        .WithMany("Visits")
-                        .HasForeignKey("UserDetailsID");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>

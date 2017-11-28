@@ -1,17 +1,33 @@
 ﻿
   <table class="table table-striped table-sm table-bordered">
     <tr><th colspan="2" class="bg-info">Visit</th></tr>
-    <tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>
+    <!--<tr><th>ID</th><td>{{ visit?.visitId || 'No Data' }}</td></tr>-->
     <tr><th>Date</th><td>{{visit?.date | date: 'mediumDate' || 'No Data'}}</td></tr>
-    <tr><th>Complain</th><td>{{visit?.complain || 'No Data'}}</td></tr>
-    <tr><th>Diagnosis</th><td>{{visit?.diagnosis || 'No Data'}}</td></tr>
-    <tr><th>Medications</th><td>{{visit?.medications ||'No Data'}}</td></tr>
-    <tr><th colspan="2" class="bg-info"><a [routerLink]="['/detail', visit?.patient?.patientID]">Patient</a></th></tr>
-    <tr><th>First Name</th><td>{{visit?.patient?.firstName ||'No Data'}}</td></tr>
-    <tr><th>Last Name</th><td>{{visit?.patient?.lastName ||'No Data'}}</td></tr>
-    <tr><th colspan="2" class="bg-info">Physician</th></tr>
+    <tr><th>Complaint</th><td>{{visit?.complaint || 'No Data'}}</td></tr>
+    <tr><th>Background</th><td>{{visit?.background || 'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Patient</th></tr>
+    <tr><th>First Name</th><td>{{patient?.firstName ||'No Data'}}</td></tr>
+    <tr><th>Last Name</th><td>{{patient?.lastName ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Nurse</th></tr>
     <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>
     <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Vital Signs</th></tr>
+    <tr><th>Temperature</th><td>{{vitalSigns?.temperature ||'No Data'}}</td></tr>
+    <tr><th>Pulse</th><td>{{vitalSigns?.pulse ||'No Data'}}</td></tr>
+    <tr><th>Respiration</th><td>{{vitalSigns?.respiration ||'No Data'}}</td></tr>
+    <tr><th>Blood Pressure</th><td>{{vitalSigns?.bloodPressure ||'No Data'}}</td></tr>
+    <tr><th>Oxygen Saturation</th><td>{{vitalSigns?.oxygenSaturation ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Doctor</th></tr>
+    <tr><th>First Name</th><td>{{visit?.userDetails?.firstName ||'No Data'}}</td></tr>
+    <tr><th>Last Name</th><td>{{visit?.userDetails?.lastName ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Doctor's Assessment</th></tr>
+    <tr><th>Notes</th><td>{{assessment?.notes ||'No Data'}}</td></tr>
+    <tr><th colspan="2" class="bg-info">Doctor's Orders</th></tr>
+    <tr><th>Order Type</th><th>Notes</th></tr>
+    <tr *ngFor ="let order of orders">
+         <td>{{ order?.orderType ||'No Data'}}</td>
+         <td>{{ order?.notes ||'No Data'}}</td>
+    </tr>
   </table>
   <div class="text-center">
     <button class="btn btn-primary" routerLink="/visittable"><i class="fa fa-backward"></i> Back</button>
