@@ -69,9 +69,6 @@ namespace ePatientCare.Controllers
     {
       if(ModelState.IsValid)
       {
-                //var appUserId = HttpContext.User.GetUserId();
-                // var userdetailsId = context.UserDetails.Where(u => u.Username == visitView.Username).FirstOrDefault();
-
                 Visit visit = new Visit();
                 visit.Date = DateTime.UtcNow;
                 visit.Complaint = visitView.Complaint;
