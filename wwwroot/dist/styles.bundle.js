@@ -6,7 +6,7 @@ webpackJsonp([2],{
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(63);
+var content = __webpack_require__(64);
 if(typeof content === 'string') content = [[module.i, content, '']];
 // add the styles to the DOM
 var update = __webpack_require__(577)(content, {});
@@ -15,8 +15,8 @@ if(content.locals) module.exports = content.locals;
 if(true) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept(63, function() {
-			var newContent = __webpack_require__(63);
+		module.hot.accept(64, function() {
+			var newContent = __webpack_require__(64);
 			if(typeof newContent === 'string') newContent = [[module.i, newContent, '']];
 			update(newContent);
 		});
@@ -289,7 +289,7 @@ module.exports = __webpack_require__(187);
 
 /***/ }),
 
-/***/ 63:
+/***/ 64:
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(84)(false);

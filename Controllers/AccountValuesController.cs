@@ -1,4 +1,4 @@
-﻿using ePatientCare.Data;
+using ePatientCare.Data;
 using ePatientCare.Models;
 using ePatientCare.Models.AccountViewModels;
 using ePatientCare.Models.BindingTargets;
@@ -72,6 +72,7 @@ namespace ePatientCare.Controllers
         return null;
       }
     }
+    
     [HttpGet]
     [Route("api/usersrole/{roleName}")]
     public async Task<IEnumerable<UserDetails>> GetUsersInRole(string roleName)

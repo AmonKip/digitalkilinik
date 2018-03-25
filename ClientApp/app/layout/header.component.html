@@ -1,4 +1,4 @@
-﻿<div id="navArea" class="navArea row">
+<div id="navArea" class="navArea row">
   <div>
    <p class="btn mt-0.8 ml-2 mr-1 pb-1.1 logo" routerLink="/table"><i class="fa fa-medkit" style="color:red"></i> <i class="font-weight-bold" style="color:red">Digital</i><i>Kilinik</i></p>
   </div>
@@ -14,15 +14,9 @@
         Visits
       </a>
     </div>
-   <!--<div class="">
-    <a class="btn btn-default ml-2"
-            routerLink="/">
-      Settings
-    </a>
-   </div>-->
   <div *ngIf="isAdmin" class="">
     <a class="btn btn-default ml-2"
-            routerLink="/admin/overview" [routerLinkActive]="['active']">
+            routerLink="/admin" [routerLinkActive]="['active']">
       Admin
     </a>
   </div>
@@ -80,13 +74,8 @@
     cursor: pointer;
     color: deepskyblue !important;
   }
-  /*.btnLogout{
-    color: dodgerblue !important;
-  }
-  btnLogout:hover {
-    border: 1px solid;
-    outline-color: dodgerblue;
-    color: white;
-  }*/
+ 
 
 </style>
+
+

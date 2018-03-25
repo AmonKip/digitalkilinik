@@ -1,4 +1,4 @@
-﻿import { Patient } from "./patient.model";
+import { Patient } from "./patient.model";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { Http, RequestMethod, Request, Response, Headers, RequestOptions } from "@angular/http";
@@ -111,6 +111,15 @@ export class Repository {
         this.sendRequest(RequestMethod.Get, "/api/users")
             .subscribe(response => { this.appUsers = response; });
     }
+    getNurseByVisitId(id: number) {
+      this.sendRequest(RequestMethod.Get, "/api/nurse/" + id)
+        .subscribe(response => { this.nurse = response; });
+    }
+    getDoctorByVisitId(id: number) {
+      this.sendRequest(RequestMethod.Get, "/api/doctor/" + id)
+        .subscribe(response => { this.doctor = response; });
+    }
+    
 
     // get all roles
     getRoles() {
@@ -141,15 +150,43 @@ export class Repository {
             })
     }
     // create visit
-    createVisit(visit: Visit) {
+    createVisit(visit: Visit): Observable<Response> {
         let data = {
-            complaint: visit.complaint, background: visit.background
+            complaint: visit.complaint, background: visit.background, patientID: visit.patientID
         };
-        this.sendRequest(RequestMethod.Post, "/api/addVisit")
-            .subscribe(response => {
-                visit.visitId = response;
-                this.visits.push(visit);
-            })
+        return this.sendRequest(RequestMethod.Post, "/api/addVisit", data);
+            //.subscribe(response => {
+                //visit.visitId = response;
+             // this.visits = response;
+           // })
+    }
+    // create vital signs
+    createVitalSigns(signs: VitalSigns): Observable<Response> {
+      let data = {
+        temperature: signs.temperature, pulse: signs.pulse, respiration: signs.respiration,
+        bloodPressure: signs.bloodPressure, oxygenSaturation: signs.oxygenSaturation,
+        visitId: signs.visitId, userDetailsID: signs.userDetailsID, patientID: signs.patientID
+      }
+      return this.sendRequest(RequestMethod.Post, "/api/addVitalSigns", data);
+        //.subscribe(response => {
+          //visit.visitId = response;
+         // this.vitalSigns = response;
+        //})
+    }
+    // create assessment
+    createAssessment(assessment: Assessment): Observable<Response> {
+      let data = { notes: assessment.notes, patientID: assessment.patientID }
+      return this.sendRequest(RequestMethod.Post, "/api/addAssessment", data);
+      //  .subscribe(response => {
+        //  this.assessment = response;
+       // })
+    }
+
+
+    // create doctors orders
+    createOrders(orders: any): Observable<Response> {
+      console.log(orders);
+      return this.sendRequest(RequestMethod.Post, "api/addDoctorOrders", orders);
     }
     // creates appUser
     createUser(user: AppUser) {
@@ -341,6 +378,8 @@ export class Repository {
     vitalSigns: VitalSigns;
     assessment: Assessment;
     doctorOrders: DoctorsOrder[];
+    doctor: AppUser;
+    nurse: AppUser;
 
     get filter(): Filter {
         return this.filterObject;

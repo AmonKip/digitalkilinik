@@ -10,13 +10,20 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
+var jwt_decode_1 = require("jwt-decode");
 var authentication_service_1 = require("../auth/authentication.service");
 var HeaderComponent = (function () {
+    // isLoggedIn: boolean = false;
     function HeaderComponent(authService) {
         this.authService = authService;
-        this.name = this.authService.name;
+        // this.name = this.authService.name;
         // this.isAdmin = this.authService.isAdmin;
         this.isAdmin = !!sessionStorage.getItem("isAdmin");
+        var token = sessionStorage.getItem('auth_token');
+        if (token) {
+            this.name = jwt_decode_1.default(token).sub;
+        }
+        //this.isLoggedIn = authService.authenticated;
     }
     return HeaderComponent;
 }());

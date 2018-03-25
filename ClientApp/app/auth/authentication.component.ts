@@ -1,4 +1,4 @@
-﻿import { Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { AuthenticationService } from "./authentication.service";
 import { Repository } from "../models/repository";
 
@@ -23,7 +23,7 @@ export class AuthenticationComponent {
     //    });
     //}
     tokenLogin() {
-        this.showError = false;
+      this.showError = false;
         this.authService.tokenLogin().subscribe(result => {
         
             this.showError = !result;

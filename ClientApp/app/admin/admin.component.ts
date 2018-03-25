@@ -1,4 +1,4 @@
-﻿import { Component } from "@angular/core";
+import { Component } from "@angular/core";
 import { Repository } from "../models/repository";
 import { AuthenticationService } from "../auth/authentication.service";
 
@@ -7,12 +7,14 @@ import { AuthenticationService } from "../auth/authentication.service";
 })
 export class AdminComponent {
 
+    
     constructor(private repo: Repository, public authService: AuthenticationService) {
         this.repo.getPatients();
         this.repo.getVisits();
         this.repo.getUsers();
         this.repo.getRoles();
         this.repo.getAccountRequests();
+
         //if (!this.repo.patients) {
         //    this.repo.getPatients();
         //}

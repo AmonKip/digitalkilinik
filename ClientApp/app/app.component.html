@@ -1,24 +1,27 @@
-﻿<div class="container bodyContainer">
-  <div class="bg-danger text-white text-center p-2 m-2" *ngIf="error != null">
-    <h6 *ngFor="let e of error">{{e}}</h6>
-    <button class="btn btn-warning" (click)="clearError()">OK</button>
-  </div>
-  <layout-header *ngIf="loggedIn"></layout-header>
-  <div class="separator">
+
+  <div class="container bodyContainer">
+    <div class="bg-danger text-white text-center p-2 m-2" *ngIf="error != null">
+      <h6 *ngFor="let e of error">{{e}}</h6>
+      <button class="btn btn-warning" (click)="clearError()">OK</button>
+    </div>
+    <layout-header *ngIf="loggedIn"></layout-header>
+    <div class="separator">
+    </div>
+
+ <div style="margin-bottom:15px">
+      <app-spinner [loadingText]="'Please wait...'"> </app-spinner>
+        <router-outlet></router-outlet>
+</div>
+    <!--<layout-footer></layout-footer>-->
   </div>
 
-  <div style="margin-bottom:15px">
-    <app-spinner [loadingText]="'Please wait...'"> </app-spinner>
-    <router-outlet></router-outlet>
-  </div>
-  <!--<layout-footer></layout-footer>-->
-</div>
-<style>
-  .separator{
-    clear:both;
-  }
-  .bodyContainer{
-    background-color: aliceblue;
-    padding-bottom: 1px;
-  }
-</style>
+  <style>
+    .separator {
+      clear: both;
+    }
+
+    .bodyContainer {
+      background-color: aliceblue;
+      padding-bottom: 1px;
+    }
+  </style>

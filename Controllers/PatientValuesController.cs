@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ePatientCare.Models;
 using ePatientCare.Data;
 using Microsoft.EntityFrameworkCore;
@@ -76,7 +76,7 @@ namespace ePatientCare.Controllers
         else
         {
           
-          return context.Patients;
+          return context.Patients.Where(p =>p.Current == 0);
         }
       }
       catch(Exception e){

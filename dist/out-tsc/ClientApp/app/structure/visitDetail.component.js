@@ -22,6 +22,8 @@ var VisitDetailComponent = (function () {
             this.repo.getVitalSigns(id);
             this.repo.getAssessment(id);
             this.repo.getDoctorOrders(id);
+            this.repo.getNurseByVisitId(id);
+            this.repo.getDoctorByVisitId(id);
         }
         else {
             router.navigateByUrl("/");
@@ -58,6 +60,20 @@ var VisitDetailComponent = (function () {
     Object.defineProperty(VisitDetailComponent.prototype, "orders", {
         get: function () {
             return this.repo.doctorOrders;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VisitDetailComponent.prototype, "nurse", {
+        get: function () {
+            return this.repo.nurse;
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(VisitDetailComponent.prototype, "doctor", {
+        get: function () {
+            return this.repo.doctor;
         },
         enumerable: true,
         configurable: true

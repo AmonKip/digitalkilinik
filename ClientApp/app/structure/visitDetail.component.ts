@@ -1,7 +1,8 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Repository } from "../models/repository";
 import { Visit } from "../models/visit.model";
 import { VitalSigns } from "../models/vitalsigns.model";
+import { AppUser } from "../models/appuser.model";
 import { Patient } from "../models/patient.model";
 import { Assessment } from "../models/assessment.model";
 import { Router, ActivatedRoute } from "@angular/router";
@@ -24,6 +25,9 @@ export class VisitDetailComponent {
             this.repo.getVitalSigns(id);
             this.repo.getAssessment(id);
             this.repo.getDoctorOrders(id);
+            this.repo.getNurseByVisitId(id);
+            this.repo.getDoctorByVisitId(id);
+           
         } else {
             router.navigateByUrl("/");
         }
@@ -45,4 +49,11 @@ export class VisitDetailComponent {
     get orders(): DoctorsOrder[] {
         return this.repo.doctorOrders;
     }
+    get nurse(): AppUser {
+      return this.repo.nurse;
+    }
+    get doctor(): AppUser {
+      return this.repo.doctor;
+    }
+
 }

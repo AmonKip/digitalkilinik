@@ -1,4 +1,4 @@
-﻿import { Injectable, OnInit } from "@angular/core";
+import { Injectable, OnInit } from "@angular/core";
 import { Repository } from "../models/repository";
 import { Observable } from "rxjs/Observable";
 import { BehaviorSubject } from 'rxjs/Rx';
@@ -75,6 +75,7 @@ export class AuthenticationService implements OnInit {
             method: RequestMethod.Post,
             url: "api/token",
             body: { name: this.name, password: this.password }
+           
         })).map(res => (res.json()))
             .map(res => {
                 sessionStorage.setItem('auth_token', res.token);

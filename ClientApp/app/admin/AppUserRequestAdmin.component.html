@@ -1,7 +1,7 @@
-﻿<div class="btn btn-success" style="width: 100%">
+<div class="btn btn-success" style="width: 100%">
   User Requests
 </div>
-<div *ngIf="users.length">
+<div *ngIf="users?.length > 0; else nousers">
   <table class="table table-sm table-striped table-bordered">
 
     <tr>
@@ -26,6 +26,6 @@
     </tr>
   </table>
 </div>
-<div *ngIf="!users.length" class="">
+<ng-template #nousers>
   <p>There are no user requests</p>
-</div>
+</ng-template>

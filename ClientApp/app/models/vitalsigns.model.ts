@@ -1,4 +1,4 @@
-﻿
+
 export class VitalSigns {
     constructor(
         public vitalSignsId?: number,
@@ -9,5 +9,6 @@ export class VitalSigns {
         public oxygenSaturation?: string,
         public visitId?: number,
         public userDetailsID?: number,
+        public patientID?: number,
         public date?: string) { }
 }

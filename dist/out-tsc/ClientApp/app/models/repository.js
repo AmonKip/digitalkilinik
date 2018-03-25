@@ -114,6 +114,16 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, "/api/users")
             .subscribe(function (response) { _this.appUsers = response; });
     };
+    Repository.prototype.getNurseByVisitId = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/nurse/" + id)
+            .subscribe(function (response) { _this.nurse = response; });
+    };
+    Repository.prototype.getDoctorByVisitId = function (id) {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "/api/doctor/" + id)
+            .subscribe(function (response) { _this.doctor = response; });
+    };
     // get all roles
     Repository.prototype.getRoles = function () {
         var _this = this;
@@ -148,15 +158,40 @@ var Repository = (function () {
     };
     // create visit
     Repository.prototype.createVisit = function (visit) {
-        var _this = this;
         var data = {
-            complaint: visit.complaint, background: visit.background
+            complaint: visit.complaint, background: visit.background, patientID: visit.patientID
         };
-        this.sendRequest(http_1.RequestMethod.Post, "/api/addVisit")
-            .subscribe(function (response) {
-            visit.visitId = response;
-            _this.visits.push(visit);
-        });
+        return this.sendRequest(http_1.RequestMethod.Post, "/api/addVisit", data);
+        //.subscribe(response => {
+        //visit.visitId = response;
+        // this.visits = response;
+        // })
+    };
+    // create vital signs
+    Repository.prototype.createVitalSigns = function (signs) {
+        var data = {
+            temperature: signs.temperature, pulse: signs.pulse, respiration: signs.respiration,
+            bloodPressure: signs.bloodPressure, oxygenSaturation: signs.oxygenSaturation,
+            visitId: signs.visitId, userDetailsID: signs.userDetailsID, patientID: signs.patientID
+        };
+        return this.sendRequest(http_1.RequestMethod.Post, "/api/addVitalSigns", data);
+        //.subscribe(response => {
+        //visit.visitId = response;
+        // this.vitalSigns = response;
+        //})
+    };
+    // create assessment
+    Repository.prototype.createAssessment = function (assessment) {
+        var data = { notes: assessment.notes, patientID: assessment.patientID };
+        return this.sendRequest(http_1.RequestMethod.Post, "/api/addAssessment", data);
+        //  .subscribe(response => {
+        //  this.assessment = response;
+        // })
+    };
+    // create doctors orders
+    Repository.prototype.createOrders = function (orders) {
+        console.log(orders);
+        return this.sendRequest(http_1.RequestMethod.Post, "api/addDoctorOrders", orders);
     };
     // creates appUser
     Repository.prototype.createUser = function (user) {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -15,6 +15,6 @@ namespace ePatientCare.Models.VisitViewModels
       public string Background { get; set; }
 
       [Required]
-        public long PatientID { get; set; }
+      public long PatientID { get; set; }
     }
 }
