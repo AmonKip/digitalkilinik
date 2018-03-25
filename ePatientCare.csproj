@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Properties\PublishProfiles\digitalkilinik - Web Deploy.pubxml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="ePatientCare.db" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
@@ -43,6 +47,10 @@
     <None Include="ClientApp\app\models\doctorsOrder.model.ts" />
     <None Include="ClientApp\app\structure\passwordresetconfirm.component.html" />
     <None Include="ClientApp\app\structure\passwordresetconfirm.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 
 </Project>
