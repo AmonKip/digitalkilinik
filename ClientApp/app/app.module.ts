@@ -1,4 +1,4 @@
-﻿import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from "@angular/http";
@@ -11,8 +11,7 @@ import { VisitTableComponent } from "./structure/visitTable.component";
 import { VisitDetailComponent } from "./structure/visitDetail.component";
 import { EmployeeTableComponent } from "./structure/employeeTable.component";
 import { EmployeeDetailComponent } from "./structure/employeeDetail.component";
-import { PatientCreateComponent } from "./structure/patientCreate.component";
-import { PatientEditComponent } from "./structure/patientEdit.component";
+import { PatientComponent } from "./structure/patient.component";
 import { RoutingConfig } from "./app.routing";
 import { AdminModule } from "./admin/admin.module";
 import { AppUserCreateComponent } from "./structure/appUserCreate.Component";
@@ -29,6 +28,7 @@ import { PasswordResetConfirmComponent } from "./structure/passwordresetconfirma
 import { ForgotPasswordConfirmComponent } from "./structure/forgotpasswordconfirm.component";
 import { RequestConfirmComponent } from "./structure/requestconfirmation.component";
 import { PatientVisitCreate } from "./structure/patientVisitCreate.component";
+import { DataTableModule } from "angular-4-data-table";
 
 const eHandler = new ErrorHandlerService();
 
@@ -41,16 +41,28 @@ export function handler() {
         VisitTableComponent, VisitDetailComponent,
         CategoryFilterComponent, PatientDetailComponent,
         EmployeeTableComponent, EmployeeDetailComponent,
-        PatientCreateComponent, AppUserCreateComponent,
-        PatientFilterPipe, SearchComponent, PatientEditComponent,
+        AppUserCreateComponent,
+        PatientFilterPipe, SearchComponent, PatientComponent,
         HeaderComponent, FooterComponent, PasswordResetConfirmComponent,
         ForgotPasswordConfirmComponent, RequestConfirmComponent, PatientVisitCreate],
 
-    imports: [BrowserModule, FormsModule, ReactiveFormsModule,
-        HttpModule, ModelModule, RoutingConfig, AdminModule, AuthModule, Ng4LoadingSpinnerModule],
+    imports: [
+      BrowserModule,
+      FormsModule,
+      ReactiveFormsModule, 
+      HttpModule,
+      ModelModule,
+      RoutingConfig,
+      AdminModule,
+      AuthModule,
+      Ng4LoadingSpinnerModule,
+      DataTableModule],
 
-    providers: [{ provide: ErrorHandlerService, useFactory: handler },
-                { provide: ErrorHandler, useFactory: handler }, PatientResolver],
+    providers: [{ provide: ErrorHandler, useFactory: handler },
+                  PatientResolver],
+
     bootstrap:    [AppComponent]
 })
 export class AppModule { } 
+
+//{ provide: ErrorHandlerService, useFactory: handler },

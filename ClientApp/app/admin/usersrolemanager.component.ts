@@ -1,4 +1,4 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Repository } from "../models/repository";
 import { AppRole } from "../models/AppRole.model";
 import { AppUser } from "../models/AppUser.model";

@@ -1,7 +1,7 @@
-﻿import { Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { Repository } from "./models/repository";
 import { Patient } from "./models/patient.model";
-import { ErrorHandlerService } from "./services/errorHandler.service";
+//import { ErrorHandlerService } from "./services/errorHandler.service";
 import { AuthenticationService } from "./auth/authentication.service";
 
 
@@ -14,17 +14,21 @@ export class AppComponent {
     private lastError: string[];
     isLoggedIn = false;
 
-    constructor(errorHandler: ErrorHandlerService, private authService: AuthenticationService) {
-        errorHandler.errors.subscribe(error => {
-            this.lastError = error;
-        })
+    //constructor(errorHandler: ErrorHandlerService, private authService: AuthenticationService) {
+    //    errorHandler.errors.subscribe(error => {
+    //      this.lastError = error;
+    //      console.log(this.lastError);
+    //    })
         //authService.login().subscribe(result => {
         //    this.isLoggedIn = result;
         //})
 
+//}
+    constructor(private authService: AuthenticationService) {
     }
 
     get error(): string[] {
+        
         return this.lastError;
     }
 

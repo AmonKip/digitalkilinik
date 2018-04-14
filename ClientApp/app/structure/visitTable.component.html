@@ -1,7 +1,28 @@
-﻿<div class="btn btn-info" style="width: 100%">
-  Visits
+<div style="margin: auto; max-width: 1000px; margin-bottom: 50px;">
+<data-table [items]="items" [itemCount]="itemCount" [pagination_limit]="true" [pagination_range]="true" 
+   headerTitle="Visit Records" [pagination_input]="false" [pagination_numbers]="false"  (reload)="reloadItems($event)">
+
+  <data-table-column [property]="'date'" [header]="'Date'" [sortable]="true" [resizable]="true" [width]="120">
+    <ng-template #dataTableCell let-item="item">
+      {{item.date | date: 'mediumDate' || 'No Data'}}
+    </ng-template>
+  </data-table-column>
+
+  <data-table-column [property]="'complaint'" [header]="'Complaint'" [sortable]="true" [resizable]="true">
+  </data-table-column>
+
+  <data-table-column [property]="'background'" [header]="'Background'" [sortable]="true" [resizable]="true" [width]="400">
+  </data-table-column>
+
+  <data-table-column [property]="'visitId'" [width]="120">
+    <ng-template #dataTableCell let-item="item">
+      <a [routerLink]="['/visitdetail', item.visitId]">Details</a>
+    </ng-template>
+  </data-table-column>
+
+</data-table>
 </div>
-<table class="table table-sm table-striped table-bordered">
+<!-- <table class="table table-sm table-striped table-bordered">
   <tr>
     <th>Date</th>
     <th>Complaint</th>
@@ -20,4 +41,19 @@
     </td>
   </tr>
 
-</table>
+</table> -->
+<style>
+/*:host /deep/ .data-table-row {
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+} */
+.override input-group-addon{
+  width: 90px;
+}
+.h4{
+  font-size: 0.75rem !important;
+}
+</style>

@@ -13,38 +13,34 @@ var core_1 = require("@angular/core");
 var repository_1 = require("../models/repository");
 var router_1 = require("@angular/router");
 var PatientDetailComponent = (function () {
-    //singlePatientVisits: Visit[];
     function PatientDetailComponent(repo, router, activeRoute) {
+        var _this = this;
         this.repo = repo;
-        var id = Number.parseInt(activeRoute.snapshot.params["id"]);
-        if (id) {
-            this.repo.getPatient(id);
-            this.repo.getPatientVisits(id);
+        this.patient = {};
+        this.id = Number.parseInt(activeRoute.snapshot.params["id"]);
+        if (this.id) {
+            this.patient = this.repo.patients.filter(function (p) { return p.patientID == _this.id; })[0];
         }
         else {
             router.navigateByUrl("/");
         }
-        //repo.getVisits();
     }
-    Object.defineProperty(PatientDetailComponent.prototype, "patient", {
-        get: function () {
-            return this.repo.patient;
-        },
-        enumerable: true,
-        configurable: true
-    });
-    Object.defineProperty(PatientDetailComponent.prototype, "singlePatientVisits", {
-        get: function () {
-            return this.repo.singlePatientVisits;
-        },
-        enumerable: true,
-        configurable: true
-    });
+    PatientDetailComponent.prototype.ngOnInit = function () {
+        //this.repo.getVisits().subscribe(visits => this.repo.visits == visits);
+    };
     Object.defineProperty(PatientDetailComponent.prototype, "totalVisits", {
         get: function () {
-            if (this.singlePatientVisits != null) {
-                return this.singlePatientVisits.length;
+            if (this.visits != null) {
+                return this.visits.length;
             }
+        },
+        enumerable: true,
+        configurable: true
+    });
+    Object.defineProperty(PatientDetailComponent.prototype, "visits", {
+        get: function () {
+            var _this = this;
+            return this.repo.visits.filter(function (p) { return p.patientID == _this.id; });
         },
         enumerable: true,
         configurable: true

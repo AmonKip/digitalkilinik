@@ -31,12 +31,17 @@ export class Repository {
     constructor(private http: Http, private spinnerService: Ng4LoadingSpinnerService) {
         this.getPatients();
         this.getVisits();
+        this.getCheckedInPatients();
        
     }
+    patient: Patient;
 
-    getPatient(id: number) {
-        this.sendRequest(RequestMethod.Get, "/api/patients/" + id)
+    getPatient(id: number) : Patient {
+      return  this.sendRequest(RequestMethod.Get, "/api/patients/" + id)
             .subscribe(response => { this.patient = response; });
+    }
+    get_Patient(): Patient {
+      return this.patient;
     }
 
     getEmployee(id: number) {
@@ -77,8 +82,8 @@ export class Repository {
     }
     // get all visits
     getVisits() {
-        this.sendRequest(RequestMethod.Get, visitsUrl)
-            .subscribe(response => { this.visits = response; });
+       return this.sendRequest(RequestMethod.Get, visitsUrl);
+            //.subscribe(response => { this.visits = response; });
     }
     // get single visit by visit id
     getVisit(id: number) {
@@ -218,7 +223,7 @@ export class Repository {
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
             idNumber: pat.idNumber, gender: pat.gender
         };
-        this.sendRequest(RequestMethod.Put, patientsUrl + "/" + pat.patientID, data)
+        this.sendRequest(RequestMethod.Put, "api/patients/" + pat.patientID, data)
             .subscribe(response => this.getPatients());
         
     }
@@ -286,6 +291,10 @@ export class Repository {
         this.sendRequest(RequestMethod.Get, "api/patientvisits/" + id)
             .subscribe(response => { this.singlePatientVisits = response; });
        
+    }
+    getCheckedInPatients() {
+      this.sendRequest(RequestMethod.Get, "api/checkedIn")
+        .subscribe(response => this.checkedInPatients = response);
     }
     // cookie login
     //login(name: string, password: string): Observable<Response> {
@@ -359,7 +368,7 @@ export class Repository {
             .subscribe(response => this.appRoles = response);
     }
     // properties 
-    patient: Patient;
+
     patients: Patient[];
     employee: Employee;
     employees: Employee[];
@@ -380,6 +389,7 @@ export class Repository {
     doctorOrders: DoctorsOrder[];
     doctor: AppUser;
     nurse: AppUser;
+    checkedInPatients: Patient[];
 
     get filter(): Filter {
         return this.filterObject;

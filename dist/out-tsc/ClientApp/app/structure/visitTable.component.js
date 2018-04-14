@@ -12,22 +12,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var repository_1 = require("../models/repository");
 var router_1 = require("@angular/router");
+var angular_4_data_table_1 = require("angular-4-data-table");
 var VisitTableComponent = (function () {
     function VisitTableComponent(repo, router) {
+        var _this = this;
         this.repo = repo;
         this.router = router;
-        this.repo.getVisits();
+        this.items = [];
+        this.repo.getVisits()
+            .subscribe(function (visits) {
+            _this.visits = visits;
+            _this.initializeTable(visits);
+        });
     }
-    Object.defineProperty(VisitTableComponent.prototype, "visits", {
-        get: function () {
+    /*     get visits(): Visit[] {
             return this.repo.visits;
-        },
-        enumerable: true,
-        configurable: true
-    });
+        } */
     VisitTableComponent.prototype.selectVisit = function (id) {
         this.repo.getVisit(id);
         this.router.navigateByUrl("/visitdetail");
+    };
+    VisitTableComponent.prototype.initializeTable = function (visits) {
+        var _this = this;
+        this.tableResource = new angular_4_data_table_1.DataTableResource(visits);
+        this.tableResource.query({ offset: 0 })
+            .then(function (items) { return _this.items = items; });
+        this.tableResource.count()
+            .then(function (count) { return _this.itemCount = count; });
+    };
+    VisitTableComponent.prototype.reloadItems = function (params) {
+        var _this = this;
+        if (!this.tableResource)
+            return;
+        this.tableResource.query(params)
+            .then(function (items) { return _this.items = items; });
     };
     return VisitTableComponent;
 }());

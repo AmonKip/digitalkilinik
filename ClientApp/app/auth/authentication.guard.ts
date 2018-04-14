@@ -48,7 +48,6 @@ export class AuthenticationGuard {
         return true;
     }
     canActivate(route: ActivatedRouteSnapshot): boolean {
-
         // this will be passed from the route config
         // on the data property
         const expectedRole = route.data.expectedRole;

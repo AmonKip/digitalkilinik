@@ -12,15 +12,14 @@ var router_1 = require("@angular/router");
 var forms_1 = require("@angular/forms");
 var overview_component_1 = require("./overview.component");
 var admin_component_1 = require("./admin.component");
-var patientAdmin_component_1 = require("./patientAdmin.component");
-var appUserAdmin_component_1 = require("./appUserAdmin.component");
-var patientDetailAdmin_component_1 = require("./patientDetailAdmin.component");
-var AppUserDetailAdmin_component_1 = require("./AppUserDetailAdmin.component");
-var AppUserRequestAdmin_component_1 = require("./AppUserRequestAdmin.component");
-var AppUserEditAdmin_component_1 = require("./AppUserEditAdmin.component");
-var visitsDetailAdmin_component_1 = require("./visitsDetailAdmin.component");
-var visitsAdmin_component_1 = require("./visitsAdmin.component");
-var appUserCreateAdmin_Component_1 = require("./appUserCreateAdmin.Component");
+//import { PatientAdminComponent } from "./patientAdmin.component";
+var userstable_component_1 = require("./userstable.component");
+//import { PatientDetailAdminComponent } from "./patientDetailAdmin.component";
+var userdetail_component_1 = require("./userdetail.component");
+var userrequest_component_1 = require("./userrequest.component");
+var user_component_1 = require("./user.component");
+//import { VisitDetailAdminComponent } from "./visitsDetailAdmin.component"
+//import { VisitAdminComponent } from "./visitsAdmin.component"
 var rolestable_component_1 = require("./rolestable.component");
 var roledetail_component_1 = require("./roledetail.component");
 var usersrolemanager_component_1 = require("./usersrolemanager.component");
@@ -33,12 +32,11 @@ var AdminModule = (function () {
 AdminModule = __decorate([
     core_1.NgModule({
         imports: [platform_browser_1.BrowserModule, router_1.RouterModule, forms_1.FormsModule],
-        declarations: [admin_component_1.AdminComponent, overview_component_1.OverviewComponent, patientAdmin_component_1.PatientAdminComponent,
-            appUserAdmin_component_1.AppUserAdminComponent, patientDetailAdmin_component_1.PatientDetailAdminComponent,
-            AppUserDetailAdmin_component_1.AppUserDetailAdminComponent, AppUserRequestAdmin_component_1.AppUserRequestAdminComponent,
-            AppUserEditAdmin_component_1.AppUserEditAdminComponent, visitsDetailAdmin_component_1.VisitDetailAdminComponent,
-            visitsAdmin_component_1.VisitAdminComponent, appUserCreateAdmin_Component_1.AppUserCreateAdminComponent,
-            rolestable_component_1.RolesTableComponent, roledetail_component_1.RoleDetailComponent, usersrolemanager_component_1.RoleManagerComponent,
+        declarations: [admin_component_1.AdminComponent, overview_component_1.OverviewComponent,
+            userstable_component_1.UsersTableComponent, userdetail_component_1.UserDetailComponent,
+            userrequest_component_1.UserRequestComponent,
+            user_component_1.UserComponent, rolestable_component_1.RolesTableComponent,
+            roledetail_component_1.RoleDetailComponent, usersrolemanager_component_1.RoleManagerComponent,
             createrole_component_1.CreateRoleComponent]
     })
 ], AdminModule);

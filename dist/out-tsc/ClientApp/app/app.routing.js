@@ -5,22 +5,18 @@ var patientTable_component_1 = require("./structure/patientTable.component");
 var patientDetail_component_1 = require("./structure/patientDetail.component");
 var visitDetail_component_1 = require("./structure/visitDetail.component");
 var visitTable_component_1 = require("./structure/visitTable.component");
-var patientCreate_component_1 = require("./structure/patientCreate.component");
-var patientEdit_component_1 = require("./structure/patientEdit.component");
+//import { PatientCreateComponent } from "./structure/patientCreate.component";
+var patient_component_1 = require("./structure/patient.component");
 var admin_component_1 = require("./admin/admin.component");
 var overview_component_1 = require("./admin/overview.component");
 var appUserCreate_Component_1 = require("./structure/appUserCreate.Component");
-var patientAdmin_component_1 = require("./admin/patientAdmin.component");
-var appUserAdmin_component_1 = require("./admin/appUserAdmin.component");
-var patientDetailAdmin_component_1 = require("./admin/patientDetailAdmin.component");
+var userstable_component_1 = require("./admin/userstable.component");
 var authentication_guard_1 = require("./auth/authentication.guard");
 var authentication_component_1 = require("./auth/authentication.component");
-var AppUserDetailAdmin_component_1 = require("./admin/AppUserDetailAdmin.component");
-var AppUserRequestAdmin_component_1 = require("./admin/AppUserRequestAdmin.component");
-var AppUserEditAdmin_component_1 = require("./admin/AppUserEditAdmin.component");
-var visitsDetailAdmin_component_1 = require("./admin/visitsDetailAdmin.component");
-var visitsAdmin_component_1 = require("./admin/visitsAdmin.component");
-var appUserCreateAdmin_Component_1 = require("./admin/appUserCreateAdmin.Component");
+var userdetail_component_1 = require("./admin/userdetail.component");
+var userrequest_component_1 = require("./admin/userrequest.component");
+var user_component_1 = require("./admin/user.component");
+//import { AppUserCreateAdminComponent } from "./admin/appUserCreateAdmin.Component";
 var forgotpassword_component_1 = require("./auth/forgotpassword.component");
 var resetpassword_component_1 = require("./auth/resetpassword.component");
 var rolestable_component_1 = require("./admin/rolestable.component");
@@ -48,32 +44,28 @@ var routes = [
         },
         children: [
             { path: "overview", component: overview_component_1.OverviewComponent },
-            { path: "patientdetail/:id", component: patientDetailAdmin_component_1.PatientDetailAdminComponent },
             { path: "roleslist", component: rolestable_component_1.RolesTableComponent },
             { path: "createrole", component: createrole_component_1.CreateRoleComponent },
             { path: "roledetail/:id", component: roledetail_component_1.RoleDetailComponent },
             { path: "rolemanager/:id", component: usersrolemanager_component_1.RoleManagerComponent },
-            { path: "patientslist", component: patientAdmin_component_1.PatientAdminComponent },
-            { path: "visitdetail/:id", component: visitsDetailAdmin_component_1.VisitDetailAdminComponent },
-            { path: "visitslist", component: visitsAdmin_component_1.VisitAdminComponent },
-            { path: "userdetails/:id", component: AppUserDetailAdmin_component_1.AppUserDetailAdminComponent },
-            { path: "useredit/:id", component: AppUserEditAdmin_component_1.AppUserEditAdminComponent },
-            { path: "userslist", component: appUserAdmin_component_1.AppUserAdminComponent },
-            { path: "usersrequests", component: AppUserRequestAdmin_component_1.AppUserRequestAdminComponent },
-            { path: "usercreate", component: appUserCreateAdmin_Component_1.AppUserCreateAdminComponent },
+            { path: "userdetails/:id", component: userdetail_component_1.UserDetailComponent },
+            { path: "user", component: user_component_1.UserComponent },
+            { path: "user/:id", component: user_component_1.UserComponent },
+            { path: "userslist", component: userstable_component_1.UsersTableComponent },
+            { path: "usersrequests", component: userrequest_component_1.UserRequestComponent },
             { path: "", component: overview_component_1.OverviewComponent },
             { path: "**", redirectTo: "/admin/overview" }
         ]
     },
     //{ path: "login", component: PatientTableComponent, canActivate: [AuthenticationGuard] },
+    { path: "", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "table", component: patientTable_component_1.PatientTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
-    { path: "patientedit/:id", component: patientEdit_component_1.PatientEditComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
-    { path: "visittable/:id", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "patient/:id", component: patient_component_1.PatientComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "patient", component: patient_component_1.PatientComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visittable", component: visitTable_component_1.VisitTableComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visitcreate/:id", component: patientVisitCreate_component_1.PatientVisitCreate, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
-    { path: "detail/:id", component: patientDetail_component_1.PatientDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
+    { path: "patientdetail/:id", component: patientDetail_component_1.PatientDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "visitdetail/:id", component: visitDetail_component_1.VisitDetailComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
-    { path: "patientcreate", component: patientCreate_component_1.PatientCreateComponent, canActivate: [authentication_guard_1.AuthenticationGuard], data: { expectedRole: 'Nurse' } },
     { path: "accountcreate", component: appUserCreate_Component_1.AppUserCreateComponent },
     { path: "**", redirectTo: "/login" }
 ];

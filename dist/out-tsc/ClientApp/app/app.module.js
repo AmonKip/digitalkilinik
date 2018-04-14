@@ -19,8 +19,7 @@ var visitTable_component_1 = require("./structure/visitTable.component");
 var visitDetail_component_1 = require("./structure/visitDetail.component");
 var employeeTable_component_1 = require("./structure/employeeTable.component");
 var employeeDetail_component_1 = require("./structure/employeeDetail.component");
-var patientCreate_component_1 = require("./structure/patientCreate.component");
-var patientEdit_component_1 = require("./structure/patientEdit.component");
+var patient_component_1 = require("./structure/patient.component");
 var app_routing_1 = require("./app.routing");
 var admin_module_1 = require("./admin/admin.module");
 var appUserCreate_Component_1 = require("./structure/appUserCreate.Component");
@@ -37,6 +36,7 @@ var passwordresetconfirmation_component_1 = require("./structure/passwordresetco
 var forgotpasswordconfirm_component_1 = require("./structure/forgotpasswordconfirm.component");
 var requestconfirmation_component_1 = require("./structure/requestconfirmation.component");
 var patientVisitCreate_component_1 = require("./structure/patientVisitCreate.component");
+var angular_4_data_table_1 = require("angular-4-data-table");
 var eHandler = new errorHandler_service_1.ErrorHandlerService();
 function handler() {
     return eHandler;
@@ -53,16 +53,27 @@ AppModule = __decorate([
             visitTable_component_1.VisitTableComponent, visitDetail_component_1.VisitDetailComponent,
             categoryFilter_component_1.CategoryFilterComponent, patientDetail_component_1.PatientDetailComponent,
             employeeTable_component_1.EmployeeTableComponent, employeeDetail_component_1.EmployeeDetailComponent,
-            patientCreate_component_1.PatientCreateComponent, appUserCreate_Component_1.AppUserCreateComponent,
-            patient_pipe_1.PatientFilterPipe, search_component_1.SearchComponent, patientEdit_component_1.PatientEditComponent,
+            appUserCreate_Component_1.AppUserCreateComponent,
+            patient_pipe_1.PatientFilterPipe, search_component_1.SearchComponent, patient_component_1.PatientComponent,
             header_component_1.HeaderComponent, footer_component_1.FooterComponent, passwordresetconfirmation_component_1.PasswordResetConfirmComponent,
             forgotpasswordconfirm_component_1.ForgotPasswordConfirmComponent, requestconfirmation_component_1.RequestConfirmComponent, patientVisitCreate_component_1.PatientVisitCreate],
-        imports: [platform_browser_1.BrowserModule, forms_1.FormsModule, forms_1.ReactiveFormsModule,
-            http_1.HttpModule, model_module_1.ModelModule, app_routing_1.RoutingConfig, admin_module_1.AdminModule, auth_module_1.AuthModule, ng4_loading_spinner_1.Ng4LoadingSpinnerModule],
-        providers: [{ provide: errorHandler_service_1.ErrorHandlerService, useFactory: handler },
-            { provide: core_2.ErrorHandler, useFactory: handler }, resolver_model_1.PatientResolver],
+        imports: [
+            platform_browser_1.BrowserModule,
+            forms_1.FormsModule,
+            forms_1.ReactiveFormsModule,
+            http_1.HttpModule,
+            model_module_1.ModelModule,
+            app_routing_1.RoutingConfig,
+            admin_module_1.AdminModule,
+            auth_module_1.AuthModule,
+            ng4_loading_spinner_1.Ng4LoadingSpinnerModule,
+            angular_4_data_table_1.DataTableModule
+        ],
+        providers: [{ provide: core_2.ErrorHandler, useFactory: handler },
+            resolver_model_1.PatientResolver],
         bootstrap: [app_component_1.AppComponent]
     })
 ], AppModule);
 exports.AppModule = AppModule;
+//{ provide: ErrorHandlerService, useFactory: handler },
 //# sourceMappingURL=app.module.js.map

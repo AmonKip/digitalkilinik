@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +17,7 @@ namespace ePatientCare.Controllers
         public IActionResult Index()
         {
       // ViewBag.Message = "ePatient Care App";
-         ViewBag.Message = System.Diagnostics.Process.GetCurrentProcess().Id;
+         //ViewBag.Message = System.Diagnostics.Process.GetCurrentProcess().Id;
          Console.WriteLine(System.Diagnostics.Process.GetCurrentProcess().Id);
         return View(context.Patients.FirstOrDefault());
             

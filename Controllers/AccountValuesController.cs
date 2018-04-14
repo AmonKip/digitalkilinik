@@ -68,7 +68,6 @@ namespace ePatientCare.Controllers
         return context.UserDetails.Where(u =>u.IsRequest == 0);
       }
       catch(Exception e){
-        Console.WriteLine(e.Message);
         return null;
       }
     }

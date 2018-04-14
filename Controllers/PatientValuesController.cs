@@ -56,7 +56,7 @@ namespace ePatientCare.Controllers
           return null;
       }
   }
-        [HttpGet]
+    [HttpGet]
     [Route("api/patients")]
     public IEnumerable<Patient> GetPatients(string category, string search)
     {
@@ -76,7 +76,7 @@ namespace ePatientCare.Controllers
         else
         {
           
-          return context.Patients.Where(p =>p.Current == 0);
+          return context.Patients;
         }
       }
       catch(Exception e){
@@ -87,6 +87,7 @@ namespace ePatientCare.Controllers
     }
 
     [HttpPost]
+    [Route("api/patients")]
     public IActionResult CreatePatient([FromBody] PatientData pdata)
     {
       //System.Threading.Thread.Sleep(5000);
@@ -102,7 +103,8 @@ namespace ePatientCare.Controllers
         return BadRequest(ModelState);
       }
     }
-    [HttpPut("{id}")]
+    [HttpPut]
+    [Route("api/patients/{id}")]
     public IActionResult ReplacePatient(long id, [FromBody] PatientData pdata)
     {
       //System.Threading.Thread.Sleep(5000);
@@ -110,7 +112,6 @@ namespace ePatientCare.Controllers
       {
         Patient p = pdata.Patient;
         p.PatientID = id;
-
         context.Update(p);
         context.SaveChanges();
         return Ok();
@@ -119,6 +120,12 @@ namespace ePatientCare.Controllers
       {
         return BadRequest(ModelState);
       }
+    }
+    [HttpGet]
+    [Route("api/checkedIn")]
+    public IEnumerable<Patient> CheckedInPatients()
+    {
+      return context.Patients.Where(p => p.Current == 1);
     }
 
     [HttpDelete("{id}")]

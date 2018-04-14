@@ -24,16 +24,21 @@ var visitsUrl = "api/visits";
 var addRequestUrl = "api/addrequest";
 var Repository = (function () {
     function Repository(http, spinnerService) {
+        var _this = this;
         this.http = http;
         this.spinnerService = spinnerService;
         this.filterObject = new configClasses_repository_1.Filter();
         this.getPatients();
-        this.getVisits();
+        this.getVisits().subscribe(function (visits) { return _this.visits = visits; });
+        //this.getCheckedInPatients();
     }
     Repository.prototype.getPatient = function (id) {
         var _this = this;
-        this.sendRequest(http_1.RequestMethod.Get, "/api/patients/" + id)
+        return this.sendRequest(http_1.RequestMethod.Get, "/api/patients/" + id)
             .subscribe(function (response) { _this.patient = response; });
+    };
+    Repository.prototype.get_Patient = function () {
+        return this.patient;
     };
     Repository.prototype.getEmployee = function (id) {
         var _this = this;
@@ -74,9 +79,8 @@ var Repository = (function () {
     };
     // get all visits
     Repository.prototype.getVisits = function () {
-        var _this = this;
-        this.sendRequest(http_1.RequestMethod.Get, visitsUrl)
-            .subscribe(function (response) { _this.visits = response; });
+        return this.sendRequest(http_1.RequestMethod.Get, visitsUrl);
+        //.subscribe(response => { this.visits = response; });
     };
     // get single visit by visit id
     Repository.prototype.getVisit = function (id) {
@@ -227,7 +231,7 @@ var Repository = (function () {
             placeOfBirth: pat.placeOfBirth, sublocation: pat.sublocation, phone: pat.phone, email: pat.email,
             idNumber: pat.idNumber, gender: pat.gender
         };
-        this.sendRequest(http_1.RequestMethod.Put, patientsUrl + "/" + pat.patientID, data)
+        this.sendRequest(http_1.RequestMethod.Put, "api/patients/" + pat.patientID, data)
             .subscribe(function (response) { return _this.getPatients(); });
     };
     // after update, the patients/employees array is repopulated using another request to server  ---very inefficient  process
@@ -294,6 +298,10 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, "api/patientvisits/" + id)
             .subscribe(function (response) { _this.singlePatientVisits = response; });
     };
+    //getCheckedInPatients() {
+    //  this.sendRequest(RequestMethod.Get, "api/checkedIn")
+    //    .subscribe(response => this.checkedInPatients = response);
+    //}
     // cookie login
     //login(name: string, password: string): Observable<Response> {
     //    return this.http.post("/api/account/login",

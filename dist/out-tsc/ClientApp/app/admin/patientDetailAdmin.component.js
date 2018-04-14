@@ -13,27 +13,25 @@ var core_1 = require("@angular/core");
 var repository_1 = require("../models/repository");
 var router_1 = require("@angular/router");
 var PatientDetailAdminComponent = (function () {
-    //singlePatientVisits: Visit[];
     function PatientDetailAdminComponent(repo, router, activeRoute) {
         this.repo = repo;
         var id = Number.parseInt(activeRoute.snapshot.params["id"]);
+        console.log(id);
         if (id) {
-            this.repo.getPatient(id);
+            //this.repo.getPatient(id);
+            this.patient = this.repo.patients.filter(function (p) { return p.patientID == id; });
             this.repo.getPatientVisits(id);
+            console.log(this.patient);
         }
         else {
             router.navigateByUrl("/");
         }
         //repo.getVisits();
     }
-    Object.defineProperty(PatientDetailAdminComponent.prototype, "patient", {
-        get: function () {
-            return this.repo.patient;
-        },
-        enumerable: true,
-        configurable: true
-    });
     Object.defineProperty(PatientDetailAdminComponent.prototype, "singlePatientVisits", {
+        //get patient(): Patient {
+        //    return this.repo.patient;
+        //}
         get: function () {
             return this.repo.singlePatientVisits;
         },

@@ -1,0 +1,63 @@
+<div class="btn btn-success" style="width: 100%">
+  Users
+</div>
+<div class="btn btn-primary btn-sm mb-2 mt-2 customBtn" routerLink ="/admin/user">
+  Add User
+</div>
+<table class="table table-sm table-striped table-bordered">
+  <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Username</th>
+    <th>Actions</th>
+  </tr>
+  <tr *ngFor="let user of users">
+    <td>{{user.firstName || 'Loading Data...'}}</td>
+    <td>{{user.lastName || 'Loading Data...'}}</td>
+    <td>{{user.username || 'Loading Data...'}}</td>
+    <td>
+      <button class="btn btn-sm actionbtn detailsButton" data-toggle="tooltip" data-placement="bottom" title="Details"
+              [routerLink]="['/admin/userdetails', user.userDetailsID]" [queryParams]="{returnUrl: returnUrl}">
+        <i class="fa fa-address-card-o"></i>
+      </button>
+      <button class="btn btn-sm actionbtn editButton" data-toggle="tooltip" data-placement="bottom" title="Edit"
+               [routerLink]="['/admin/user', user.userDetailsID]">
+        <i class="fa fa-pencil editButton"></i>
+      </button>
+      <button class="btn btn-sm actionbtn deleteButton" data-toggle="tooltip" data-placement="bottom" title="Delete"><i class="fa fa-trash"></i></button>
+      <button *ngIf="user.enabled " class="btn actionbtn enabledButton" data-toggle="tooltip" data-placement="bottom" title="Disable" (click)="toggle(user.userDetailsID, user.enabled)">
+        <i class="fa fa-toggle-on"></i>
+      </button>
+      <button *ngIf="!user.enabled" class="btn actionbtn disabledButton" data-toggle="tooltip" data-placement="bottom" title="Enable" (click)="toggle(user.userDetailsID, user.enabled)"><i  class="fa fa-toggle-on"></i></button>
+    </td>
+  </tr>
+
+</table>
+
+<style>
+  .actionbtn {
+    background-color: Transparent;
+    background-repeat: no-repeat;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    outline: none;
+    margin-right: 0px !important;
+    padding: 2px;
+  }
+  .editButton {
+    color: #ffc805;
+  }
+  .deleteButton {
+    color: red;
+  }
+  .detailsButton {
+    color: #0571ff;
+  }
+  .enabledButton {
+    color: #07bc40;
+  }
+  .disabledButton {
+    color: #66645b;
+  }
+</style>

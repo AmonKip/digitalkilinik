@@ -1,7 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Patient = (function () {
-    function Patient(patientID, firstName, lastName, middleName, gender, dob, placeOfBirth, sublocation, phone, email, idNumber, visits) {
+    function Patient(current, patientID, firstName, lastName, middleName, gender, dob, placeOfBirth, sublocation, phone, email, idNumber, visits) {
+        this.current = current;
         this.patientID = patientID;
         this.firstName = firstName;
         this.lastName = lastName;

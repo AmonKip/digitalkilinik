@@ -1,7 +1,8 @@
-﻿import { Visit } from "./visit.model";
+import { Visit } from "./visit.model";
 
 export class Patient {
-    constructor(
+  constructor(
+        public current?: number,
         public patientID?: number,
         public firstName?: string,
         public lastName?: string,

@@ -14,16 +14,21 @@ var repository_1 = require("../models/repository");
 var router_1 = require("@angular/router");
 var authentication_service_1 = require("../auth/authentication.service");
 var PatientTableComponent = (function () {
-    function PatientTableComponent(repo, router, authService) {
+    function PatientTableComponent(repo, router, authService, route) {
         this.repo = repo;
         this.router = router;
         this.authService = authService;
+        this.route = route;
+        this.isCheckedIn = false;
         this.repo.getPatients();
+        this.registeredPatients();
     }
     Object.defineProperty(PatientTableComponent.prototype, "patients", {
         get: function () {
-            // this.spinnerService.hide();
-            return this.repo.patients;
+            return this.filteredPatients;
+        },
+        set: function (value) {
+            this.patients = value;
         },
         enumerable: true,
         configurable: true
@@ -35,9 +40,25 @@ var PatientTableComponent = (function () {
         enumerable: true,
         configurable: true
     });
+    Object.defineProperty(PatientTableComponent.prototype, "checkedInPatientsCount", {
+        get: function () {
+            return this.repo.patients.filter(function (p) { return p.current == 1; }).length;
+        },
+        enumerable: true,
+        configurable: true
+    });
     PatientTableComponent.prototype.selectPatient = function (id) {
         this.repo.getPatient(id);
         this.router.navigateByUrl("/detail");
+    };
+    PatientTableComponent.prototype.checkedInPatients = function () {
+        this.isCheckedIn = true;
+        this.filteredPatients = this.repo.patients.filter(function (p) { return p.current == 1; });
+        return this.patients = this.filteredPatients;
+    };
+    PatientTableComponent.prototype.registeredPatients = function () {
+        this.filteredPatients = this.repo.patients.filter(function (p) { return p.current == 0; });
+        this.isCheckedIn = false;
     };
     PatientTableComponent.prototype.criteriaChange = function (value) {
         if (value != '[object Event]')
@@ -50,7 +71,7 @@ PatientTableComponent = __decorate([
         selector: "patient-table",
         templateUrl: "patientTable.component.html"
     }),
-    __metadata("design:paramtypes", [repository_1.Repository, router_1.Router, authentication_service_1.AuthenticationService])
+    __metadata("design:paramtypes", [repository_1.Repository, router_1.Router, authentication_service_1.AuthenticationService, router_1.ActivatedRoute])
 ], PatientTableComponent);
 exports.PatientTableComponent = PatientTableComponent;
 //# sourceMappingURL=patientTable.component.js.map
