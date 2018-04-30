@@ -24,13 +24,12 @@ var visitsUrl = "api/visits";
 var addRequestUrl = "api/addrequest";
 var Repository = (function () {
     function Repository(http, spinnerService) {
-        var _this = this;
         this.http = http;
         this.spinnerService = spinnerService;
         this.filterObject = new configClasses_repository_1.Filter();
         this.getPatients();
-        this.getVisits().subscribe(function (visits) { return _this.visits = visits; });
-        //this.getCheckedInPatients();
+        this.getVisits();
+        this.getCheckedInPatients();
     }
     Repository.prototype.getPatient = function (id) {
         var _this = this;
@@ -298,10 +297,11 @@ var Repository = (function () {
         this.sendRequest(http_1.RequestMethod.Get, "api/patientvisits/" + id)
             .subscribe(function (response) { _this.singlePatientVisits = response; });
     };
-    //getCheckedInPatients() {
-    //  this.sendRequest(RequestMethod.Get, "api/checkedIn")
-    //    .subscribe(response => this.checkedInPatients = response);
-    //}
+    Repository.prototype.getCheckedInPatients = function () {
+        var _this = this;
+        this.sendRequest(http_1.RequestMethod.Get, "api/checkedIn")
+            .subscribe(function (response) { return _this.checkedInPatients = response; });
+    };
     // cookie login
     //login(name: string, password: string): Observable<Response> {
     //    return this.http.post("/api/account/login",

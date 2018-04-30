@@ -1,4 +1,4 @@
-﻿using ePatientCare.Data;
+using ePatientCare.Data;
 using ePatientCare.Models.Security;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -331,15 +331,56 @@ namespace ePatientCare.Models
         };
         var order8 = new Order
         {
-            Date = DateTime.Parse("11/10/2017"),
-            VisitId = 4,
-            Notes = "Order for 8 500mg of panadols to be taken morning and noon for daily for 4 days",
-            OrderType = "Pharmacy"
+          Date = DateTime.Parse("11/10/2017"),
+          VisitId = 4,
+          Notes = "Order for 8 500mg of panadols to be taken morning and noon for daily for 4 days",
+          OrderType = "Pharmacy"
         };
         context.Orders.AddRange(order1, order2, order3, order4, order5, order6, order7, order8);
         context.SaveChanges();
-
       }
+
+      if (context.LogLevel.Count() == 0)
+      {
+        var all = new LogLevel
+        {
+          Level = 0,
+          Description = "All"
+        };
+        var debug = new LogLevel
+        {
+          Level = 1,
+          Description = "Debug"
+        };
+        var info = new LogLevel
+        {
+          Level = 2,
+          Description = "Info"
+        };
+        var warn = new LogLevel
+        {
+          Level = 3,
+          Description = "Warn"
+        };
+        var error = new LogLevel
+        {
+          Level = 4,
+          Description = "Error"
+        };
+        var fatal = new LogLevel
+        {
+          Level = 5,
+          Description = "Fatal"
+        };
+        var off = new LogLevel
+        {
+          Level = 6,
+          Description = "Off"
+        };
+        context.AddRange(all, debug, info, warn, error, fatal, off);
+        context.SaveChanges();
+      }
+      
     }
   }
 }

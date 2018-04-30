@@ -4,13 +4,15 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using ePatientCare.Data;
+using ePatientCare.Models;
 
 namespace ePatientCare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180427022616_clientLogger")]
+    partial class clientLogger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -96,20 +98,6 @@ namespace ePatientCare.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("LogEntry");
-                });
-
-            modelBuilder.Entity("ePatientCare.Models.LogLevel", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Description");
-
-                    b.Property<int>("Level");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("LogLevel");
                 });
 
             modelBuilder.Entity("ePatientCare.Models.Order", b =>

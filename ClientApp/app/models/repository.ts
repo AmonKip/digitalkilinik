@@ -36,10 +36,11 @@ export class Repository {
     }
     patient: Patient;
 
-    getPatient(id: number) : Patient {
+    getPatient(id: number) {
       return  this.sendRequest(RequestMethod.Get, "/api/patients/" + id)
             .subscribe(response => { this.patient = response; });
     }
+    
     get_Patient(): Patient {
       return this.patient;
     }

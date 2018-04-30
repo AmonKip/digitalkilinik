@@ -24,6 +24,7 @@ var AppUserCreateComponent = (function () {
     AppUserCreateComponent.prototype.submitForm = function (form) {
         this.formSubmitted = true;
         if (form.valid) {
+            console.log(this.newUser);
             this.repo.createUser(this.newUser);
             this.newUser = new appuser_model_1.AppUser();
             form.reset();
@@ -51,6 +52,16 @@ var AppUserCreateComponent = (function () {
         }
         return messages;
     };
+    AppUserCreateComponent.prototype.fileChange = function (event) {
+        var fileList = event.target.files;
+        if (fileList.length > 0) {
+            var file = fileList[0];
+            this.newUser.file = file;
+        }
+        else {
+            alert('Upload failed');
+        }
+    };
     return AppUserCreateComponent;
 }());
 AppUserCreateComponent = __decorate([
@@ -61,4 +72,24 @@ AppUserCreateComponent = __decorate([
     __metadata("design:paramtypes", [repository_1.Repository, router_1.Router])
 ], AppUserCreateComponent);
 exports.AppUserCreateComponent = AppUserCreateComponent;
+//  fileChange(event) {
+//  let fileList: FileList = event.target.files;
+//  if (fileList.length > 0) {
+//    let file: File = fileList[0];
+//    let formData: FormData = new FormData();
+//    formData.append('uploadFile', file, file.name);
+//    let headers = new Headers();
+//    /** In Angular 5, including the header Content-Type can invalidate your request */
+//    headers.append('Content-Type', 'multipart/form-data');
+//    headers.append('Accept', 'application/json');
+//    let options = new RequestOptions({ headers: headers });
+//    this.http.post(`${this.apiEndPoint}`, formData, options)
+//      .map(res => res.json())
+//      .catch(error => Observable.throw(error))
+//      .subscribe(
+//      data => console.log('success'),
+//      error => console.log(error)
+//      )
+//  }
+//}
 //# sourceMappingURL=appUserCreate.Component.js.map

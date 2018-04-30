@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var AppUser = (function () {
-    function AppUser(userDetailsID, title, email, password, confirmPassword, firstName, lastName, idNumber, username, phoneNumber, gender, enabled, reason, biography, imageUrl) {
+    function AppUser(userDetailsID, title, email, password, confirmPassword, firstName, lastName, idNumber, username, phoneNumber, gender, enabled, reason, biography, imageUrl, file) {
         this.userDetailsID = userDetailsID;
         this.title = title;
         this.email = email;
@@ -17,6 +17,7 @@ var AppUser = (function () {
         this.reason = reason;
         this.biography = biography;
         this.imageUrl = imageUrl;
+        this.file = file;
     }
     return AppUser;
 }());

@@ -1,4 +1,4 @@
-﻿export class AppUser {
+export class AppUser {
     constructor(
         public userDetailsID?: number,
         public title?: string,
@@ -14,5 +14,6 @@
         public enabled?: number,
         public reason?: string,
         public biography?: string,
-        public imageUrl?: string){}
+        public imageUrl?: string,
+        public file?: File) { }
 }

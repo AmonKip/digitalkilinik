@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,5 +37,7 @@ namespace ePatientCare.Data
         public DbSet<Lab> LabWorks { get; set; }
         public DbSet <Pharmacy> Pharmacy { get; set; }
         public DbSet<Imaging> Imaging { get; set; }
+        public DbSet<LogEntry> LogEntry { get; set; }
+        public DbSet<LogLevel> LogLevel { get; set; }
   }
 }

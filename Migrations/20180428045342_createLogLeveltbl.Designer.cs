@@ -8,9 +8,10 @@ using ePatientCare.Data;
 namespace ePatientCare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180428045342_createLogLeveltbl")]
+    partial class createLogLeveltbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -89,11 +90,13 @@ namespace ePatientCare.Migrations
 
                     b.Property<DateTime>("EntryDate");
 
-                    b.Property<int>("Level");
+                    b.Property<int?>("LevelID");
 
                     b.Property<string>("Message");
 
                     b.HasKey("ID");
+
+                    b.HasIndex("LevelID");
 
                     b.ToTable("LogEntry");
                 });
@@ -429,6 +432,13 @@ namespace ePatientCare.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("ePatientCare.Models.LogEntry", b =>
+                {
+                    b.HasOne("ePatientCare.Models.LogLevel", "Level")
+                        .WithMany()
+                        .HasForeignKey("LevelID");
                 });
 
             modelBuilder.Entity("ePatientCare.Models.UserDetails", b =>

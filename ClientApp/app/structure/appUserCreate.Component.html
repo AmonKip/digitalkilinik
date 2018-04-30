@@ -1,4 +1,4 @@
-﻿<div class="container">
+<div class="container">
   <div class="card create bor">
     <div class="card-body btn btn-info mb-3">
       <i class="fa fa-user-plus"></i> Account Request
@@ -70,28 +70,6 @@
             </ul>
           </div>
 
-          <!--<div class="form-group">
-            <label>Password</label>
-            <input class="form-control" [(ngModel)]="newUser.password" name="password"
-                   #password="ngModel" required />
-            <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || password.dirty) && password.invalid">
-              <li *ngFor="let error of getValidationMessages(password)">
-                {{error}}
-              </li>
-            </ul>
-          </div>
-
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input class="form-control" [(ngModel)]="newUser.confirmPassword" name="confirmPassword"
-                   #confirmPassword="ngModel" required />
-            <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid">
-              <li *ngFor="let error of getValidationMessages(confirmPassword)">
-                {{error}}
-              </li>
-            </ul>
-          </div>-->
-
           <div class="form-group">
             <label>National ID No.</label>
             <input class="form-control" [(ngModel)]="newUser.idNumber" name="idNumber"
@@ -133,17 +111,11 @@
             </ul>
 
           </div>
-
-          <!--<div class="form-group">
-            <label>Image Url</label>
-            <input class="form-control" [(ngModel)]="newUser.confirmPassword" name="confirmPassword"
-                   #confirmPassword="ngModel" required />
-            <ul class="text-danger list-unstyled" *ngIf="(formSubmitted || confirmPassword.dirty) && confirmPassword.invalid">
-              <li *ngFor="let error of getValidationMessages(confirmPassword)">
-                {{ }}
-              </li>
-            </ul>
-          </div>-->
+          <div class="form-group">
+            <label>Image</label>
+            <input class="form-control" name="file" type="file" (change)="fileChange($event)" placeholder="Upload Image" accept=".pdf,.doc,.docx">
+          </div>
+         
 
           <div class="mb-2 row justify-content-center align-items-center">
             <button type="submit" class="btn btn-primary">Submit</button>
