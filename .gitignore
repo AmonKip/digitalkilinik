@@ -265,4 +265,4 @@ dist/out-tsc/
 /e2e/*.js
 /e2e/*.map
 wwwroot/dist
-appsettings*.json
+appsettings.production.json
