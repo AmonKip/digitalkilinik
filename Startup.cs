@@ -30,7 +30,7 @@ namespace ePatientCare
     public class Startup
     {
 
-    private static readonly string secretKey = "mysuperSUPER&verilysecret_secretkey!123";
+    private static readonly string secretKey = "test_secretkey!123";
     private static readonly string issuer = "DigitalKilinikApi";
     private static readonly string audience = "DigitalKilinikApps";
     public Startup(IHostingEnvironment env)
