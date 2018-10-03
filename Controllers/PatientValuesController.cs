@@ -43,7 +43,6 @@ namespace ePatientCare.Controllers
   [Route("api/patientbyVisitId/{id}")]
   public Patient GetPatientByVisitId(long id)
   {
-      //System.Threading.Thread.Sleep(5000);
       try
       {
                 long patientId = context.Visits.Find(id).PatientID;
@@ -60,7 +59,6 @@ namespace ePatientCare.Controllers
     [Route("api/patients")]
     public IEnumerable<Patient> GetPatients(string category, string search)
     {
-      //System.Threading.Thread.Sleep(5000);
       try
       {
         if (!string.IsNullOrWhiteSpace(category))
@@ -90,7 +88,6 @@ namespace ePatientCare.Controllers
     [Route("api/patients")]
     public IActionResult CreatePatient([FromBody] PatientData pdata)
     {
-      //System.Threading.Thread.Sleep(5000);
       if (ModelState.IsValid)
       {
         Patient p = pdata.Patient;
@@ -107,7 +104,6 @@ namespace ePatientCare.Controllers
     [Route("api/patients/{id}")]
     public IActionResult ReplacePatient(long id, [FromBody] PatientData pdata)
     {
-      //System.Threading.Thread.Sleep(5000);
       if (ModelState.IsValid)
       {
         Patient p = pdata.Patient;

@@ -1,4 +1,4 @@
-﻿using ePatientCare.Data;
+using ePatientCare.Data;
 using ePatientCare.Models;
 using ePatientCare.Models.AccountViewModels;
 using ePatientCare.Models.Security;
@@ -35,22 +35,16 @@ namespace ePatientCare.Controllers
     }
 
         // get all roles from roles table
-
         [HttpGet]
         [Route("api/roles")]
         [Authorize(ActiveAuthenticationSchemes = "Bearer")]
         public IQueryable<Object> GetRoles()
         {
-            // System.Threading.Thread.Sleep(5000);
-            // return roleManager.Roles;
-            //  return roleManager.Roles.Select
            var query = from r in roleManager.Roles
             select new { Id = r.Id, Name = r.Name };
 
             return query;
     }
-
-    // POST: /Account/Register
 
     // add a new role to roles table
     [Route("api/addrole")]
